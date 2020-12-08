@@ -1,10 +1,15 @@
 import React from 'react'
+// components 
+import Dashboard from './components/Dashboard/Dashboard'
+import CreateBooking from './components/Booking/CreateBooking'
 
 const App = () => {
   return (
-    <div >
-          The basic empty template
-    </div>
+    <React.Fragment >
+      <Dashboard>
+        <CreateBooking />
+      </Dashboard>
+    </React.Fragment>
   )
 }
 
