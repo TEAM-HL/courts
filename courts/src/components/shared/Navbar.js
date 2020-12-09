@@ -12,10 +12,7 @@ const Navbar = () => {
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Tools</a></li>
-                        <li><a href="#">
-                            <i class="material-icons right">account_circle</i>
-                            Login</a>
-                        </li>
+                        <li><a class="waves-effect waves-light btn">Login <i class="material-icons right">account_circle</i></a></li>
                     </ul>
                 </div>
             </nav>
