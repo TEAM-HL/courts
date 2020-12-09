@@ -9,11 +9,13 @@ import UserLogin from './components/User/UserLogin'
 
 const App = () => {
   return (
-    <React.Fragment>
-      <Dashboard>
-        <UserLogin />
-      </Dashboard>
-    </React.Fragment>
+    <div>
+      <BrowserRouter>
+        <Route path="/" exact component={Dashboard} />
+        <Route path="/login" exact component={UserLogin} />
+        <Route path="/booking/new" exact component={CreateBooking} />
+      </BrowserRouter>
+    </div>
   )
 }
 

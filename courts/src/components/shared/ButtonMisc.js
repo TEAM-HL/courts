@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Button = (props) => {
+const Button = ({title}) => {
     return (
         <React.Fragment>
-            <a class="waves-effect waves-light btn">{props.name}</a>
+            <a href="#" class="waves-effect waves-light btn">{title}</a>
         </React.Fragment>
     )
 }

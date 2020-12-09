@@ -11,8 +11,8 @@ const ButtonSelection = () => {
     
     return (
         <div style={style}>
-            <ButtonSubmit />
-            <Button name="Cancel" />
+            <ButtonSubmit title="Login"/>
+            <Button title="Cancel" />
         </div>
     )
 }
