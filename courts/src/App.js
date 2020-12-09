@@ -6,10 +6,12 @@ import 'materialize-css/dist/css/materialize.min.css'
 import Dashboard from './components/Dashboard/Dashboard'
 import CreateBooking from './components/Booking/CreateBooking'
 import UserLogin from './components/User/UserLogin'
+import Navbar from './components/shared/Navbar'
 
 const App = () => {
   return (
     <div>
+      <Navbar />
       <BrowserRouter>
         <Route path="/" exact component={Dashboard} />
         <Route path="/login" exact component={UserLogin} />

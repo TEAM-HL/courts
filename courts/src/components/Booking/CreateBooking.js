@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ButtonSelection from '../shared/ButtonSelection'
+import ButtonGroup from '../shared/ButtonGroup'
 
 const CreateBooking = () => {
   
@@ -48,7 +48,7 @@ const CreateBooking = () => {
                     </form>
                 </div>
             </div>
-            <ButtonSelection />
+            <ButtonGroup />
         </div>
     )
 }

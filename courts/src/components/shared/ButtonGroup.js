@@ -3,7 +3,7 @@ import React from 'react'
 import Button from './ButtonMisc'
 import ButtonSubmit from './ButtonSubmit'
 
-const ButtonSelection = () => {
+const ButtonGroup = () => {
 
     const style = {
         display: "flex",
@@ -17,4 +17,4 @@ const ButtonSelection = () => {
     )
 }
 
-export default ButtonSelection
+export default ButtonGroup

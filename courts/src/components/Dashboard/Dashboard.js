@@ -1,10 +1,13 @@
 import React from 'react'
 
-const Dashboard = (props) => {
+// components 
+import CourtPicker from './CourtPicker'
+
+const Dashboard = () => {
 
     return (
         <div className="container">
-            <div>{props.children}</div>
+            <CourtPicker />
         </div>
     )
 }
