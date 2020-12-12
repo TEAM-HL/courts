@@ -1,13 +1,13 @@
 import React from 'react'
 
 // components 
-import CourtPicker from './CourtPicker'
+// import CourtPicker from './CourtPicker'
 
 const Dashboard = () => {
 
     return (
         <div className="container">
-            <CourtPicker />
+            {/* <CourtPicker /> */}
         </div>
     )
 }
