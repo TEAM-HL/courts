@@ -48,7 +48,7 @@ const CreateBooking = () => {
                     </form>
                 </div>
             </div>
-            <ButtonGroup />
+            <ButtonGroup title="Create"/>
         </div>
     )
 }
