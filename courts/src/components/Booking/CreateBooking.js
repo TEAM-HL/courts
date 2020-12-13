@@ -65,9 +65,7 @@ const CreateBooking = () => {
                         </select>
                         <label>Total Cost:</label>
                         <input name="total" type="number" step="any" min="0.00" ref={register({})} />
-                        <input type="submit"/>
-
-                        {/* <ButtonGroup type="submit" title="Create"/> */}
+                        <input type="submit" className="waves-effect waves-light btn"/>
                     </form>
                 </div>
             </div>
