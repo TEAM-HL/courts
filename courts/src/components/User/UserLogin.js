@@ -1,12 +1,11 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-// components 
 
 const UserLogin = () => {
-    const { register, handleSubmit, errors } = useForm()
+    const { register, errors, handleSubmit } = useForm()
     const onSubmit = data => console.log(data)
 
-    console.log(errors)
+    // console.log(errors)
 
     return (
         <div className="container">
@@ -16,28 +15,39 @@ const UserLogin = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <label>Username:</label>
                             <input 
-                                type="text" 
                                 name="username" 
-                                ref={register({ required: true, minLength: 6, maxLength: 15 })} 
+                                type="text" 
+                                ref={register({ 
+                                    required: {
+                                        value: true,
+                                        message: "You must enter a username" 
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9]{4,10}$/,
+                                        message: "must use at least 4 characters"    
+                                    }})}
                             />
-                            {errors.username && errors.username.type === "required" && (
-                                <p>This is required.</p>
+                            {errors.username && (
+                                <p style={{color: "red"}}>{errors.username.message}</p>
                             )}
                         <label>Password:</label>
                             <input 
-                                type="text" 
                                 name="password" 
+                                type="text" 
                                 ref={register({ 
-                                    required: true, 
-                                    minLength: 8, 
-                                    maxLength: 10,
-                                    pattern: /^[a-zA-Z0-9]$/i 
-                                    })} 
+                                    required: {
+                                        value: true,
+                                        message: "You must enter a password"
+                                    }, 
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9]{6,}$/i,
+                                        message: "Must use at least 6 characters. Must be a combination of uppercase & lowercase letters and numbers" 
+                                    }})} 
                             />
                             {errors.password && (
-                                <p>Minimum 8 characters, Maxium 10 characters. Must use lowercase & uppercase letters and at least one number</p>
+                            <p style={{color: "red"}}>{errors.password.message}</p>
                             )}
-                            <input type="submit" class="btn waves-effect waves-light" /> 
+                            <input type="submit" className="btn waves-effect waves-light" /> 
                     </form>    
                 </div>
             </div>
