@@ -1,8 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import ButtonGroup from '../shared/ButtonGroup'
-
 const CreateBooking = () => {
     const { register, handleSubmit } = useForm()
  
@@ -44,7 +42,7 @@ const CreateBooking = () => {
                         <br />
                         <label>Racquets:</label>
                         <select className="browser-default" name="racquets" ref={register({})} >
-                            <option value="" default>none</option>
+                            <option value="" default>None</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -65,7 +63,7 @@ const CreateBooking = () => {
                         </select>
                         <label>Total Cost:</label>
                         <input name="total" type="number" step="any" min="0.00" ref={register({})} />
-                        <input type="submit" className="waves-effect waves-light btn"/>
+                        <input type="submit" className="btn waves-effect waves-light"/>
                     </form>
                 </div>
             </div>
