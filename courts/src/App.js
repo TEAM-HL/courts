@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 // css 
-import 'materialize-css/dist/css/materialize.min.css'
+import 'materialize-css'
 // components 
 import Dashboard from './components/Dashboard/Dashboard'
 import CreateBooking from './components/Booking/CreateBooking'
