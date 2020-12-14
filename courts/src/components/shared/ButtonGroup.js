@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Button from './ButtonMisc'
+import ButtonSecondary from './ButtonSecondary'
 import ButtonSubmit from './ButtonSubmit'
 
-const ButtonGroup = () => {
+const ButtonGroup = ({title}) => {
 
     const style = {
         display: "flex",
@@ -11,8 +11,8 @@ const ButtonGroup = () => {
     
     return (
         <div style={style}>
-            <ButtonSubmit title="Login"/>
-            <Button title="Cancel" />
+            <ButtonSubmit title={title}/>
+            <ButtonSecondary title="Cancel" />
         </div>
     )
 }

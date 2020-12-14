@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Button = ({title}) => {
+const ButtonSecondary = ({title}) => {
     return (
         <React.Fragment>
             <a href="#" class="waves-effect waves-light btn">{title}</a>
@@ -8,4 +8,4 @@ const Button = ({title}) => {
     )
 }
 
-export default Button
+export default ButtonSecondary
