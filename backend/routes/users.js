@@ -12,12 +12,13 @@ router.route('/login').post((req, res) => {
 
 // register user route 
 router.route('/add').post((req, res) => {
-    User.findOne({username: req.body.username}, (err, doc) => {
-        console.log(req.body.username)
+    console.log(req.body.username)
+    
+    User.findOne({username: req.body.username}, async (err, match) => {
 
         if (err) throw err;
-        if (doc) res.send("User Already exists")
-        if (!doc) {
+        if (match) res.send("User Already exists")
+        if (!match) {
             const username = req.body.username
             const email = req.body.email
             const password = req.body.password
@@ -26,10 +27,11 @@ router.route('/add').post((req, res) => {
             const newUser = new User({
                 username, email, password, category
             })
+            await newUser.save()
+            res.send("User Created Successfully")
         }
-        newUser.save()
-        .then(() => res.json('User created'))
-        .catch(e => res.status(400).json('Error: ' + e))
+        // .then(() => res.json('User created'))
+        // .catch(e => res.status(400).json('Error: ' + e))
     })
 })
 
