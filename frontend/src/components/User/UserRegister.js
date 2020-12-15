@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import {registerUser} from '../../helpers/registerUser'
 
 // set initial values 
 const initialvalues = {
@@ -21,9 +22,9 @@ const UserRegister = () => {
     }
   
     const formSubmit = (e) => {
-      e.preventDefault()
-      console.log(values)
-  
+        e.preventDefault()
+        console.log(values)
+        registerUser(values)
     }
 
     return (

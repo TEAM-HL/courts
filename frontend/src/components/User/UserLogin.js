@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import {loginUser} from '../../helpers/loginUser'
 
 // set initial values 
 const initialvalues = {
@@ -21,7 +23,7 @@ const UserLogin = () => {
 
   const formSubmit = (e) => {
     e.preventDefault()
-    console.log(values)
+    loginUser(values)
 
   }
 
