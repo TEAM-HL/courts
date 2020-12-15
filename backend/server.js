@@ -31,9 +31,11 @@ connection.once('open', () => {
 // Routes
 const bookingsRouter = require('./routes/bookings')
 const usersRouter = require('./routes/users')
+const postsRouter = require('./routes/posts')
 
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
+app.use('/posts', postsRouter)
 
 // run server 
 app.listen(port, () => {
