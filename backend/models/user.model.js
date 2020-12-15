@@ -4,26 +4,27 @@ const Schema = mongoose.Schema
 
 const userSchema = new Schema({
     username: {
+        type: String,
         required: true,
         unique: true,
         trim: true,
-        minlength: 6
+        minlength: 4
     },
     email: {
+        type: String,
         required: true,
         unique: true,
         trim: true
     },
     password: {
+        type: String,
         required: true,
         trim: true
     },
     category: {
+        type: String,
         required: true,
         trim: true
-    },
-    dp: {
-        required: false
     }
 })
 

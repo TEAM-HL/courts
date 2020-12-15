@@ -2,15 +2,32 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+const equipmentSchema = new Schema({
+    canisters: {
+        type: Number
+    },
+    racquets: {
+        type: Number
+    },
+    hopper: {
+        type: Boolean
+    }
+})
+
 const bookingSchema = new Schema({
     username: {
         type: String,
         required: true,
         trim: true,
-        minlength: 6
+        minlength: 4
     },
     date: {
         type: Date,
+        required: true,
+        trim: true
+    },
+    duration: {
+        type: Number,
         required: true,
         trim: true
     },
@@ -21,16 +38,13 @@ const bookingSchema = new Schema({
     },
     equipment: {
         canisters: {
-            type: Number,
-            required: true
+            type: Number
         },
         racquets: {
-            type: Number,
-            required: true
+            type: Number
         },
         hopper: {
-            type: Boolean,
-            required: true
+            type: Boolean
         }
     },
     cost: {
