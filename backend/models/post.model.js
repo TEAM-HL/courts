@@ -8,7 +8,7 @@ const postSchema = new Schema({
         required: true,
         unique: true,
         trim: true,
-        minlength: 6
+        minlength: 4
     },
     category: {
         type: String,
