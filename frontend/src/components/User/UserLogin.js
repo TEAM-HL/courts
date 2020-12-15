@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 // set initial values 
 const initialvalues = {
   id: 0,
-  username: '',
-  password: ''
+  username: "",
+  password: ""
 }
 
 const UserLogin = () => {
@@ -22,7 +22,7 @@ const UserLogin = () => {
   const formSubmit = (e) => {
     e.preventDefault()
     console.log(values)
-        
+
   }
 
 
@@ -50,7 +50,7 @@ const UserLogin = () => {
                 onChange={handleInputChange}
                 />
             </label>
-            <input type="submit" value="login" className="btn waves-effect waves-light" />
+            <input type="submit" value="submit" className="btn waves-effect waves-light" />
           </form>
           <br/>
           <span>Don't have an account? <strong><a href="/register">Register</a></strong></span>
