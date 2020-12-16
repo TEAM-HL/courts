@@ -1,14 +1,13 @@
 import axios from 'axios'
 
-export const registerUser = (data) => {
+export const loginUser = (data) => {
     axios({
-        method: "POST",
+        method: "GET",
         data: {
             username: data.username,
-            email: data.email,
             password: data.password
         },
         withCredentials: true, 
-        url: "http://localhost:5000/register",
+        url: "http://localhost:5000/users/login",
     }).then((res) => console.log(res))
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {registerUser} from '../../helpers/registerUser'
+import {registerUser} from '../../services/registerUser'
 
 // set initial values 
 const initialvalues = {

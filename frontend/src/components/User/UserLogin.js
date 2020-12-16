@@ -1,30 +1,42 @@
-import React, { useState } from "react";
-
-import {loginUser} from '../../helpers/loginUser'
-
-// set initial values 
-const initialvalues = {
-  id: 0,
-  username: "",
-  password: ""
-}
+import React, { useState, useEffect } from "react";
+import {loginUser} from "../../services/loginUser"
+import { useGlobalState } from "../../config/store"
 
 const UserLogin = () => {
+  
+  // set initial values for local state 
+  const initialvalues = {
+    id: 0,
+    username: "",
+    password: ""
+  }
 
   const [values, setValues] = useState(initialvalues)
+  // destructure store and dispatch from global state
+  const {store, dispatch} = useGlobalState()
+  // destructure loggedInUser from store
+  const {loggedInUser} = store
 
   const handleInputChange = e => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value,
-    })
+      [name]: value
+    })    
   }
 
+  useEffect(() => {
+    dispatch({
+      type: "setLoggedInUser",
+      data: values
+    })
+  }, [values])
+  
+  
   const formSubmit = (e) => {
     e.preventDefault()
+    console.log(loggedInUser)
     loginUser(values)
-
   }
 
 
