@@ -1,11 +1,38 @@
 import React from 'react'
+import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { Container, Row, Col } from 'materialize-css';
 
 const CreateBooking = () => {
     const { register, handleSubmit } = useForm()
  
-    const onSubmit = data => console.log(data)
+    const onSubmit = data => {
+        console.log(data)
+
+        // changing hopper over to boolean
+        let newHopper = false
+
+        if (data.hopper == "yes") {
+            newHopper = true
+        } else {
+            newHopper = false
+        }
+
+        // structuring the form data to match the database
+        const booking = {
+            username: "Test2",
+            date: data.date,
+            duration: data.duration,
+            court: data.court,
+            equipment: {canisters: data.canisters, racquets: data.racquets, hopper: newHopper},
+            cost: data.total
+        }
+
+        console.log(booking)
+
+        axios.post('http://localhost:5000/bookings/add', booking)
+            .then(res => console.log(res.data))
+    }
 
 
     return (
@@ -58,7 +85,7 @@ const CreateBooking = () => {
                             <option value="4" >4</option>
                         </select>
                         <label>Hopper:</label>
-                        <select className="browser-default" name="canisters" ref={register({})} >
+                        <select className="browser-default" name="hopper" ref={register({})} >
                             <option value="no" default>No</option>
                             <option value="yes" default>Yes</option>
                         </select>

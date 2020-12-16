@@ -7,6 +7,7 @@ import CreateBooking from '../components/Booking/CreateBooking'
 import UserLogin from '../components/User/UserLogin'
 import Navbar from '../components/shared/Navbar'
 import UserRegister from '../components/User/UserRegister'
+import CalendarComponent from '../components/Dashboard/Calendar'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/login" exact component={UserLogin} />
         <Route path="/register" exact component={UserRegister} />
         <Route path="/booking/new" exact component={CreateBooking} />
+        <Route path="/calendar" exact component={CalendarComponent} />
       </BrowserRouter>
     </>
   )

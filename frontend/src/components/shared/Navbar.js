@@ -15,6 +15,10 @@ const Navbar = () => {
                 <li><a href="/booking/new">Book a Court</a></li>
                 <li><a href="">View My Bookings</a></li>
             </ul>
+            <ul id="tools-dropdown" className="dropdown-content">
+                <li><a href="">User List</a></li>
+                <li><a href="/calendar">Calendar</a></li>
+            </ul>
             <nav>
                 <div class="nav-wrapper">
                     <a href="/" class="brand-logo">Courts</a>
@@ -24,7 +28,8 @@ const Navbar = () => {
                         <li><a href="#">Community</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Contact</a></li>
-                        <li><a href="#">Tools</a></li>
+                        <li><a class="dropdown-trigger" href="" data-target="tools-dropdown">Tools
+                            <i class="material-icons right">arrow_drop_down</i></a></li>
                         <li><a href="/login" class="waves-effect waves-light btn">Login<i class="material-icons right">account_circle</i></a></li>
                     </ul>
                 </div>
