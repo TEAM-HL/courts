@@ -33,10 +33,10 @@ const UserLogin = () => {
   }, [values])
   
   
-  const formSubmit = (e) => {
+  const formSubmit = async (e) => {
     e.preventDefault()
-    console.log(loggedInUser)
-    loginUser(values)
+    // console.log(loggedInUser)
+    await loginUser(values)
   }
 
 

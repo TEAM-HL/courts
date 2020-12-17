@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export const loginUser = (data) => {
+export const loginUser = async (data) => {
     axios({
-        method: "GET",
+        method: "POST",
         data: {
             username: data.username,
             password: data.password

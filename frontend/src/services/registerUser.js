@@ -10,5 +10,5 @@ export const registerUser = (data) => {
         },
         withCredentials: true, 
         url: "http://localhost:5000/users/register",
-    }).then((res) => console.log(res))
+    }).then(res => console.log('response=', res))
 }
