@@ -28,6 +28,9 @@ app.use(session({
     saveUninitialized: true
 }))
 app.use(cookieParser("secretcode"))
+app.use(passport.initialize())
+app.use(passport.session())
+require('./config/passportConfig')(passport)
 
 // Mongo Atlas connection
 const uri = process.env.ATLAS_URI;

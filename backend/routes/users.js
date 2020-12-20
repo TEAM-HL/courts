@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
 let User = require('../models/user')
 
 // admin route
@@ -9,25 +10,33 @@ router.route('/').get((req, res) => {
         .catch(e => res.status(400).json('Error: ' + e))
 })
 // login user route 
-router.route('/login').post( async (req, res) => {
+router.route('/login').post((req, res, next) => {
     console.log('hit login route')
     console.log('data sent=', req.body)
 
-    User.find
-    // get hashed password from DB
-    // compare hashed password linked to username to req.body.password input 
-
-    User.find({ username: req.body.username, password: req.body.password }, 
-        async (err, match) => {
-        try {
-            console.log('match=', match)
-            if (!match.length > 0) res.send("Invalid username/password")
-            if (match.length > 0) res.send("user matched")   
-            } catch (error) {
-               res.send(error)
-            }
-        })
+    passport.authenticate("local", (err, user, info) => {
+        if (err) throw err;
+        if(!user) res.send("no user exists")
+        else {
+            req.login(user, err => {
+                if (err) throw err
+                res.send('user successfully authenticated')
+                console.log(req.user)
+            })
+        }
+    })(req, res, next)
 })
+
+//     User.find({ username: req.body.username, password: req.body.password }, 
+//         async (err, match) => {
+//         try {
+//             console.log('match=', match)
+//             if (!match.length > 0) res.send("Invalid username/password")
+//             if (match.length > 0) res.send("user matched")   
+//             } catch (error) {
+//                res.send(error)
+//             }
+//         })
 
 // register user route 
 router.route('/register').post((req, res, next) => {
@@ -73,7 +82,7 @@ router.route('/register').post((req, res, next) => {
             }
             return res.send({
                 success: true,
-                message: 'User successfully registered.'
+                message: 'User is successfully registered.'
             })
         })
         console.log("finish")

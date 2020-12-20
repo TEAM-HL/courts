@@ -7,12 +7,12 @@ module.exports = function(passport) {
 
     passport.use(
         new localStrategy((username, password, done) => {
-            user.findOne({username: username}, (err, user) => {
+            User.findOne({username: username}, (err, user) => {
                 if (err) throw err;
                 if (!user) return done(null, false)
                 bcrypt.compare(password, user.password, (err, result) => {
                     if (result === true) {
-                        //return null error and user if password comparison is successful
+                        //return null as error and the user if password comparison is successful
                         return done(null, user)
                     } else {
                         // return no user if comparison fails
@@ -22,7 +22,7 @@ module.exports = function(passport) {
             })
         })
     )
-    // store a cookie with user id inside
+    // stores a cookie with user id inside
     passport.serializeUser((user, cb) => {
         cb(null, user.id)
     })
