@@ -9,9 +9,14 @@ router.route('/').get((req, res) => {
         .catch(e => res.status(400).json('Error: ' + e))
 })
 // login user route 
-router.route('/login').post((req, res) => {
+router.route('/login').post( async (req, res) => {
     console.log('hit login route')
     console.log('data sent=', req.body)
+
+    User.find
+    // get hashed password from DB
+    // compare hashed password linked to username to req.body.password input 
+
     User.find({ username: req.body.username, password: req.body.password }, 
         async (err, match) => {
         try {
@@ -33,30 +38,31 @@ router.route('/register').post((req, res, next) => {
     // assign user credentials to variables 
     const {username} = req.body
     const {email} = req.body
-    const userType = "Player"
+    const userType = "player"
     const {password} = req.body 
     
+    //verify that username doesn't already exist
     User.find({
         username: username
-        }, (error, existingUsers) => {
+        }, async (error, existingUser) => {
             if (error) {
                 return res.send({
                     success: false,
-                    message: `Error: ${error}`
+                    message: `Error (line50): ${error}`
                 })
-            } else if (existingUsers.length > 0) {
+            } else if (existingUser.length > 0) {
                 return res.send({
                     success: false,
                     message: 'Error: Account already exists!'
                 })
             }
-        // create new user 
+        // create new user instance
         const newUser = new User()
-        // set credentials of new User
+        // set credentials to new user instance
         newUser.username = username
         newUser.email = email
-        // hash the password 
-        newUser.password = bcrypt.hash(password, 10) 
+        newUser.userType = userType
+        newUser.password = await bcrypt.hash(password, 10)  //hash password
         // save new user 
         newUser.save((err, user) => {
             if (err) {
@@ -70,9 +76,8 @@ router.route('/register').post((req, res, next) => {
                 message: 'User successfully registered.'
             })
         })
-
+        console.log("finish")
     })
 })
-
 
 module.exports = router

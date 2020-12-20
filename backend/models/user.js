@@ -26,10 +26,6 @@ const userSchema = new Schema({
         required: true,
         trim: true
     },
-    userId: {
-        type: String,
-        default: ''
-    },
     signUpDate: {
         type: Date,
         default: Date.now()
