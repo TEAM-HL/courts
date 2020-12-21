@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(session({
-    secret: "secretcode",
+    secret: process.env.TOKEN_SECRET,
     resave: true, 
     saveUninitialized: true
 }))
@@ -31,6 +31,12 @@ app.use(cookieParser("secretcode"))
 app.use(passport.initialize())
 app.use(passport.session())
 require('./config/passportConfig')(passport)
+
+app.use((req, res, next) => {
+    const { token } = req.cookies
+    console.log(`this is the token: ${token}`)
+    next()
+})
 
 // Mongo Atlas connection
 const uri = process.env.ATLAS_URI;

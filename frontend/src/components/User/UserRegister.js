@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {registerUser} from '../../services/registerUser'
+import axios from 'axios'
 
 // set initial values 
 const initialvalues = {
@@ -21,6 +21,24 @@ const UserRegister = () => {
       })
     }
   
+    const registerUser = async (data) => {
+        await axios({
+            method: "POST",
+            data: {
+                username: data.username,
+                email: data.email,
+                password: data.password
+            },
+            withCredentials: true, 
+            url: "http://localhost:5000/users/register",
+        }).then(res => {
+            console.log('response=', res)
+            if (res.status === 200) {
+                
+            } 
+        })
+    }
+
     const formSubmit = (e) => {
         e.preventDefault()
         console.log(values)

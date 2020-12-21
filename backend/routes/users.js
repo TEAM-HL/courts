@@ -11,21 +11,43 @@ router.route('/').get((req, res) => {
 })
 // login user route 
 router.route('/login').post((req, res, next) => {
-    console.log('hit login route')
-    console.log('data sent=', req.body)
-
-    passport.authenticate("local", (err, user, info) => {
-        if (err) throw err;
-        if(!user) res.send("no user exists")
-        else {
-            req.login(user, err => {
-                if (err) throw err
-                res.send('user successfully authenticated')
-                console.log(req.user)
+    // console.log('hit login route')
+    // console.log('data sent=', req.body)
+    passport.authenticate("local", { failureRedirect: '/login'}, (error, user, info) => {
+        try {
+            if (error) {
+                res.send({
+                    success: false,
+                    message: `Error: ${error}`
+                })
+            }
+            if(!user) res.send({
+                success: false,
+                message: "Incorrect username/password"})
+            else {
+                req.login(user, error => {
+                    if (error) {
+                        res.send({
+                            success: false,
+                            message: `Error: ${error}`
+                        })
+                    }
+                    res.send({
+                        success: true,
+                        message: 'user successfully authenticated'
+                    })
+                    console.log(req.user)
+                })
+            }
+        } catch (error) {
+            res.send({
+                success: false,
+                message: `Error: ${error}`
             })
         }
     })(req, res, next)
 })
+
 
 //     User.find({ username: req.body.username, password: req.body.password }, 
 //         async (err, match) => {
@@ -38,6 +60,7 @@ router.route('/login').post((req, res, next) => {
 //             }
 //         })
 
+// ----------------------------------------------------
 // register user route 
 router.route('/register').post((req, res, next) => {
     //testing
@@ -57,12 +80,12 @@ router.route('/register').post((req, res, next) => {
             if (error) {
                 return res.send({
                     success: false,
-                    message: `Error (line50): ${error}`
+                    message: `Error: ${error}`
                 })
             } else if (existingUser.length > 0) {
                 return res.send({
                     success: false,
-                    message: 'Error: Account already exists!'
+                    message: 'Error: Account already exists.'
                 })
             }
         // create new user instance

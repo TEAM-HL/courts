@@ -3,11 +3,11 @@ export const stateReducer = (state, action) => {
         case "setLoggedInUser": {
             return {
                 ...state,
-                loggedInUser: action.data
+                loggedInUser: action.data,
             }
+            
         }
         default: 
             return state
     }
 }
-
