@@ -68,7 +68,6 @@ const UserLogin = () => {
       <div classame="row">
         <div className="col s6">
           <h1>Login</h1>
-          <Error />
           <form onSubmit={formSubmit}>
             <label htmlFor="username">
                 Username

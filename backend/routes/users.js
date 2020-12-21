@@ -72,6 +72,28 @@ router.route('/register').post((req, res, next) => {
     const {email} = req.body
     const userType = "player"
     const {password} = req.body 
+
+    //validate form inputs
+    if (!username) {
+        return res.send({
+            success: false,
+            message: 'Error! Username cannot be blank'
+        })
+    }
+    
+    if (!email) {
+        return res.send({
+            success: false,
+            message: 'Error! Email cannot be blank'
+        })
+    }
+    
+    if (!password) {
+        return res.send({
+            success: false,
+            message: 'Error! Password cannot be blank'
+        })
+    }
     
     //verify that username doesn't already exist
     User.find({
