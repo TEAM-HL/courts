@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // set initial values 
-const initialvalues = {
+const initialValues = {
   id: 0,
   username: "",
   password: ""
@@ -9,7 +9,7 @@ const initialvalues = {
 
 const UserLogin = () => {
 
-  const [values, setValues] = useState(initialvalues)
+  const [values, setValues] = useState(initialValues)
 
   const handleInputChange = e => {
     const { name, value } = e.target

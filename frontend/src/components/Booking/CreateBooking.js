@@ -1,11 +1,24 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'materialize-css';
 
+// set initial values 
+const initialValues = {
+    
+}
+
 const CreateBooking = () => {
-    const { register, handleSubmit } = useForm()
  
-    const onSubmit = data => console.log(data)
+    const [values, setValues] = useState(initialValues)
+
+    const handleInputChange = e => {
+        const { name, value } = e.target
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
+
+    const handleSubmit = data => console.log(data)
 
 
     return (
@@ -13,20 +26,20 @@ const CreateBooking = () => {
             <div className="row">
                 <div className="col s6">
                     <h1>Create Booking</h1>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit}>
                         <label>Date:</label>
-                        <input name="date" type="date" ref={register({ required: true })} />
+                        <input name="date" type="date" onChange={handleInputChange} />
                         <label>Time:</label>
-                        <input name="time" type="time" ref={register({ required: true })} />
+                        <input name="time" type="time" onChange={handleInputChange} />
                         <label>Duration:</label>
-                        <select className="browser-default" name="duration" ref={register({ required: true })} >
+                        <select className="browser-default" name="duration" >
                             <option value="" disabled selected>choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
                             <option value="2">2 Hours</option>
                         </select>
                         <label>Court:</label>
-                        <select className="browser-default" name="court" ref={register({ required: true })} >
+                        <select className="browser-default" name="court" >
                             <option value="" disabled selected>choose option</option>
                             <option value="1">Court 1</option>
                             <option value="2">Court 2</option>
@@ -42,7 +55,7 @@ const CreateBooking = () => {
                         <br />
                         <br />
                         <label>Racquets:</label>
-                        <select className="browser-default" name="racquets" ref={register({})} >
+                        <select className="browser-default" name="racquets" >
                             <option value="" default>None</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -50,7 +63,7 @@ const CreateBooking = () => {
                             <option value="4">4</option>
                         </select>
                         <label>Ball Canisters:</label>
-                        <select className="browser-default" name="canisters" ref={register({})} >
+                        <select className="browser-default" name="canisters" >
                             <option value="" default>None</option>
                             <option value="1" >1</option>
                             <option value="2" >2</option>
@@ -58,12 +71,12 @@ const CreateBooking = () => {
                             <option value="4" >4</option>
                         </select>
                         <label>Hopper:</label>
-                        <select className="browser-default" name="canisters" ref={register({})} >
+                        <select className="browser-default" name="canisters" >
                             <option value="no" default>No</option>
                             <option value="yes" default>Yes</option>
                         </select>
                         <label>Total Cost:</label>
-                        <input name="total" type="number" step="any" min="0.00" ref={register({})} />
+                        <input name="total" type="number" step="any" min="0.00" />
                         <input type="submit" className="btn waves-effect waves-light"/>
                     </form>
                 </div>
