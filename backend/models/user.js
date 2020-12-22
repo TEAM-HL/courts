@@ -25,6 +25,7 @@ const userSchema = new Schema({
     },
     userType: {
         type: String,
+        default: 'player',
         required: true,
         trim: true,
         lowercase: true

@@ -12,7 +12,7 @@ router.route('/').get((req, res) => {
 // login user route 
 router.route('/login').post((req, res, next) => {
 
-// assign user credentials to variables 
+// assign user credentials to variables
     const {username} = req.body
     const {password} = req.body
 
