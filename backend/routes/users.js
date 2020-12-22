@@ -11,9 +11,27 @@ router.route('/').get((req, res) => {
 })
 // login user route 
 router.route('/login').post((req, res, next) => {
-    // console.log('hit login route')
-    // console.log('data sent=', req.body)
-    passport.authenticate("local", { failureRedirect: '/login'}, (error, user, info) => {
+
+// assign user credentials to variables 
+    const {username} = req.body
+    const {password} = req.body
+
+// validate inputs
+    if (!username) {
+        return res.send({
+            success: false,
+            message: 'Error! Username cannot be blank'
+        })
+    }
+
+    if (!password) {
+        return res.send({
+            success: false,
+            message: 'Error! password cannot be blank'
+        })
+    }
+// authenticate password
+    passport.authenticate("local", (error, user, info) => {
         try {
             if (error) {
                 res.send({
@@ -48,24 +66,12 @@ router.route('/login').post((req, res, next) => {
     })(req, res, next)
 })
 
-
-//     User.find({ username: req.body.username, password: req.body.password }, 
-//         async (err, match) => {
-//         try {
-//             console.log('match=', match)
-//             if (!match.length > 0) res.send("Invalid username/password")
-//             if (match.length > 0) res.send("user matched")   
-//             } catch (error) {
-//                res.send(error)
-//             }
-//         })
-
 // ----------------------------------------------------
 // register user route 
 router.route('/register').post((req, res, next) => {
     //testing
-    console.log("hit register route")
-    console.log('username = ' + req.body.username)
+    // console.log("hit register route")
+    // console.log('username = ' + req.body.username)
     
     // assign user credentials to variables 
     const {username} = req.body
