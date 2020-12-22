@@ -32,6 +32,7 @@ require('./config/passportConfig')(passport)
 
 app.use((req, res, next) => {
     const { token } = req.cookies
+    // TODO: token showing as undefined
     console.log(`this is the token: ${token}`)
     next()
 })

@@ -25,7 +25,7 @@ const UserLogin = () => {
       [name]: value
     })    
   }
-
+  
   useEffect(() => {
     dispatch({
       type: "setLoggedInUser",
@@ -46,6 +46,7 @@ const UserLogin = () => {
       }).then(res => {
           console.log(res)
           if (res.data.success) {
+            // set loggedIn user here? 
           }
         })  
       } catch (error) {
