@@ -140,4 +140,31 @@ router.route('/register').post((req, res, next) => {
     })
 })
 
+router.route('/:id').get((req, res) => {
+    User.findById(req.params.id)
+        .then(user => res.json(user))
+        .catch(e => res.status(400).json('Error: ' + e))
+})
+
+router.route('/:id').delete((req, res) => {
+    User.findByIdAndDelete(req.params.id)
+        .then(() => res.json('User deleted'))
+        .catch(e => res.status(400).json('Error: ' + e))
+})
+
+router.route('/update/:id').post((req, res) => {
+    Booking.findById(req.params.id)
+        .then(booking => {
+            user.username = req.body.username
+            user.email = req.body.email
+            user.password = req.body.password
+            user.category = req.body.category
+
+            booking.save()
+                .then(() => res.json('User updated'))
+                .catch(e => res.status(400).json('Error: ' + e))
+        })
+        .catch(e => res.status(400).json('Error: ' + e))
+})
+
 module.exports = router

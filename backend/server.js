@@ -7,8 +7,6 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
-const bookingsRouter = require('./routes/bookings')
-const usersRouter = require('./routes/users')
 
 require('dotenv').config()
 
@@ -50,9 +48,14 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
 
-// routes 
+// Routes
+const bookingsRouter = require('./routes/bookings')
+const usersRouter = require('./routes/users')
+const postsRouter = require('./routes/posts')
+
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
+app.use('/posts', postsRouter)
 
 
 // run server 

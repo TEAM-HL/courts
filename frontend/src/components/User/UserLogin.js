@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
-import Error from '../shared/Error'
+// import Error from '../shared/Error'
 
 const UserLogin = () => {
   
   // set initial values for local state 
-  const initialvalues = {
+  const initialValues = {
     username: "",
     password: ""
   }
 
-  const [values, setValues] = useState(initialvalues)
+  const [values, setValues] = useState(initialValues)
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
   // destructure loggedInUser from store
@@ -45,23 +45,23 @@ const UserLogin = () => {
           url: "http://localhost:5000/users/login",
       }).then(res => {
           console.log(res)
-          if (res.data.success === true) {
-              setValues({username: data.username})
+          if (res.data.success) {
           }
-      })  
-    } catch (error) {
-      console.log(error)
+        })  
+      } catch (error) {
+        console.log(error)
+      }
     }
-  }
-  
-  const formSubmit = async (e) => {
-    e.preventDefault()
-    await loginUser(values)
-    console.log(store)
-    // if (store.loggedIn === true) {
-    //   <Redirect to ="/" />
-    // }
-  }
+    
+    const formSubmit = async (e) => {
+      e.preventDefault()
+      await loginUser(values)
+      console.log(store)
+      // redirect  TODO: not working!
+      if (loggedInUser.username === values.username) {
+        return <Redirect  to="/" />
+      }
+    }
 
   return (
     <div className="container">
