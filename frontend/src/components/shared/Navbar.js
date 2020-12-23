@@ -11,11 +11,11 @@ const Navbar = () => {
 
     return (
         <div>
-            <ul id="bookings-dropdown" className="dropdown-content">
+            <ul id="bookings-dropdown" class="dropdown-content">
                 <li><a href="/booking/new">Book a Court</a></li>
                 <li><a href="">View My Bookings</a></li>
             </ul>
-            <ul id="tools-dropdown" className="dropdown-content">
+            <ul id="tools-dropdown" class="dropdown-content">
                 <li><a href="">User List</a></li>
                 <li><a href="/calendar">Calendar</a></li>
             </ul>
