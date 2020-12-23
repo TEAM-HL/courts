@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from 'react'
-
-
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
 
 const CreateBooking = () => {
-
     // assign current date to variable
-    const date = new Date(Date.now())
+    // const date = new Date(Date.now())
     // convert to local date string
-    const localDate = date.toLocaleDateString('en-GB')
-
-
+    // const localDate = date.toLocaleDateString('en-GB')
+    // define initial booking values
     const initialBookingValues = {
-        date: localDate,
-        time: null, 
-        duration: null,
-        court: null,
-        racquet: null,
-        canister: null,
-        hopper: null,            
+        // date: date,
+        // time: "", 
+        duration: "",
+        court: "",
+        racquet: "",
+        canister: "",
+        hopper: false,            
     }
-
-    // set state variables 
+    // set state for booking values 
     const [values, setValues] = useState(initialBookingValues)
-
+    // set state for date
+    const [date, setDate] = useState(new Date())
+    
     // set state variable for total
     const [total, setTotal] = useState(0)
-
+    
     // update state as form input changes 
     const handleInputChange = e => {
         const { name, value } = e.target
@@ -33,13 +32,22 @@ const CreateBooking = () => {
             ...values,
             [name]: value
         })
-        console.log(values)
+    }
+    
+    const handleDateChange = date => {
+      setDate(date)
     }
     
     // form submission
-    const handleSubmit = data => console.log(data)
+    const handleSubmit = data => {
+        console.log(data)
+    }
 
-
+    // testing 
+    console.log(date)
+    console.log(values)
+    // -------------------------- 
+    
     // component structure
     return (
         <div className="container">
@@ -47,19 +55,27 @@ const CreateBooking = () => {
                 <div className="col s6">
                     <h1>Create Booking</h1>
                     <form onSubmit={handleSubmit}>
-                        <label>Date:</label>
-                        <input name="date" type="date" onChange={handleInputChange} />
-                        <label>Time:</label>
-                        <input name="time" type="time" onChange={handleInputChange} />
+                        <label>Date & Time</label>
+                        {/* <input className="datepicker" name="date" type="date" format="dd mm yyyy" value={values.date} onChange={handleInputChange} /> */}
+                        <br/>
+                        <DatePicker 
+                            selected={date} 
+                            onChange={handleDateChange}
+                            dateFormat="dd/MM/yyyy"
+                            showTimeSelect
+                        />
+                        <br/>
+                        {/* <label>Time:</label>
+                        <input name="time" type="time" value={values.time} onChange={handleInputChange} /> */}
                         <label>Duration:</label>
                         <select className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
-                            <option value="" default>Choose option</option>
+                            <option value="0" default>Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
                             <option value="2">2 Hours</option>
                         </select>
                         <label>Court:</label>
-                        <select className="browser-default" name="court" onChange={handleInputChange} >
+                        <select className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
                             <option value="0" default>Choose option</option>
                             <option value="1">Court 1</option>
                             <option value="2">Court 2</option>
@@ -75,7 +91,7 @@ const CreateBooking = () => {
                         <br />
                         <br />
                         <label>Racquets:</label>
-                        <select className="browser-default" name="racquet" onChange={handleInputChange} >
+                        <select className="browser-default" name="racquet" value={values.racquet} onChange={handleInputChange} >
                             <option value="0" default>None</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -83,7 +99,7 @@ const CreateBooking = () => {
                             <option value="4">4</option>
                         </select>
                         <label>Ball Canisters:</label>
-                        <select className="browser-default" name="canister" onChange={handleInputChange} >
+                        <select className="browser-default" name="canister" value={values.canister} onChange={handleInputChange} >
                             <option value="0" default>None</option>
                             <option value="1" >1</option>
                             <option value="2" >2</option>
@@ -91,9 +107,9 @@ const CreateBooking = () => {
                             <option value="4" >4</option>
                         </select>
                         <label>Hopper:</label>
-                        <select className="browser-default" name="hopper" onChange={handleInputChange} >
-                            <option value="no" default>No</option>
-                            <option value="yes" default>Yes</option>
+                        <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
+                            <option value="false" default>No</option>
+                            <option value="true" default>Yes</option>
                         </select>
                         <label>Total Cost:</label>
                         <input name="total" type="number" step="any" min="0.00" />
