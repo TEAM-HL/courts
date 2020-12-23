@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const passportLocal = require('passport-local')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
 
@@ -12,11 +13,31 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000
 
-// Middleware 
-app.use(cors())
+// middleware 
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}))
 app.use(express.json())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(session({
+    secret: process.env.TOKEN_SECRET,
+    resave: true, 
+    saveUninitialized: true
+}))
+app.use(cookieParser("secretcode"))
+app.use(passport.initialize())
+app.use(passport.session())
+require('./config/passportConfig')(passport)
 
-// Atlas connection
+app.use((req, res, next) => {
+    const { token } = req.cookies
+    // TODO: token showing as undefined
+    console.log(`this is the token: ${token}`)
+    next()
+})
+
+// Mongo Atlas connection
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { 
         useNewUrlParser: true, 
@@ -36,6 +57,7 @@ const postsRouter = require('./routes/posts')
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
 app.use('/posts', postsRouter)
+
 
 // run server 
 app.listen(port, () => {

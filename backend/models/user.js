@@ -14,17 +14,25 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true
+        trim: true,
+        lowercase: true
     },
     password: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        minlength: 6
     },
-    category: {
+    userType: {
         type: String,
+        default: 'player',
         required: true,
-        trim: true
+        trim: true,
+        lowercase: true
+    },
+    signUpDate: {
+        type: Date,
+        default: Date.now()
     }
 })
 

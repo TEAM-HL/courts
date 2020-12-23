@@ -1,30 +1,89 @@
 import React, { useState, useEffect } from "react";
-
-// set initial values 
-const initialvalues = {
-  id: 0,
-  username: "",
-  password: ""
-}
+import { Redirect, useHistory } from 'react-router-dom'
+import axios from 'axios'
+import { useGlobalState } from "../../config/store"
+// import Error from '../shared/Error'
 
 const UserLogin = () => {
+  const history = useHistory()
+  
+  // define initial user values 
+  const initialUserValues = {
+    username: "",
+    password: "",
+  }
 
-  const [values, setValues] = useState(initialvalues)
+  //initial authentication values
+  const initialAuth = {authenticated: false}
+  
+  // set local state for user values
+  const [values, setValues] = useState(initialUserValues)
+
+  // set localstate for authentication
+  const [authentication, setAuthentication] = useState(initialAuth)
+
+  // destructure store and dispatch from global state
+  const {store, dispatch} = useGlobalState()
+  // destructure loggedInUser from store
+  const {loggedInUser} = store
 
   const handleInputChange = e => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value,
+      [name]: value
+    })    
+  }
+  // hook to update global state for loggedInUser
+  useEffect(() => {
+    dispatch({
+      type: "setLoggedInUser",
+      data: values,
     })
-  }
+  }, [values])
 
-  const formSubmit = (e) => {
-    e.preventDefault()
-    console.log(values)
-
-  }
-
+  // hook to update global state for Authenticated 
+  useEffect(() => {
+    dispatch({
+      type: "setAuthentication",
+      data: authentication
+    })
+  }, [authentication])
+  
+  // login user function calling express server
+  const loginUser = async (data) => {
+    console.log(store)
+    try {
+      await axios({
+          method: "POST",
+          data: {
+              username: data.username,
+              password: data.password
+          },
+          withCredentials: true, 
+          url: "http://localhost:5000/users/login"
+      }).then(res => {
+          console.log(res)
+          //TODO: authenticated global state not updating
+          if (res.data.success === true) {
+            setAuthentication({
+              ...authentication,
+              authenticated: true
+            })
+            history.push("/")
+            console.log(store)
+          }
+        })  
+      } catch (error) {
+        console.log(error)
+      }
+      
+    }
+    
+    const formSubmit = (e) => {
+      e.preventDefault()
+      loginUser(values)
+    }
 
   return (
     <div className="container">
@@ -57,7 +116,7 @@ const UserLogin = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserLogin;
+export default UserLogin

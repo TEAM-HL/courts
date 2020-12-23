@@ -16,16 +16,16 @@ const Navbar = () => {
                 <li><a href="">View My Bookings</a></li>
             </ul>
             <nav>
-                <div class="nav-wrapper">
-                    <a href="/" class="brand-logo">Courts</a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a class="dropdown-trigger" href="" data-target="bookings-dropdown">Bookings
-                            <i class="material-icons right">arrow_drop_down</i></a></li>
+                <div className="nav-wrapper">
+                    <a href="/" className="brand-logo">Courts</a>
+                    <ul id="nav-mobile" className="right hide-on-med-and-down">
+                        <li><a className="dropdown-trigger" href="" data-target="bookings-dropdown">Bookings
+                            <i className="material-icons right">arrow_drop_down</i></a></li>
                         <li><a href="#">Community</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Tools</a></li>
-                        <li><a href="/login" class="waves-effect waves-light btn">Login<i class="material-icons right">account_circle</i></a></li>
+                        <li><a href="/login" className="waves-effect waves-light btn">Login<i className="material-icons right">account_circle</i></a></li>
                     </ul>
                 </div>
             </nav>

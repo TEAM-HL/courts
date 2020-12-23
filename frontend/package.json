@@ -8,12 +8,16 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.21.0",
     "materialize-css": "^1.0.0-rc.2",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.4.0",
+    "react-datepicker": "^3.3.0",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.13.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1"
+    "react-scripts": "4.0.1",
+    "react-toastify": "^6.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

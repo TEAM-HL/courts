@@ -119,7 +119,7 @@ bluebird@3.5.1:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
   integrity sha512-MKiLiV+I1AA596t9w1sQJ8jkiSr5+ZKi0WKrYGUn6d1Fx+Ij4tIj+m2WMQSGczs5jZVxV339chE8iwk6F64wjA==
 
-body-parser@1.19.0:
+body-parser@1.19.0, body-parser@^1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
   integrity sha512-dhEPs72UPbDnAQJ9ZKMNTP6ptJaionhP5cBb541nXPlW60Jepo9RV/a4fX4XWW9CuFNK22krhrj1+rgzifNCsw==
@@ -847,7 +847,7 @@ mongoose-legacy-pluralize@1.0.2:
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
 
-mongoose@^5.11.7:
+mongoose@^5.11.8:
   version "5.11.8"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.11.8.tgz#71900d5638a298a8ed37709b3fda8c94e46f29df"
   integrity sha512-RRfrYLg7pyuyx7xu5hwadjIZZJB9W2jqIMkL1CkTmk/uOCX3MX2tl4BVIi2rJUtgMNwn6dy3wBD3soB8I9Nlog==
