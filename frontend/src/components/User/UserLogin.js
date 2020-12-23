@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
 
 const UserLogin = () => {
+  const history = useHistory()
   
   // define initial user values 
   const initialUserValues = {
@@ -60,29 +61,28 @@ const UserLogin = () => {
               password: data.password
           },
           withCredentials: true, 
-          url: "http://localhost:5000/users/login",
+          url: "http://localhost:5000/users/login"
       }).then(res => {
           console.log(res)
           //TODO: authenticated global state not updating
           if (res.data.success === true) {
             setAuthentication({
+              ...authentication,
               authenticated: true
             })
+            history.push("/")
             console.log(store)
           }
         })  
       } catch (error) {
         console.log(error)
       }
+      
     }
     
     const formSubmit = (e) => {
       e.preventDefault()
       loginUser(values)
-      // TODO: page redirect not working!
-      if (store.authenticated === true) {
-        return <Redirect  to="/" />
-      }
     }
 
   return (
