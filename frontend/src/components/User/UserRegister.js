@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
+
 
 // set initial values 
 const initialvalues = {
@@ -10,6 +12,7 @@ const initialvalues = {
   }
 
 const UserRegister = () => {
+    const history = useHistory()
 
     const [values, setValues] = useState(initialvalues)
 
@@ -32,9 +35,9 @@ const UserRegister = () => {
             withCredentials: true, 
             url: "http://localhost:5000/users/register",
         }).then(res => {
-            console.log('response=', res)
-            if (res.status === 200) {
-                
+            console.log(res)
+            if (res.data.success === true) {
+                history.push("/login")
             } 
         })
     }
