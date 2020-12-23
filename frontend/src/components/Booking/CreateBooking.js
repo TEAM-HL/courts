@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Row, Col } from 'materialize-css';
 
-// set initial values 
-const initialValues = {
-    
-}
 
 const CreateBooking = () => {
- 
-    const [values, setValues] = useState(initialValues)
+    
+    // define initial values 
+    const initialBookingValues = {
+    
+    }
+    // set state variables 
+    const [values, setValues] = useState(initialBookingValues)
 
+    const [total, setTotal] = useState(0)
+
+    // update state as form input changes 
     const handleInputChange = e => {
         const { name, value } = e.target
         setValues({
             ...values,
             [name]: value
         })
+        console.log(values)
     }
-
+    
     const handleSubmit = data => console.log(data)
-
 
     return (
         <div className="container">
@@ -32,15 +35,15 @@ const CreateBooking = () => {
                         <label>Time:</label>
                         <input name="time" type="time" onChange={handleInputChange} />
                         <label>Duration:</label>
-                        <select className="browser-default" name="duration" >
-                            <option value="" disabled selected>choose option</option>
+                        <select className="browser-default" default="" name="duration" onChange={handleInputChange}>
+                            <option value="" disabled>choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
                             <option value="2">2 Hours</option>
                         </select>
                         <label>Court:</label>
-                        <select className="browser-default" name="court" >
-                            <option value="" disabled selected>choose option</option>
+                        <select className="browser-default" default="" name="court" onChange={handleInputChange} >
+                            <option value="" disabled>choose option</option>
                             <option value="1">Court 1</option>
                             <option value="2">Court 2</option>
                             <option value="3">Court 3</option>
@@ -55,7 +58,7 @@ const CreateBooking = () => {
                         <br />
                         <br />
                         <label>Racquets:</label>
-                        <select className="browser-default" name="racquets" >
+                        <select className="browser-default" name="racquets" onChange={handleInputChange} >
                             <option value="" default>None</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -63,7 +66,7 @@ const CreateBooking = () => {
                             <option value="4">4</option>
                         </select>
                         <label>Ball Canisters:</label>
-                        <select className="browser-default" name="canisters" >
+                        <select className="browser-default" name="canisters" onChange={handleInputChange} >
                             <option value="" default>None</option>
                             <option value="1" >1</option>
                             <option value="2" >2</option>
@@ -71,7 +74,7 @@ const CreateBooking = () => {
                             <option value="4" >4</option>
                         </select>
                         <label>Hopper:</label>
-                        <select className="browser-default" name="canisters" >
+                        <select className="browser-default" name="canisters" onChange={handleInputChange} >
                             <option value="no" default>No</option>
                             <option value="yes" default>Yes</option>
                         </select>
