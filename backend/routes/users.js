@@ -70,8 +70,8 @@ router.route('/login').post((req, res, next) => {
 // register user route 
 router.route('/register').post((req, res, next) => {
     //testing
-    // console.log("hit register route")
-    // console.log('username = ' + req.body.username)
+    console.log("hit register route")
+    console.log('username = ' + req.body.username)
     
     // assign user credentials to variables 
     const {username} = req.body

@@ -6,13 +6,20 @@ import { useGlobalState } from "../../config/store"
 
 const UserLogin = () => {
   
-  // set initial values for local state 
-  const initialValues = {
+  // define initial user values 
+  const initialUserValues = {
     username: "",
-    password: ""
+    password: "",
   }
 
-  const [values, setValues] = useState(initialValues)
+  const initialAuth = {authenticated: false}
+  
+  // set local state for user values
+  const [values, setValues] = useState(initialUserValues)
+
+  // set localstate for authentication
+  const [authentication, setAuthentication] = useState(initialAuth)
+
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
   // destructure loggedInUser from store
@@ -25,15 +32,25 @@ const UserLogin = () => {
       [name]: value
     })    
   }
-  
+  // hook to update global state for loggedInUser
   useEffect(() => {
     dispatch({
       type: "setLoggedInUser",
       data: values,
     })
   }, [values])
+
+  // hook to update global state for Authenticated 
+  useEffect(() => {
+    dispatch({
+      type: "setAuthentication",
+      data: authentication
+    })
+  }, [authentication])
   
+  // login user function calling express server
   const loginUser = async (data) => {
+    console.log(store)
     try {
       await axios({
           method: "POST",
@@ -45,8 +62,12 @@ const UserLogin = () => {
           url: "http://localhost:5000/users/login",
       }).then(res => {
           console.log(res)
-          if (res.data.success) {
-            // set loggedIn user here? 
+          //TODO: authenticated global state not updating
+          if (res.data.success === true) {
+            setAuthentication({
+              authenticated: true
+            })
+            console.log(store)
           }
         })  
       } catch (error) {
@@ -54,12 +75,11 @@ const UserLogin = () => {
       }
     }
     
-    const formSubmit = async (e) => {
+    const formSubmit = (e) => {
       e.preventDefault()
-      await loginUser(values)
-      console.log(store)
-      // redirect  TODO: not working!
-      if (loggedInUser.username === values.username) {
+      loginUser(values)
+      // TODO: page redirect not working!
+      if (store.authenticated === true) {
         return <Redirect  to="/" />
       }
     }

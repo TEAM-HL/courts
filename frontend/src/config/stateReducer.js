@@ -7,6 +7,17 @@ export const stateReducer = (state, action) => {
             }
             
         }
+        case "setAuthentication": {
+            return {
+                ...state,
+                authenticated: action.data
+            }
+        }
+        case "RESET_STATE": {
+            return {
+                ...state = undefined
+            }
+        }
         default: 
             return state
     }
