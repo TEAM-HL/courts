@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
 
 const UserLogin = () => {
+  const history = useHistory()
   
   // define initial user values 
   const initialUserValues = {
@@ -69,21 +70,19 @@ const UserLogin = () => {
               ...authentication,
               authenticated: true
             })
+            history.push("/")
+            console.log(store)
           }
         })  
       } catch (error) {
         console.log(error)
       }
-      // console.log(store)
+      
     }
     
     const formSubmit = (e) => {
       e.preventDefault()
       loginUser(values)
-      // TODO: page redirect not working!
-      if (store.authenticated.authenticated === true) {
-        return <Redirect  to="/" />
-      }
     }
 
   return (
