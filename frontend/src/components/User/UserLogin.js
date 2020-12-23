@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
@@ -24,8 +24,9 @@ const UserLogin = () => {
 
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
+
   // destructure loggedInUser from store
-  const {loggedInUser} = store
+  // const {loggedInUser} = store
 
   const handleInputChange = e => {
     const { name, value } = e.target
