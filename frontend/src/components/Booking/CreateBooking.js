@@ -17,10 +17,12 @@ const CreateBooking = () => {
         canister: "",
         hopper: false,            
     }
-    // set state for booking values 
+    // set state for booking detail values 
     const [values, setValues] = useState(initialBookingValues)
     // set state for date
     const [date, setDate] = useState(new Date())
+    // set state for time
+    const [time, setTime] = useState(0)
     
     // set state variable for total
     const [total, setTotal] = useState(0)
@@ -53,7 +55,7 @@ const CreateBooking = () => {
         <div className="container">
             <div className="row">
                 <div className="col s6">
-                    <h1>Create Booking</h1>
+                    <h1>Book a Court</h1>
                     <form onSubmit={handleSubmit}>
                         <label>Date & Time</label>
                         {/* <input className="datepicker" name="date" type="date" format="dd mm yyyy" value={values.date} onChange={handleInputChange} /> */}
@@ -62,12 +64,12 @@ const CreateBooking = () => {
                             selected={date} 
                             onChange={handleDateChange}
                             dateFormat="dd/MM/yyyy"
-                            showTimeSelect
+                            showTimeSelect={true}
+                            dateFormat="MMM d yyyy h:mm aa"
                         />
+                        {/* <label>Time:</label> */}
                         <br/>
-                        {/* <label>Time:</label>
-                        <input name="time" type="time" value={values.time} onChange={handleInputChange} /> */}
-                        <label>Duration:</label>
+                        <label>Duration of play</label>
                         <select className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
                             <option value="0" default>Choose option</option>
                             <option value="1">1 Hour</option>
