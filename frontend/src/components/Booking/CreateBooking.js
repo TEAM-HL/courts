@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from 'react'
 
 
+
 const CreateBooking = () => {
-    
-    // define initial values 
+
+    // assign current date to variable
+    const date = new Date(Date.now())
+    // convert to local date string
+    const localDate = date.toLocaleDateString('en-GB')
+
+
     const initialBookingValues = {
-    
+        date: localDate,
+        time: null, 
+        duration: null,
+        court: null,
+        racquet: null,
+        canister: null,
+        hopper: null,            
     }
+
     // set state variables 
     const [values, setValues] = useState(initialBookingValues)
 
+    // set state variable for total
     const [total, setTotal] = useState(0)
 
     // update state as form input changes 
@@ -22,8 +36,11 @@ const CreateBooking = () => {
         console.log(values)
     }
     
+    // form submission
     const handleSubmit = data => console.log(data)
 
+
+    // component structure
     return (
         <div className="container">
             <div className="row">
@@ -35,15 +52,15 @@ const CreateBooking = () => {
                         <label>Time:</label>
                         <input name="time" type="time" onChange={handleInputChange} />
                         <label>Duration:</label>
-                        <select className="browser-default" default="" name="duration" onChange={handleInputChange}>
-                            <option value="" disabled>choose option</option>
+                        <select className="browser-default" name="duration" onChange={handleInputChange}>
+                            <option value="" default>Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
                             <option value="2">2 Hours</option>
                         </select>
                         <label>Court:</label>
-                        <select className="browser-default" default="" name="court" onChange={handleInputChange} >
-                            <option value="" disabled>choose option</option>
+                        <select className="browser-default" name="court" onChange={handleInputChange} >
+                            <option value="0" default>Choose option</option>
                             <option value="1">Court 1</option>
                             <option value="2">Court 2</option>
                             <option value="3">Court 3</option>
@@ -58,23 +75,23 @@ const CreateBooking = () => {
                         <br />
                         <br />
                         <label>Racquets:</label>
-                        <select className="browser-default" name="racquets" onChange={handleInputChange} >
-                            <option value="" default>None</option>
+                        <select className="browser-default" name="racquet" onChange={handleInputChange} >
+                            <option value="0" default>None</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
                         </select>
                         <label>Ball Canisters:</label>
-                        <select className="browser-default" name="canisters" onChange={handleInputChange} >
-                            <option value="" default>None</option>
+                        <select className="browser-default" name="canister" onChange={handleInputChange} >
+                            <option value="0" default>None</option>
                             <option value="1" >1</option>
                             <option value="2" >2</option>
                             <option value="3" >3</option>
                             <option value="4" >4</option>
                         </select>
                         <label>Hopper:</label>
-                        <select className="browser-default" name="canisters" onChange={handleInputChange} >
+                        <select className="browser-default" name="hopper" onChange={handleInputChange} >
                             <option value="no" default>No</option>
                             <option value="yes" default>Yes</option>
                         </select>
