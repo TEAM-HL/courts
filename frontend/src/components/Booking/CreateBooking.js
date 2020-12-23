@@ -52,7 +52,7 @@ const CreateBooking = () => {
                         <label>Time:</label>
                         <input name="time" type="time" onChange={handleInputChange} />
                         <label>Duration:</label>
-                        <select className="browser-default" name="duration" onChange={handleInputChange}>
+                        <select className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
                             <option value="" default>Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>

@@ -60,27 +60,28 @@ const UserLogin = () => {
               password: data.password
           },
           withCredentials: true, 
-          url: "http://localhost:5000/users/login",
+          url: "http://localhost:5000/users/login"
       }).then(res => {
           console.log(res)
           //TODO: authenticated global state not updating
           if (res.data.success === true) {
             setAuthentication({
+              ...authentication,
               authenticated: true
             })
-            console.log(store)
           }
         })  
       } catch (error) {
         console.log(error)
       }
+      // console.log(store)
     }
     
     const formSubmit = (e) => {
       e.preventDefault()
       loginUser(values)
       // TODO: page redirect not working!
-      if (store.authenticated === true) {
+      if (store.authenticated.authenticated === true) {
         return <Redirect  to="/" />
       }
     }
