@@ -14,9 +14,9 @@ const CreateBooking = () => {
         // time: "", 
         duration: "",
         court: "",
-        racquet: false,
-        canister: false,
-        hopper: false,            
+        racquet: 0,
+        canister: 0,
+        hopper: 0,            
     }
 
     const initialCost = {
@@ -43,11 +43,10 @@ const CreateBooking = () => {
     const [total, setTotal] = useState(initialCost)
     
     // calculate total cost
-    const calculateTotalCost = total => {
-        total.reduce(function(acc, curr) {
+    const calculateTotalCost = 
+        Object.values(total).reduce((acc, curr) => {
             return acc + curr
         })
-    }
 
     // update state as form input changes 
     const handleInputChange = e => {
@@ -60,6 +59,7 @@ const CreateBooking = () => {
         // update and calculate total cost *NOT WORKING*
         // implement useEffect???
         setTotal({
+            ...total,
             duration: (prices.duration * values.duration),
             racquet: (prices.racquet * values.racquet),
             canister: (prices.canister * values.canister),
@@ -75,10 +75,10 @@ const CreateBooking = () => {
     const handleSubmit = e => {
         e.preventDefault()
         console.log(total)
-    
+        console.log(calculateTotalCost)
     }
     
-    // testing 
+    // ------TESTING-------------
     // console.log(date)
     console.log(values)
     // -------------------------- 
@@ -90,14 +90,14 @@ const CreateBooking = () => {
                 <div className="col s6">
                     <h1>Book a Court</h1>
                     <form onSubmit={handleSubmit}>
-                        <label>Date & Time</label>
+                        <label>Date  &  Time</label>
                         <br/>
                         <DatePicker 
                             selected={date} 
                             onChange={handleDateChange}
                             dateFormat="dd/MM/yyyy"
                             showTimeSelect={true}
-                            dateFormat="MMM d  h:mm aa"
+                            dateFormat="MMM d   h:mm aa"
                         />
                         <br/>
                         <label>Duration of play</label>
@@ -143,6 +143,7 @@ const CreateBooking = () => {
                         <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
                             <option value="0" default>None</option>
                             <option value="1">1</option>
+                            <option value="2">2</option>
                         </select>
                         <label>Total:</label>
                         <input name="total" type="number" step="any" min="0.00" value={calculateTotalCost}/>
