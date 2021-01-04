@@ -44,7 +44,7 @@ const UserRegister = () => {
 
     const formSubmit = (e) => {
         e.preventDefault()
-        console.log(values)
+        // console.log(values)
         registerUser(values)
     }
 
