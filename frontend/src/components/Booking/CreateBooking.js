@@ -44,9 +44,10 @@ const CreateBooking = () => {
     
     // calculate total cost
     const calculateTotalCost = 
-        Object.values(total).reduce((acc, curr) => {
-            return acc + curr
-        })
+    (prices.duration * values.duration + 
+    prices.racquet * values.racquet + 
+    prices.canister * values.canister + 
+    prices.hopper * values.hopper)
 
     // update state as form input changes 
     const handleInputChange = e => {
@@ -55,15 +56,6 @@ const CreateBooking = () => {
         setValues({
             ...values,
             [name]: value,
-        })
-        // update and calculate total cost *NOT WORKING*
-        // implement useEffect???
-        setTotal({
-            ...total,
-            duration: (prices.duration * values.duration),
-            racquet: (prices.racquet * values.racquet),
-            canister: (prices.canister * values.canister),
-            hopper: (prices.canister * values.hopper)
         })
     }
 
@@ -80,7 +72,8 @@ const CreateBooking = () => {
     
     // ------TESTING-------------
     // console.log(date)
-    console.log(values)
+    // console.log(values)
+    // console.log(total)
     // -------------------------- 
     
     // component structure
