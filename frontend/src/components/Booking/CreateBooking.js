@@ -7,46 +7,79 @@ const CreateBooking = () => {
     // const date = new Date(Date.now())
     // convert to local date string
     // const localDate = date.toLocaleDateString('en-GB')
+    
     // define initial booking values
     const initialBookingValues = {
         // date: date,
         // time: "", 
         duration: "",
         court: "",
-        racquet: "",
-        canister: "",
+        racquet: false,
+        canister: false,
         hopper: false,            
     }
+
+    const initialCost = {
+        duration: 0,
+        racquet: 0,
+        canister: 0,
+        hopper: 0   
+    }
+
+    const prices = {
+        duration: 25,
+        racquet: 10,
+        canister: 5,
+        hopper: 10
+    }
+
     // set state for booking detail values 
     const [values, setValues] = useState(initialBookingValues)
     // set state for date
     const [date, setDate] = useState(new Date())
     // set state for time
     const [time, setTime] = useState(0)
-    
     // set state variable for total
-    const [total, setTotal] = useState(0)
+    const [total, setTotal] = useState(initialCost)
     
+    // calculate total cost
+    const calculateTotalCost = total => {
+        total.reduce(function(acc, curr) {
+            return acc + curr
+        })
+    }
+
     // update state as form input changes 
     const handleInputChange = e => {
         const { name, value } = e.target
+        //update each value
         setValues({
             ...values,
-            [name]: value
+            [name]: value,
+        })
+        // update and calculate total cost *NOT WORKING*
+        // implement useEffect???
+        setTotal({
+            duration: (prices.duration * values.duration),
+            racquet: (prices.racquet * values.racquet),
+            canister: (prices.canister * values.canister),
+            hopper: (prices.canister * values.hopper)
         })
     }
-    
+
     const handleDateChange = date => {
-      setDate(date)
+        setDate(date)
     }
     
     // form submission
-    const handleSubmit = data => {
-        console.log(data)
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log(total)
+    
     }
-
+    
     // testing 
-    console.log(date)
+    // console.log(date)
     console.log(values)
     // -------------------------- 
     
@@ -58,16 +91,14 @@ const CreateBooking = () => {
                     <h1>Book a Court</h1>
                     <form onSubmit={handleSubmit}>
                         <label>Date & Time</label>
-                        {/* <input className="datepicker" name="date" type="date" format="dd mm yyyy" value={values.date} onChange={handleInputChange} /> */}
                         <br/>
                         <DatePicker 
                             selected={date} 
                             onChange={handleDateChange}
                             dateFormat="dd/MM/yyyy"
                             showTimeSelect={true}
-                            dateFormat="MMM d yyyy h:mm aa"
+                            dateFormat="MMM d  h:mm aa"
                         />
-                        {/* <label>Time:</label> */}
                         <br/>
                         <label>Duration of play</label>
                         <select className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
@@ -110,11 +141,11 @@ const CreateBooking = () => {
                         </select>
                         <label>Hopper:</label>
                         <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
-                            <option value="false" default>No</option>
-                            <option value="true" default>Yes</option>
+                            <option value="0" default>None</option>
+                            <option value="1">1</option>
                         </select>
-                        <label>Total Cost:</label>
-                        <input name="total" type="number" step="any" min="0.00" />
+                        <label>Total:</label>
+                        <input name="total" type="number" step="any" min="0.00" value={calculateTotalCost}/>
                         <input type="submit" className="btn waves-effect waves-light"/>
                     </form>
                 </div>
