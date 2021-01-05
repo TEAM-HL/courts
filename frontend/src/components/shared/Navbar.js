@@ -16,7 +16,7 @@ const Navbar = () => {
                 <li><a href="">View My Bookings</a></li>
             </ul>
             <nav>
-                <div className="nav-wrapper green">
+                <div className="nav-wrapper blue darken-4">
                     <a href="/" className="brand-logo">Courts</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><a className="dropdown-trigger" href="" data-target="bookings-dropdown">Bookings
