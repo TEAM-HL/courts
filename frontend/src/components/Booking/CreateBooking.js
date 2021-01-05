@@ -2,9 +2,15 @@ import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import addDays from 'date-fns/addDays'
+import CurrencyInput from 'react-currency-input-field'
 import axios from 'axios'
+import { useGlobalState } from "../../config/store"
 
 const CreateBooking = () => {    
+    // destructure store and dispatch from global state
+    const {store} = useGlobalState()
+    // destructure loggedInUser from store
+    const {loggedInUser} = store
 
     // define initial booking values
     const initialBookingValues = {
@@ -47,7 +53,7 @@ const CreateBooking = () => {
     // update state as form input changes 
     const handleInputChange = e => {
         const { name, value } = e.target
-        //update each value
+        //update values in state
         setValues({
             ...values,
             [name]: value,
@@ -57,12 +63,12 @@ const CreateBooking = () => {
     const handleDateChange = date => {
         setDate(date)
     }
-    
-    const newBooking = async (data) => {
+
+    const newBooking = async () => {
         await axios({
             method: "POST",
             data: {
-                username: data.username,
+                username: loggedInUser.username,
                 date: date,
                 duration: values.duration,
                 court: values.court,
@@ -86,8 +92,9 @@ const CreateBooking = () => {
     // form submission
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(data)
-        newBooking(data)
+        console.log(store)
+        // console.log(data)
+        // newBooking(data)
     }
     
     // ------TESTING-------------
@@ -163,7 +170,15 @@ const CreateBooking = () => {
                             <option value="2">2</option>
                         </select>
                         <label>Total:</label>
-                        <input name="total" type="number" step="any" min="0.00" value={calculateTotalCost}/>
+                        <CurrencyInput
+                            id="total-cost"
+                            name="totalCost"
+                            readOnly
+                            prefix="$"
+                            defaultValue={0}
+                            decimalsLimit={2}
+                            value={calculateTotalCost}
+                        />
                         <input type="submit" className="btn waves-effect waves-light"/>
                     </form>
                 </div>

@@ -9398,6 +9398,11 @@ react-bootstrap@^1.4.0:
     uncontrollable "^7.0.0"
     warning "^4.0.3"
 
+react-currency-input-field@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-currency-input-field/-/react-currency-input-field-3.0.0.tgz#a4b2192cd199552c7611c1cda7ce73bd45418b1d"
+  integrity sha512-CBxKDXKNFM6MnT4MqNr7sKzvBaRLlN7gM1d+On68u0GP3vnxL+2d36dSGNipMFNHPohSgLhfth9EoaKAduAyVg==
+
 react-datepicker@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-3.3.0.tgz#38dec531fd7c8e0de6860a55dfbc3a8ff803d43c"
