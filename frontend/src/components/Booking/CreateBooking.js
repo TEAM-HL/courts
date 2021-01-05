@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+import addDays from 'date-fns/addDays'
+import axios from 'axios'
 
-const CreateBooking = () => {
-    // assign current date to variable
-    // const date = new Date(Date.now())
-    // convert to local date string
-    // const localDate = date.toLocaleDateString('en-GB')
-    
+const CreateBooking = () => {    
+
     // define initial booking values
     const initialBookingValues = {
-        // date: date,
-        // time: "", 
         duration: "",
         court: "",
         racquet: 0,
@@ -36,18 +32,17 @@ const CreateBooking = () => {
     // set state for booking detail values 
     const [values, setValues] = useState(initialBookingValues)
     // set state for date
-    const [date, setDate] = useState(new Date())
+    const [date, setDate] = useState(null)
     // set state for time
-    const [time, setTime] = useState(0)
-    // set state variable for total
-    const [total, setTotal] = useState(initialCost)
-    
+    // const [time, setTime] = useState(0)
+
     // calculate total cost
-    const calculateTotalCost = 
-    (prices.duration * values.duration + 
-    prices.racquet * values.racquet + 
-    prices.canister * values.canister + 
-    prices.hopper * values.hopper)
+    const calculateTotalCost = (
+        prices.duration * values.duration + 
+        prices.racquet * values.racquet + 
+        prices.canister * values.canister + 
+        prices.hopper * values.hopper
+    )
 
     // update state as form input changes 
     const handleInputChange = e => {
@@ -63,11 +58,36 @@ const CreateBooking = () => {
         setDate(date)
     }
     
+    const newBooking = async (data) => {
+        await axios({
+            method: "POST",
+            data: {
+                username: data.username,
+                date: date,
+                duration: values.duration,
+                court: values.court,
+                equipment: {
+                    canister: values.canister,
+                    racquet: values.racquet,
+                    hopper: values.hopper,
+                },
+                cost: calculateTotalCost
+            },
+            withCredentials: true, 
+            url: "http://localhost:5000/bookings/new",
+        }).then(res => {
+            console.log(res)
+            // if (data passes validation formatting and no prev booking clashes) 
+                // redirect user to stripe payment
+            // } 
+        })
+    }
+
     // form submission
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(total)
-        console.log(calculateTotalCost)
+        console.log(data)
+        newBooking(data)
     }
     
     // ------TESTING-------------
@@ -83,14 +103,18 @@ const CreateBooking = () => {
                 <div className="col s6">
                     <h1>Book a Court</h1>
                     <form onSubmit={handleSubmit}>
-                        <label>Date  &  Time</label>
+                        <label>Date & Time</label>
                         <br/>
                         <DatePicker 
                             selected={date} 
                             onChange={handleDateChange}
                             dateFormat="dd/MM/yyyy"
                             showTimeSelect={true}
-                            dateFormat="MMM d   h:mm aa"
+                            dateFormat="MMM d  h:mm aa"
+                            placeholderText="Select a date and time"
+                            minDate={new Date()}                        
+                            maxDate={addDays(new Date(), 10)}
+                            required
                         />
                         <br/>
                         <label>Duration of play</label>

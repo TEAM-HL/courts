@@ -7,7 +7,7 @@ router.route('/').get((req, res) => {
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
-router.route('/add').post((req, res) => {
+router.route('/new').post((req, res) => {
     const username = req.body.username
     const date = Date.parse(req.body.date)
     const duration = Number(req.body.duration)

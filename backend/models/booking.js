@@ -2,17 +2,17 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const equipmentSchema = new Schema({
-    canisters: {
-        type: Number
-    },
-    racquets: {
-        type: Number
-    },
-    hopper: {
-        type: Boolean
-    }
-})
+// const equipmentSchema = new Schema({
+//     canisters: {
+//         type: Number
+//     },
+//     racquets: {
+//         type: Number
+//     },
+//     hopper: {
+//         type: Boolean
+//     }
+// })
 
 const bookingSchema = new Schema({
     username: {
@@ -37,10 +37,10 @@ const bookingSchema = new Schema({
         trim: true
     },
     equipment: {
-        canisters: {
+        canister: {
             type: Number
         },
-        racquets: {
+        racquet: {
             type: Number
         },
         hopper: {
