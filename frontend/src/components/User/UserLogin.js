@@ -64,7 +64,6 @@ const UserLogin = () => {
           url: "http://localhost:5000/users/login"
       }).then(res => {
           console.log(res)
-          //TODO: authenticated global state not updating
           if (res.data.success === true) {
             setAuthentication({
               ...authentication,
