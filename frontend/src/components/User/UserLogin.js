@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
@@ -31,14 +31,14 @@ const UserLogin = () => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value
+      [name]: value.trim()
     })    
   }
   // hook to update global state for loggedInUser
   useEffect(() => {
     dispatch({
       type: "setLoggedInUser",
-      data: values,
+      data: values
     })
   }, [values])
 
@@ -76,7 +76,6 @@ const UserLogin = () => {
       } catch (error) {
         console.log(error)
       }
-      
     }
     
     const formSubmit = (e) => {
