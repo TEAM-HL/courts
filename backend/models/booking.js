@@ -26,6 +26,11 @@ const bookingSchema = new Schema({
         required: true,
         trim: true
     },
+    time: {
+        type: String,
+        required: true,
+        trim: true
+    },
     duration: {
         type: Number,
         required: true,

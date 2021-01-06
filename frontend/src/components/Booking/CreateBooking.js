@@ -14,19 +14,12 @@ const CreateBooking = () => {
 
     // define initial booking values
     const initialBookingValues = {
-        date: "",
         duration: "",
         court: "",
         racquet: 0,
         canister: 0,
-        hopper: 0,            
-    }
-
-    const initialCost = {
-        duration: 0,
-        racquet: 0,
-        canister: 0,
-        hopper: 0   
+        hopper: 0,   
+        total: 0
     }
 
     const prices = {
@@ -40,6 +33,8 @@ const CreateBooking = () => {
     const [values, setValues] = useState(initialBookingValues)
     // set state for date
     const [date, setDate] = useState(null)
+    // set state for total
+    // const [total, setTotal] = useState(0)
 
     // calculate total cost
     const calculateTotalCost = (
@@ -63,7 +58,6 @@ const CreateBooking = () => {
         setDate(date)
         setValues({
             ...values,
-            date: date
         })
     }
 
@@ -71,8 +65,9 @@ const CreateBooking = () => {
         await axios({
             method: "POST",
             data: {
-                username: loggedInUser.username,
-                date: date,
+                username: "test",
+                date: date.toLocaleDateString(),
+                time: date.toLocaleTimeString(),
                 duration: values.duration,
                 court: values.court,
                 equipment: {
@@ -83,7 +78,7 @@ const CreateBooking = () => {
                 cost: calculateTotalCost
             },
             withCredentials: true, 
-            url: "http://localhost:5000/bookings/new",
+            url: "http://localhost:5000/bookings/new"
         }).then(res => {
             console.log(res)
             // if (data passes validation formatting and no prev booking clashes) 
@@ -95,10 +90,13 @@ const CreateBooking = () => {
     // form submission
     const handleSubmit = e => {
         e.preventDefault()
+        // TESTING
         console.log(store)
         console.log(values)
-        // console.log(data)
-        // newBooking(data)
+        console.log(calculateTotalCost)
+        console.log(`date = ${date}`)
+    // ----------------------------------
+        newBooking()
     }
     
     // ------TESTING-------------
@@ -118,7 +116,7 @@ const CreateBooking = () => {
                         <br/>
                         <DatePicker     
                             name="date"
-                            selected={values.date} 
+                            selected={date} 
                             value={date}
                             onChange={handleDateChange}
                             dateFormat="dd/MM/yyyy"
@@ -131,15 +129,15 @@ const CreateBooking = () => {
                         />
                         <br/>
                         <label>Duration of play</label>
-                        <select className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
-                            <option value="0" default>Choose option</option>
+                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
+                            <option value="0">Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
                             <option value="2">2 Hours</option>
                         </select>
                         <label>Court:</label>
-                        <select className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
-                            <option value="0" default>Choose option</option>
+                        <select required className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
+                            <option disabled value="0">Choose option</option>
                             <option value="1">Court 1</option>
                             <option value="2">Court 2</option>
                             <option value="3">Court 3</option>
@@ -178,7 +176,7 @@ const CreateBooking = () => {
                         <label>Total:</label>
                         <CurrencyInput
                             id="total-cost"
-                            name="totalCost"
+                            name="total"
                             value={calculateTotalCost}
                             prefix="$"
                             defaultValue={0}

@@ -1,13 +1,19 @@
 const router = require('express').Router()
 let Booking = require('../models/booking')
 
+// retrieve all bookings
 router.route('/').get((req, res) => {
     Booking.find()
         .then(bookings => res.json(bookings))
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
+//create new booking
 router.route('/new').post((req, res) => {
+    // TESTING
+    console.log("hit new booking endpoint")
+    console.log(req.body)
+//--------------------------------------------------------- 
     const username = req.body.username
     const date = Date.parse(req.body.date)
     const duration = Number(req.body.duration)
@@ -21,19 +27,19 @@ router.route('/new').post((req, res) => {
         .then(() => res.json('Booking added'))
         .catch(e => res.status(400).json('Error: ' + e))
 })
-
+// find booking by ID
 router.route('/:id').get((req, res) => {
     Booking.findById(req.params.id)
         .then(booking => res.json(booking))
         .catch(e => res.status(400).json('Error: ' + e))
 })
-
+// delete a booking
 router.route('/:id').delete((req, res) => {
     Booking.findByIdAndDelete(req.params.id)
         .then(() => res.json('Booking deleted'))
         .catch(e => res.status(400).json('Error: ' + e))
 })
-
+// update a booking
 router.route('/update/:id').post((req, res) => {
     Booking.findById(req.params.id)
         .then(booking => {
