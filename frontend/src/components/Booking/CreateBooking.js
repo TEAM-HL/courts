@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import addDays from 'date-fns/addDays'
+import setHours from 'date-fns/setHours'
+import setMinutes from 'date-fns/setMinutes'
+import getDay from 'date-fns/getDay'
 import CurrencyInput from 'react-currency-input-field'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
@@ -44,6 +47,7 @@ const CreateBooking = () => {
         prices.hopper * values.hopper
     )
 
+    
     // update state as form input changes 
     const handleInputChange = e => {
         const { name, value } = e.target
@@ -53,14 +57,16 @@ const CreateBooking = () => {
             [name]: value,
         })
     }
-
+    
     const handleDateChange = date => {
+        availableTimes()
         setDate(date)
         setValues({
             ...values,
         })
     }
 
+    
     const newBooking = async () => {
         await axios({
             method: "POST",
@@ -82,9 +88,43 @@ const CreateBooking = () => {
         }).then(res => {
             console.log(res)
             // if (data passes validation formatting and no prev booking clashes) 
-                // redirect user to stripe payment
+            // redirect user to stripe payment
             // } 
         })
+    }
+
+    const excludedTimes = [
+        setHours(setMinutes(new Date(), 0), 0),
+        setHours(setMinutes(new Date(), 30), 0),
+        setHours(setMinutes(new Date(), 0), 1),
+        setHours(setMinutes(new Date(), 30), 1),
+        setHours(setMinutes(new Date(), 0), 2),
+        setHours(setMinutes(new Date(), 30), 2),
+        setHours(setMinutes(new Date(), 0), 3),
+        setHours(setMinutes(new Date(), 30), 3),
+        setHours(setMinutes(new Date(), 0), 4),
+        setHours(setMinutes(new Date(), 30), 4),
+        setHours(setMinutes(new Date(), 0), 5),
+        setHours(setMinutes(new Date(), 30), 5),
+        setHours(setMinutes(new Date(), 0), 6),
+        setHours(setMinutes(new Date(), 30), 6),
+        setHours(setMinutes(new Date(), 30), 23),
+        setHours(setMinutes(new Date(), 0), 24),
+        setHours(setMinutes(new Date(), 30), 24)
+      ]
+
+    // available times validation for date picker
+    const availableTimes = () => {
+        console.log(getDay(date))
+        if (getDay(date) < 1) {
+            return ( 
+                date > setHours(setMinutes(new Date(), 0), 20)
+            )
+        } else {
+            return (
+                date < setHours(setMinutes(new Date(), 30), 22) 
+            )
+        }
     }
 
     // form submission
@@ -120,11 +160,13 @@ const CreateBooking = () => {
                             value={date}
                             onChange={handleDateChange}
                             dateFormat="dd/MM/yyyy"
-                            showTimeSelect={true}
                             dateFormat="MMM d  h:mm aa"
                             placeholderText="Select a date and time"
                             minDate={new Date()}                        
                             maxDate={addDays(new Date(), 10)}
+                            excludeTimes={excludedTimes}
+                            filterTime={availableTimes}
+                            showTimeSelect
                             required
                         />
                         <br/>
@@ -175,7 +217,6 @@ const CreateBooking = () => {
                         </select>
                         <label>Total:</label>
                         <CurrencyInput
-                            id="total-cost"
                             name="total"
                             value={calculateTotalCost}
                             prefix="$"
