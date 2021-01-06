@@ -108,13 +108,44 @@ const CreateBooking = () => {
         setHours(setMinutes(new Date(), 30), 5),
         setHours(setMinutes(new Date(), 0), 6),
         setHours(setMinutes(new Date(), 30), 6),
+        setHours(setMinutes(new Date(), 30), 22),
+        setHours(setMinutes(new Date(), 0), 23),
         setHours(setMinutes(new Date(), 30), 23),
         setHours(setMinutes(new Date(), 0), 24),
         setHours(setMinutes(new Date(), 30), 24)
       ]
+      
+      const excludedTimesSunday = [
+          setHours(setMinutes(new Date(), 0), 0),
+          setHours(setMinutes(new Date(), 30), 0),
+          setHours(setMinutes(new Date(), 0), 1),
+          setHours(setMinutes(new Date(), 30), 1),
+          setHours(setMinutes(new Date(), 0), 2),
+          setHours(setMinutes(new Date(), 30), 2),
+          setHours(setMinutes(new Date(), 0), 3),
+          setHours(setMinutes(new Date(), 30), 3),
+          setHours(setMinutes(new Date(), 0), 4),
+          setHours(setMinutes(new Date(), 30), 4),
+          setHours(setMinutes(new Date(), 0), 5),
+          setHours(setMinutes(new Date(), 30), 5),
+          setHours(setMinutes(new Date(), 0), 6),
+          setHours(setMinutes(new Date(), 30), 6),
+          setHours(setMinutes(new Date(), 30), 19),
+          setHours(setMinutes(new Date(), 0), 20),
+          setHours(setMinutes(new Date(), 30), 20),
+          setHours(setMinutes(new Date(), 0), 21),
+          setHours(setMinutes(new Date(), 30), 21),
+          setHours(setMinutes(new Date(), 0), 22),
+          setHours(setMinutes(new Date(), 30), 22),
+          setHours(setMinutes(new Date(), 0), 23),
+          setHours(setMinutes(new Date(), 30), 23),
+          setHours(setMinutes(new Date(), 0), 24),
+          setHours(setMinutes(new Date(), 30), 24)
+        ]
 
-    // available times validation for date picker
+    // available times for date picker according to day selected
     const availableTimes = () => {
+        
         console.log(getDay(date))
         if (getDay(date) < 1) {
             return ( 
@@ -164,8 +195,7 @@ const CreateBooking = () => {
                             placeholderText="Select a date and time"
                             minDate={new Date()}                        
                             maxDate={addDays(new Date(), 10)}
-                            excludeTimes={excludedTimes}
-                            filterTime={availableTimes}
+                            excludeTimes={(getDay(date) < 1) ? excludedTimesSunday : excludedTimes}
                             showTimeSelect
                             required
                         />
