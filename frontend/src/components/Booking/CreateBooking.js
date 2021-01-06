@@ -14,6 +14,7 @@ const CreateBooking = () => {
 
     // define initial booking values
     const initialBookingValues = {
+        date: "",
         duration: "",
         court: "",
         racquet: 0,
@@ -39,8 +40,6 @@ const CreateBooking = () => {
     const [values, setValues] = useState(initialBookingValues)
     // set state for date
     const [date, setDate] = useState(null)
-    // set state for time
-    // const [time, setTime] = useState(0)
 
     // calculate total cost
     const calculateTotalCost = (
@@ -62,6 +61,10 @@ const CreateBooking = () => {
 
     const handleDateChange = date => {
         setDate(date)
+        setValues({
+            ...values,
+            date: date
+        })
     }
 
     const newBooking = async () => {
@@ -93,6 +96,7 @@ const CreateBooking = () => {
     const handleSubmit = e => {
         e.preventDefault()
         console.log(store)
+        console.log(values)
         // console.log(data)
         // newBooking(data)
     }
@@ -112,8 +116,10 @@ const CreateBooking = () => {
                     <form onSubmit={handleSubmit}>
                         <label>Date & Time</label>
                         <br/>
-                        <DatePicker 
-                            selected={date} 
+                        <DatePicker     
+                            name="date"
+                            selected={values.date} 
+                            value={date}
                             onChange={handleDateChange}
                             dateFormat="dd/MM/yyyy"
                             showTimeSelect={true}
@@ -173,11 +179,11 @@ const CreateBooking = () => {
                         <CurrencyInput
                             id="total-cost"
                             name="totalCost"
-                            readOnly
+                            value={calculateTotalCost}
                             prefix="$"
                             defaultValue={0}
                             decimalsLimit={2}
-                            value={calculateTotalCost}
+                            readOnly
                         />
                         <input type="submit" className="btn waves-effect waves-light"/>
                     </form>
