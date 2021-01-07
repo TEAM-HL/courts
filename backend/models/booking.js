@@ -22,8 +22,13 @@ const bookingSchema = new Schema({
         minlength: 4
     },
     date: {
-        type: Date,
+        type: String,
         required: true,
+        trim: true
+    },
+    end: {
+        type: String,
+        require: true,
         trim: true
     },
     time: {
