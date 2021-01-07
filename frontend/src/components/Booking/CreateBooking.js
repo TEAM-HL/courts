@@ -5,6 +5,7 @@ import addDays from 'date-fns/addDays'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import getDay from 'date-fns/getDay'
+import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
@@ -18,7 +19,7 @@ const CreateBooking = () => {
     // define initial booking values
     const initialBookingValues = {
         duration: "",
-        court: "",
+        court: "1",
         racquet: 0,
         canister: 0,
         hopper: 0,   
@@ -36,8 +37,6 @@ const CreateBooking = () => {
     const [values, setValues] = useState(initialBookingValues)
     // set state for date
     const [date, setDate] = useState(null)
-    // set state for total
-    // const [total, setTotal] = useState(0)
 
     // calculate total cost
     const calculateTotalCost = (
@@ -47,7 +46,6 @@ const CreateBooking = () => {
         prices.hopper * values.hopper
     )
 
-    
     // update state as form input changes 
     const handleInputChange = e => {
         const { name, value } = e.target
@@ -59,11 +57,8 @@ const CreateBooking = () => {
     }
     
     const handleDateChange = date => {
-        availableTimes()
         setDate(date)
-        setValues({
-            ...values,
-        })
+        // checkAvailability(date)
     }
 
     
@@ -74,6 +69,7 @@ const CreateBooking = () => {
                 username: "test",
                 date: date.toLocaleDateString(),
                 time: date.toLocaleTimeString(),
+                end: addMinutes(date, (60*values.duration)).toLocaleTimeString(),
                 duration: values.duration,
                 court: values.court,
                 equipment: {
@@ -93,6 +89,25 @@ const CreateBooking = () => {
         })
     }
 
+    const checkAvailability = async (date) => {
+        // console.log("checking availability")
+        try {
+            await axios({
+                method: "POST",
+                data: {
+                    date: date.toLocaleDateString(),
+                },
+                withCredentials: true, 
+                url: "http://localhost:5000/bookings/avail"
+            }).then(res => {
+                console.log(res)
+    }
+            )} catch (error) {
+                console.log(error)
+            }
+    }
+
+    // array of excluded times mon-sat
     const excludedTimes = [
         setHours(setMinutes(new Date(), 0), 0),
         setHours(setMinutes(new Date(), 30), 0),
@@ -114,7 +129,7 @@ const CreateBooking = () => {
         setHours(setMinutes(new Date(), 0), 24),
         setHours(setMinutes(new Date(), 30), 24)
       ]
-      
+    // array of excluded times sun  
       const excludedTimesSunday = [
           setHours(setMinutes(new Date(), 0), 0),
           setHours(setMinutes(new Date(), 30), 0),
@@ -145,16 +160,10 @@ const CreateBooking = () => {
 
     // available times for date picker according to day selected
     const availableTimes = () => {
-        
-        console.log(getDay(date))
-        if (getDay(date) < 1) {
-            return ( 
-                date > setHours(setMinutes(new Date(), 0), 20)
-            )
-        } else {
-            return (
-                date < setHours(setMinutes(new Date(), 30), 22) 
-            )
+        const currentDate = new Date()
+        // console.log(selectedDate)
+        const filterPastTime = ()  => {
+            return currentDate.getTime() < date.getTime()
         }
     }
 
@@ -162,9 +171,9 @@ const CreateBooking = () => {
     const handleSubmit = e => {
         e.preventDefault()
         // TESTING
-        console.log(store)
-        console.log(values)
-        console.log(calculateTotalCost)
+        // console.log(store)
+        // console.log(values)
+        console.log(`total cost: ${calculateTotalCost}`)
         console.log(`date = ${date}`)
     // ----------------------------------
         newBooking()
@@ -190,14 +199,16 @@ const CreateBooking = () => {
                             selected={date} 
                             value={date}
                             onChange={handleDateChange}
-                            dateFormat="dd/MM/yyyy"
                             dateFormat="MMM d  h:mm aa"
                             placeholderText="Select a date and time"
                             minDate={new Date()}                        
                             maxDate={addDays(new Date(), 10)}
                             excludeTimes={(getDay(date) < 1) ? excludedTimesSunday : excludedTimes}
+                            onSelect={checkAvailability}	
                             showTimeSelect
                             required
+                            // filterTime={availableTimes}
+                            // dropdownMode="select"
                         />
                         <br/>
                         <label>Duration of play</label>
