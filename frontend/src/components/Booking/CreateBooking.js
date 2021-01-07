@@ -60,7 +60,6 @@ const CreateBooking = () => {
         setDate(date)
         // checkAvailability(date)
     }
-
     
     const newBooking = async () => {
         await axios({
@@ -89,19 +88,17 @@ const CreateBooking = () => {
         })
     }
 
-    const checkAvailability = async (date) => {
-        // console.log("checking availability")
+    const checkDate = async (date) => {
+        console.log("checking availability...")
         try {
             await axios({
                 method: "POST",
-                data: {
-                    date: date.toLocaleDateString(),
-                },
+                data: { date: date.toLocaleDateString() },
                 withCredentials: true, 
-                url: "http://localhost:5000/bookings/avail"
+                url: "http://localhost:5000/bookings/check"
             }).then(res => {
                 console.log(res)
-    }
+            }
             )} catch (error) {
                 console.log(error)
             }
@@ -204,7 +201,7 @@ const CreateBooking = () => {
                             minDate={new Date()}                        
                             maxDate={addDays(new Date(), 10)}
                             excludeTimes={(getDay(date) < 1) ? excludedTimesSunday : excludedTimes}
-                            onSelect={checkAvailability}	
+                            onSelect={checkDate}	
                             showTimeSelect
                             required
                             // filterTime={availableTimes}

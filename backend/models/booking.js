@@ -2,18 +2,6 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-// const equipmentSchema = new Schema({
-//     canisters: {
-//         type: Number
-//     },
-//     racquets: {
-//         type: Number
-//     },
-//     hopper: {
-//         type: Boolean
-//     }
-// })
-
 const bookingSchema = new Schema({
     username: {
         type: String,
@@ -26,14 +14,14 @@ const bookingSchema = new Schema({
         required: true,
         trim: true
     },
-    end: {
-        type: String,
-        require: true,
-        trim: true
-    },
     time: {
         type: String,
         required: true,
+        trim: true
+    },
+    end: {
+        type: String,
+        require: true,
         trim: true
     },
     duration: {

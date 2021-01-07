@@ -9,18 +9,18 @@ router.route('/').get((req, res) => {
 })
 
 // validate booking
-router.route('/validate').post((req, res) => {
+router.route('/validate').get((req, res) => {
     Booking.find({ 
         date: req.body.date, 
-        // include more data if needed?
-    }, async (err, doc) => {
+        // ***add rest of booking data***
+    }, async (err, result) => {
         if (err) {
             return res.send({
                 success: false,
                 message: `Error: ${error}`
             })
-        } else if (doc.length > 0) {
-            console.log(doc)
+        } else if (result.length > 0) {
+            console.log(result)
             return res.send({
                 success: false,
                 message: "date/time already exists"
@@ -35,32 +35,32 @@ router.route('/validate').post((req, res) => {
 })
 
 // check current court availability 
-router.route('/avail').post((req, res) => {
+router.route('/check').post((req, res) => {
+    console.log(req.body)
     Booking.find({ 
         date: req.body.date, 
-    }, async (err, doc) => {
+    }, async (err, result) => {
         if (err) {
             return res.send({
                 success: false,
                 message: `Error: ${error}`
             })
-        } else if (doc) {
-            console.log(doc)
-        } else if (doc.length > 0) {
-            console.log(doc.court)
-            console.log(doc.time)
-            console.log(doc.duration)
-            // return res.send({
-            //     success: false,
-            //     message: "date/time already exists"
-            // })
-        } 
-        // else {
-        //     return res.send({
-        //         success: true,
-        //         message: "date/time is available"
+        } else res.json(result)
+        
+        // else (result) { 
+        //     res.json(result)
+        // } else if (result.length < 0) {
+        //     res.send({
+        //         success: false,
+        //         message: `No bookings exist on that date`
         //     })
-        // }
+        // } else if (result.length > 0) {
+        //     console.log(result.court)
+        //     console.log(result.time)
+        //     console.log(result.duration)
+          
+        // } 
+      
     })
 })
 
@@ -71,8 +71,9 @@ router.route('/new').post((req, res) => {
     console.log(req.body)
 //--------------------------------------------------------- 
     const username = req.body.username
-    const date = Date.parse(req.body.date)
+    const date = req.body.date
     const time = req.body.time
+    const end = req.body.end
     const duration = Number(req.body.duration)
     const court = Number(req.body.court)
     const equipment = req.body.equipment
