@@ -48,6 +48,16 @@ const bookingSchema = new Schema({
     cost: {
         type: Number,
         required: true
+    },
+    receipt: {
+        number: {
+            type: Number, 
+            required: true
+        },
+        date: {
+            type: String,
+            required: true
+        }
     }
 })
 

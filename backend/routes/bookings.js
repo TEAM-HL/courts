@@ -40,6 +40,7 @@ router.route('/check').post((req, res) => {
     Booking.find({ 
         date: req.body.date, 
     }, async (err, result) => {
+        console.log(result)
         if (err) {
             return res.send({
                 success: false,
