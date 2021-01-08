@@ -42,7 +42,7 @@ const bookingSchema = new Schema({
             type: Number
         },
         hopper: {
-            type: Boolean
+            type: Number
         }
     },
     cost: {

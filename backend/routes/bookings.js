@@ -46,21 +46,21 @@ router.route('/check').post((req, res) => {
                 success: false,
                 message: `Error: ${error}`
             })
-        } else res.json(result)
+        } else if (result) res.json(result)
         
-        // else (result) { 
-        //     res.json(result)
-        // } else if (result.length < 0) {
-        //     res.send({
-        //         success: false,
-        //         message: `No bookings exist on that date`
-        //     })
-        // } else if (result.length > 0) {
-        //     console.log(result.court)
-        //     console.log(result.time)
-        //     console.log(result.duration)
+        else (result) { 
+            res.json(result)
+        } else if (result.length < 0) {
+            res.send({
+                success: false,
+                message: `No bookings exist on that date`
+            })
+        } else if (result.length > 0) {
+            console.log(result.court)
+            console.log(result.time)
+            console.log(result.duration)
           
-        // } 
+        } 
       
     })
 })
