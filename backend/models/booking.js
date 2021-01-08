@@ -49,16 +49,16 @@ const bookingSchema = new Schema({
         type: Number,
         required: true
     },
-    receipt: {
-        number: {
-            type: Number, 
-            required: true
-        },
-        date: {
-            type: String,
-            required: true
-        }
-    }
+    // receipt: {
+    //     number: {
+    //         type: Number, 
+    //         required: true
+    //     },
+    //     date: {
+    //         type: String,
+    //         required: true
+    //     }
+    // }
 })
 
 const Booking = mongoose.model('Booking', bookingSchema)
