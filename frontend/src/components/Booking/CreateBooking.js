@@ -54,6 +54,15 @@ const CreateBooking = () => {
             ...values,
             [name]: value,
         })
+    } 
+
+    const handleDurationChange = e => {
+        const { value } = e.target
+        setValues({
+            ...values,
+            duration: value
+        })
+
     }
     
     const handleDateChange = date => {
@@ -89,13 +98,35 @@ const CreateBooking = () => {
     }
 
     const checkDate = async (date) => {
-        console.log("checking availability...")
+        console.log("checking for available times for selected date...")
         try {
             await axios({
                 method: "POST",
                 data: { date: date.toLocaleDateString() },
                 withCredentials: true, 
-                url: "http://localhost:5000/bookings/check"
+                url: "http://localhost:5000/bookings/checkDate"
+            }).then(res => {
+                console.log(res)
+            }
+            )} catch (error) {
+                console.log(error)
+            }
+    }
+
+    const checkCourt = async () => {
+        console.log("checking available courts...")
+        try {
+            await axios({
+                method: "POST",
+                data: { 
+                    date: date.toLocaleDateString(),
+                    date: date.toLocaleDateString(),
+                    time: date.toLocaleTimeString(),
+                    end: addMinutes(date, (60*values.duration)).toLocaleTimeString(),
+                    duration: values.duration        
+                },
+                withCredentials: true, 
+                url: "http://localhost:5000/bookings/checkCourt"
             }).then(res => {
                 console.log(res)
             }
@@ -209,7 +240,7 @@ const CreateBooking = () => {
                         />
                         <br/>
                         <label>Duration of play</label>
-                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
+                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleDurationChange}>
                             <option value="0">Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>

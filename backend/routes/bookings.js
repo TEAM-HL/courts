@@ -34,8 +34,8 @@ router.route('/validate').get((req, res) => {
     })
 })
 
-// check current court availability 
-router.route('/check').post((req, res) => {
+// check current times available on date 
+router.route('/checkDate').post((req, res) => {
     console.log(req.body)
     Booking.find({ 
         date: req.body.date, 
@@ -46,22 +46,42 @@ router.route('/check').post((req, res) => {
                 success: false,
                 message: `Error: ${error}`
             })
-        } else if (result) res.json(result)
-        
-        else (result) { 
-            res.json(result)
-        } else if (result.length < 0) {
-            res.send({
-                success: false,
-                message: `No bookings exist on that date`
+        } else if (result.length < 1) { 
+            return res.send({
+                success: true,
+                message: "No bookings exist for selected date."
             })
         } else if (result.length > 0) {
-            console.log(result.court)
-            console.log(result.time)
-            console.log(result.duration)
-          
-        } 
-      
+            res.send(result)
+            // const notAvail = result.filter(booking => {
+                
+            // })
+        }
+    })
+})
+// check current available courts
+router.route('/checkCourt').post((req, res) => {
+    console.log(req.body)
+    Booking.find({ //use this method?
+        // insert values here
+    }, async (err, result) => {
+        console.log(result)
+        if (err) {
+            return res.send({
+                success: false,
+                message: `Error: ${error}`
+            })
+        } else if (result.length < 1) { 
+            return res.send({
+                success: true,
+                message: "No bookings exist for selected date."
+            })
+        } else if (result.length > 0) {
+            res.send(result)
+            // const notAvail = result.filter(booking => {
+                
+            // })
+        }
     })
 })
 
@@ -80,10 +100,10 @@ router.route('/new').post((req, res) => {
     const equipment = req.body.equipment
     const cost = Number(req.body.cost)
 
-    const newBooking = new Booking({username, date, time, duration, court, equipment, cost})
+    const newBooking = new Booking({username, date, time, end, duration, court, equipment, cost})
 
-    newBooking.save((err, booking) => {
-        if (err) {
+    newBooking.save((error, booking) => {
+        if (error) {
             return res.send({
                 success: false,
                 message: `Error: ${error}`
