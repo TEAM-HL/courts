@@ -9,6 +9,7 @@ import CreateBooking from './components/Booking/CreateBooking'
 import UserLogin from './components/User/UserLogin'
 import Navbar from './components/shared/Navbar'
 import UserRegister from './components/User/UserRegister'
+import Checkout from './components/Checkout/Checkout'
 //toastify dependencies
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/login" exact component={UserLogin} />
           <Route path="/register" exact component={UserRegister} />
           <Route path="/booking/new" exact component={CreateBooking} />
+          <Route path="/checkout" exact component={Checkout} />
         </BrowserRouter>
       </StateContext.Provider>    
     </>

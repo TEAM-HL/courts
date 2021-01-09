@@ -53,10 +53,12 @@ connection.once('open', () => {
 const bookingsRouter = require('./routes/bookings')
 const usersRouter = require('./routes/users')
 const postsRouter = require('./routes/posts')
+const checkoutRouter = require('./routes/checkout')
 
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
 app.use('/posts', postsRouter)
+app.use('/checkout', checkoutRouter)
 
 //error handling
 app.use(function (err, req, res, next) {
