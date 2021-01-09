@@ -172,7 +172,7 @@ const CreateBooking = () => {
                     }
                 }).join(""))
 
-                let dateEnd = dateTime + (values.duration * 100)
+                let dateEnd = dateTime + 200
 
                 console.log(values)
 
