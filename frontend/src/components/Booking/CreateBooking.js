@@ -162,7 +162,59 @@ const CreateBooking = () => {
                 withCredentials: true, 
                 url: "http://localhost:5000/bookings/findCourt"
             }).then(res => {
-                console.log(res)
+                console.log(res.data)
+
+                let dateTime = parseInt(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12).split("").filter(x => x !== ":").map((x, i) => {
+                    if (x == "3" && i == 2) {
+                        return "5"
+                    } else {
+                        return x
+                    }
+                }).join(""))
+
+                let dateEnd = dateTime + (values.duration * 100)
+
+                console.log(values)
+
+                let toNumbers = res.data.map(obj => {
+                    obj.time = parseInt(obj.time.split("").filter(x => x !== ":").map((x, i) => {
+                        if (x == "3" && i == 2) {
+                            return "5"
+                        } else {
+                            return x
+                        }
+                    }).join(""))
+                    obj.end = parseInt(obj.end.split("").filter(x => x !== ":").map((x, i) => {
+                        if (x == "3" && i == 2) {
+                            return "5"
+                        } else {
+                            return x
+                        }
+                    }).join(""))
+                    return obj
+                })
+
+                console.log(dateTime)
+                console.log(dateEnd)
+                console.log(toNumbers)
+
+                let arr1 = toNumbers.filter(obj => obj.end >= dateTime)
+                let arr2 = arr1.filter(obj => obj.time <= dateEnd)
+
+                console.log(arr1)
+                console.log(arr2)
+
+                let courtsArray = arr2.map(obj => obj.court)
+                console.log(courtsArray)
+
+                // parseInt(startString.split("")
+                //     .map((char, index) => {
+                //     if (char === '3' && index === startString.length-2) {
+                //         return '5'
+                //     } else {return char}
+                // })
+                //     .filter(char => char !== ':')
+                //     .join(""))
             }
             )} catch (error) {
                 console.log(error)
