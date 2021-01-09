@@ -88,7 +88,7 @@ router.route('/checkDate').post((req, res) => {
 })
 
 // check current available courts
-router.route('/checkCourt').post((req, res) => {
+router.route('/findCourt').post((req, res) => {
     console.log(req.body)
     Booking.find({ //use this method?
         date: req.body.date
@@ -102,13 +102,24 @@ router.route('/checkCourt').post((req, res) => {
         } else if (result.length < 1) { 
             return res.send({
                 success: true,
-                message: "No bookings exist for selected date."
+                message: "No current bookings exist for selected date/time."
             })
         } else if (result.length > 0) {
-            res.send(result)
-            // const notAvail = result.filter(booking => {
-                
-            // })
+            console.log("there is a clash")
+            // check for equal start times
+
+            const filtered = result.filter(booking => {
+                if (booking.time === req.body.time) {
+                    console.log(booking)
+                }
+            })
+            
+            // result.filter(obj => (obj.endTime > localState.time) && (obj.time < localState.time))
+
+            // splice the time to a number removing colon
+            
+            // check start time against courts > dont include those courts
+            // check end time clashes courts > don't include those courts
         }
     })
 })

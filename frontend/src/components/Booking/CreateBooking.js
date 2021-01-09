@@ -59,19 +59,20 @@ const CreateBooking = () => {
             [name]: value,
         })
     } 
-
+    
     const handleDurationChange = e => {
         const { value } = e.target
         setValues({
             ...values,
             duration: value
         })
-        // checkCourt()
+        findCourt()
     }
     
     const handleDateChange = date => {
         setDate(date)
         console.log("date changed")
+        // console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         // checkDate(date)
     }
     
@@ -147,7 +148,7 @@ const CreateBooking = () => {
                 }
     }
 
-    const checkCourt = async () => {
+    const findCourt = async () => {
         console.log("checking available courts...")
         try {
             await axios({
@@ -159,7 +160,7 @@ const CreateBooking = () => {
                     duration: values.duration        
                 },
                 withCredentials: true, 
-                url: "http://localhost:5000/bookings/checkCourt"
+                url: "http://localhost:5000/bookings/findCourt"
             }).then(res => {
                 console.log(res)
             }
@@ -321,11 +322,6 @@ const CreateBooking = () => {
         newBooking()
     }
     
-    // ------TESTING-------------
-    // console.log(date)
-    // console.log(values)
-    // console.log(total)
-    // -------------------------- 
     
     // component structure
     return (
@@ -345,16 +341,16 @@ const CreateBooking = () => {
                             placeholderText="Select a date and time"
                             minDate={new Date()}                        
                             maxDate={addDays(new Date(), 10)}
-                            minTime={ 
-                                (getDay(date) < 1) ? 
-                                operatingHoursSunday.filter(time => isFuture(time))[0] : 
-                                operatingHours.filter(time => isFuture(time))[0]
-                            }
-                            maxTime={
-                                (getDay(date) < 1) ? 
-                                operatingHoursSunday[operatingHoursSunday.length-1] : 
-                                operatingHours[operatingHours.length-1]
-                            }
+                            // minTime={ 
+                            //     getDay(date) === getDay(new Date()) && getDay(date) < 1 ? 
+                            //     operatingHoursSunday.filter(time => isFuture(time))[0] :
+                            //     operatingHours.filter(time => isFuture(time))[0]
+                            //     }
+                            // maxTime={
+                            //     (getDay(date) < 1) ? 
+                            //     operatingHoursSunday[operatingHoursSunday.length-1] : 
+                            //     operatingHours[operatingHours.length-1]
+                            // }
                             // excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date))}
                             showTimeSelect
                             required
