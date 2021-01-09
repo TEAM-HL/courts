@@ -5,6 +5,10 @@ import addDays from 'date-fns/addDays'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import getDay from 'date-fns/getDay'
+import getTime from 'date-fns/getTime'
+import closestTo from 'date-fns/closestTo'
+import isFuture from 'date-fns/isFuture'
+import toDate from 'date-fns/toDate'
 import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
 import axios from 'axios'
@@ -62,12 +66,13 @@ const CreateBooking = () => {
             ...values,
             duration: value
         })
-
+        // checkCourt()
     }
     
     const handleDateChange = date => {
         setDate(date)
-        // checkAvailability(date)
+        console.log("date changed")
+        // checkDate(date)
     }
     
     const newBooking = async () => {
@@ -76,7 +81,7 @@ const CreateBooking = () => {
             data: {
                 username: "test",
                 date: date.toLocaleDateString(),
-                time: date.toLocaleTimeString(),
+                time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 end: addMinutes(date, (60*values.duration)).toLocaleTimeString(),
                 duration: values.duration,
                 court: values.court,
@@ -97,20 +102,49 @@ const CreateBooking = () => {
         })
     }
 
+    // function to return all values of a certain key -
+    // used below to return array of unavailable times
+    function findAllByKey(object, keyToFind) {
+        return Object.entries(object)
+          .reduce((acc, [key, value]) => (key === keyToFind)
+            ? acc.concat(value)
+            : (typeof value === 'object')
+            ? acc.concat(findAllByKey(value, keyToFind))
+            : acc
+          , [])
+      }
+
     const checkDate = async (date) => {
         console.log("checking for available times for selected date...")
         try {
             await axios({
                 method: "POST",
-                data: { date: date.toLocaleDateString() },
+                data: { 
+                    date: date.toLocaleDateString(), 
+                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })    
+                },
                 withCredentials: true, 
                 url: "http://localhost:5000/bookings/checkDate"
             }).then(res => {
                 console.log(res)
-            }
-            )} catch (error) {
-                console.log(error)
-            }
+                console.log("second array starts here")
+                const data = res.data.data
+                console.log(data)
+                // add data to localState
+                console.log(data.filter(court => court.court === 3))
+                
+                // if (res.data.success === true && getDay(date) < 1) {
+                // }
+
+                // for filtering duration
+                // array.filter(remove entries that are earlier than current booking)
+                //  .filter(end <= start)
+
+
+                }
+                )} catch (error) {
+                    console.log(error)
+                }
     }
 
     const checkCourt = async () => {
@@ -120,8 +154,7 @@ const CreateBooking = () => {
                 method: "POST",
                 data: { 
                     date: date.toLocaleDateString(),
-                    date: date.toLocaleDateString(),
-                    time: date.toLocaleTimeString(),
+                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     end: addMinutes(date, (60*values.duration)).toLocaleTimeString(),
                     duration: values.duration        
                 },
@@ -185,8 +218,77 @@ const CreateBooking = () => {
           setHours(setMinutes(new Date(), 0), 24),
           setHours(setMinutes(new Date(), 30), 24)
         ]
-
-    // available times for date picker according to day selected
+    // array of operatingHours mon-sat
+    const operatingHours = [
+        setHours(setMinutes(new Date(), 0), 7),
+        setHours(setMinutes(new Date(), 30), 7),
+        setHours(setMinutes(new Date(), 0), 8),
+        setHours(setMinutes(new Date(), 30), 8),
+        setHours(setMinutes(new Date(), 0), 9),
+        setHours(setMinutes(new Date(), 30), 9),
+        setHours(setMinutes(new Date(), 0), 10),
+        setHours(setMinutes(new Date(), 30), 10),
+        setHours(setMinutes(new Date(), 0), 11),
+        setHours(setMinutes(new Date(), 30), 11),
+        setHours(setMinutes(new Date(), 0), 12),
+        setHours(setMinutes(new Date(), 30), 12),
+        setHours(setMinutes(new Date(), 0), 13),
+        setHours(setMinutes(new Date(), 30), 13),
+        setHours(setMinutes(new Date(), 0), 14),
+        setHours(setMinutes(new Date(), 30), 14),
+        setHours(setMinutes(new Date(), 0), 15),
+        setHours(setMinutes(new Date(), 30), 15),
+        setHours(setMinutes(new Date(), 0), 16),
+        setHours(setMinutes(new Date(), 30), 16),
+        setHours(setMinutes(new Date(), 0), 17),
+        setHours(setMinutes(new Date(), 30), 17),
+        setHours(setMinutes(new Date(), 0), 18),
+        setHours(setMinutes(new Date(), 30), 18),
+        setHours(setMinutes(new Date(), 0), 19),
+        setHours(setMinutes(new Date(), 30), 19),
+        setHours(setMinutes(new Date(), 0), 20),
+        setHours(setMinutes(new Date(), 30), 20),
+        setHours(setMinutes(new Date(), 0), 21),
+        setHours(setMinutes(new Date(), 30), 21),
+        setHours(setMinutes(new Date(), 0), 22),
+        setHours(setMinutes(new Date(), 30), 22)
+      ]
+    // array of excluded times sun  
+      const operatingHoursSunday = [
+          setHours(setMinutes(new Date(), 0), 7),
+          setHours(setMinutes(new Date(), 30), 7),
+          setHours(setMinutes(new Date(), 0), 8),
+          setHours(setMinutes(new Date(), 30), 8),
+          setHours(setMinutes(new Date(), 0), 9),
+          setHours(setMinutes(new Date(), 30), 9),
+          setHours(setMinutes(new Date(), 0), 10),
+          setHours(setMinutes(new Date(), 30), 10),
+          setHours(setMinutes(new Date(), 0), 11),
+          setHours(setMinutes(new Date(), 30), 11),
+          setHours(setMinutes(new Date(), 0), 12),
+          setHours(setMinutes(new Date(), 30), 12),
+          setHours(setMinutes(new Date(), 0), 13),
+          setHours(setMinutes(new Date(), 30), 13),
+          setHours(setMinutes(new Date(), 0), 14),
+          setHours(setMinutes(new Date(), 30), 14),
+          setHours(setMinutes(new Date(), 0), 15),
+          setHours(setMinutes(new Date(), 30), 15),
+          setHours(setMinutes(new Date(), 0), 16),
+          setHours(setMinutes(new Date(), 30), 16),
+          setHours(setMinutes(new Date(), 0), 17),
+          setHours(setMinutes(new Date(), 30), 17),
+          setHours(setMinutes(new Date(), 0), 18),
+          setHours(setMinutes(new Date(), 30), 18),
+          setHours(setMinutes(new Date(), 0), 19),
+          setHours(setMinutes(new Date(), 30), 19)
+        ]
+    // -----TESTING ------------------
+    // const times = operatingHours.map(time => toDate(time)).filter(time => isFuture(time))
+    // const timesAfterNow = operatingHours.filter(time => isFuture(time))
+    // console.log(timesAfterNow)    
+    // ------------------------------------
+    
+    // get available times for date picker according to day selected
     const availableTimes = () => {
         const currentDate = new Date()
         // console.log(selectedDate)
@@ -194,6 +296,18 @@ const CreateBooking = () => {
             return currentDate.getTime() < date.getTime()
         }
     }
+
+    const getRoundedDate = (d=new Date()) => {
+        console.log("hit rounded date func")
+        // convert minutes to ms
+        const ms = 1000 * 60 * 30
+        // round date to nearest supplied ms value
+        const roundedDate = new Date(Math.ceil(d.getTime() / ms) * ms)
+        console.log(roundedDate)
+        const m = roundedDate.getMinutes()
+        const h = roundedDate.getHours()
+        return (setHours(setMinutes(new Date(), m), h))
+      }
 
     // form submission
     const handleSubmit = e => {
@@ -231,12 +345,19 @@ const CreateBooking = () => {
                             placeholderText="Select a date and time"
                             minDate={new Date()}                        
                             maxDate={addDays(new Date(), 10)}
-                            excludeTimes={(getDay(date) < 1) ? excludedTimesSunday : excludedTimes}
-                            onSelect={checkDate}	
+                            minTime={ 
+                                (getDay(date) < 1) ? 
+                                operatingHoursSunday.filter(time => isFuture(time))[0] : 
+                                operatingHours.filter(time => isFuture(time))[0]
+                            }
+                            maxTime={
+                                (getDay(date) < 1) ? 
+                                operatingHoursSunday[operatingHoursSunday.length-1] : 
+                                operatingHours[operatingHours.length-1]
+                            }
+                            // excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date))}
                             showTimeSelect
                             required
-                            // filterTime={availableTimes}
-                            // dropdownMode="select"
                         />
                         <br/>
                         <label>Duration of play</label>

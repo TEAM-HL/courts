@@ -39,9 +39,9 @@ router.route('/checkDate').post((req, res) => {
     console.log(req.body)
     Booking.find({ 
         date: req.body.date, 
-    }, async (err, result) => {
+    }, async (error, result) => {
         console.log(result)
-        if (err) {
+        if (error) {
             return res.send({
                 success: false,
                 message: `Error: ${error}`
@@ -52,18 +52,46 @@ router.route('/checkDate').post((req, res) => {
                 message: "No bookings exist for selected date."
             })
         } else if (result.length > 0) {
-            res.send(result)
-            // const notAvail = result.filter(booking => {
-                
+            console.log(result)
+              res.send({
+                success: true,
+                data: result
+            })
+            
+            // let len = result.length
+            // let rslt = {}
+            // for(let i = 0; i < len; i++) {
+            //     let time = result[i]["time"]
+            //     let end = result[i]["end"]
+            //     rslt[time] = rslt[time] || {}
+            //     rslt[time][end] = rslt[time][end] || 0
+            //     rslt[time][end]++
+            // }
+            // let max = 0
+            // let commonTimes = {}
+            // for(let time in rslt) {
+            //     for(let end in rslt[time]) {
+            //         if(rslt[time][end] > max) {
+            //             max = rslt[time][end]
+            //             commonTimes = {time: time, end: end}
+            //         }
+            //     }
+            // }
+            // console.log(commonTimes)
+            // res.send({
+            //     success: true,
+            //     message: "Unavailable timings found",
+            //     data: commonTimes
             // })
         }
     })
 })
+
 // check current available courts
 router.route('/checkCourt').post((req, res) => {
     console.log(req.body)
     Booking.find({ //use this method?
-        // insert values here
+        date: req.body.date
     }, async (err, result) => {
         console.log(result)
         if (err) {
