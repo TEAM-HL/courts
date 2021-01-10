@@ -22,10 +22,11 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(session({
     secret: process.env.TOKEN_SECRET,
-    resave: true, 
-    saveUninitialized: true
+    resave: false, 
+    saveUninitialized: true,
+    cookie: { expires: 600000 }
 }))
-app.use(cookieParser("secretcode"))
+// app.use(cookieParser("secretcode")) // not required
 app.use(passport.initialize())
 app.use(passport.session())
 require('./config/passportConfig')(passport)

@@ -14,9 +14,11 @@ module.exports = function(passport) {
                     if (result === true) {
                         //return null as error and the user if password comparison is successful
                         return done(null, user)
-                    } else {
+                    } else if (result !== true) {
                         // return no user if comparison fails
-                        return done(null, false)
+                        return done(null, false, {message: "Incorrect username/password."})
+                    } else {
+                        return done(error)
                     }
                 })
             })
