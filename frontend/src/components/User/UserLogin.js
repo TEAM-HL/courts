@@ -32,14 +32,14 @@ const UserLogin = () => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value
+      [name]: value.trim()
     })    
   }
   // hook to update global state for loggedInUser
   useEffect(() => {
     dispatch({
       type: "setLoggedInUser",
-      data: values,
+      data: values
     })
   }, [values])
 
@@ -65,7 +65,6 @@ const UserLogin = () => {
           url: "http://localhost:5000/users/login"
       }).then(res => {
           console.log(res)
-          //TODO: authenticated global state not updating
           if (res.data.success === true) {
             setAuthentication({
               ...authentication,
@@ -78,7 +77,6 @@ const UserLogin = () => {
       } catch (error) {
         console.log(error)
       }
-      
     }
     
     const formSubmit = (e) => {

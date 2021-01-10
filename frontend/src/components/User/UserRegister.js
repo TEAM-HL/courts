@@ -20,7 +20,7 @@ const UserRegister = () => {
       const { name, value } = e.target
       setValues({
         ...values,
-        [name]: value,
+        [name]: value.trim()
       })
     }
   
@@ -44,7 +44,7 @@ const UserRegister = () => {
 
     const formSubmit = (e) => {
         e.preventDefault()
-        console.log(values)
+        // console.log(values)
         registerUser(values)
     }
 

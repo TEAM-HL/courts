@@ -16,7 +16,7 @@ const Navbar = () => {
                 <li><a href="">View My Bookings</a></li>
             </ul>
             <nav>
-                <div className="nav-wrapper">
+                <div className="nav-wrapper blue darken-4">
                     <a href="/" className="brand-logo">Courts</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><a className="dropdown-trigger" href="" data-target="bookings-dropdown">Bookings
@@ -25,7 +25,7 @@ const Navbar = () => {
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Tools</a></li>
-                        <li><a href="/login" className="waves-effect waves-light btn">Login<i className="material-icons right">account_circle</i></a></li>
+                        <li><a href="/login" className="waves-effect waves-light btn grey">Login<i className="material-icons right">account_circle</i></a></li>
                     </ul>
                 </div>
             </nav>
