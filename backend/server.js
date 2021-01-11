@@ -9,7 +9,6 @@ const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
-
 require('dotenv').config()
 
 const app = express()
@@ -71,9 +70,6 @@ const postsRouter = require('./routes/posts')
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
 app.use('/posts', postsRouter)
-// app.get('/', (req, res) => {
-//     res.send("hello world")
-// })
 
 //error handling
 app.use(function (err, req, res, next) {
