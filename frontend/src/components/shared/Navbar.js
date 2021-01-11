@@ -10,6 +10,9 @@ const Navbar = () => {
     // destructure loggedInUser from store
     const {loggedInUser} = store
     
+    // destructure authenticated from store
+    const {authenticated} = store
+
     useEffect(() => {
         // initialise materialize dropdown element
         let dropdown = document.querySelector('.dropdown-trigger')
@@ -32,8 +35,13 @@ const Navbar = () => {
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Tools</a></li>
-                        <li className="red-text text-darken-2">{`Welcome, ${loggedInUser && loggedInUser.username}!`}</li>
-                        <li><a href="/login" className="waves-effect waves-light btn grey">Login<i className="material-icons right">account_circle</i></a></li>
+                        <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser && loggedInUser.username}!` : ``}</li>
+                        <li>
+                            {(authenticated === true)
+                                ? <a href="/logout" className="waves-effect waves-light btn grey">Logout<i className="material-icons right">account_circle</i></a>
+                                : <a href="/login" className="waves-effect waves-light btn grey">Login<i className="material-icons right">account_circle</i></a>
+                            }
+                        </li>
                     </ul>
                 </div>
             </nav>

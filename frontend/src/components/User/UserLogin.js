@@ -32,25 +32,9 @@ const UserLogin = () => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value.trim()
+      [name]: value.trim(),
     })    
   }
-
-  // hook to update global state for loggedInUser
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "setLoggedInUser",
-  //     data: values
-  //   })
-  // }, [values])
-
-  // hook to update global state for Authenticated 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "setAuthentication",
-  //     data: authentication
-  //   })
-  // }, [])
   
   // login user function calling express server
   const loginUser = async (data) => {
