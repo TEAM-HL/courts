@@ -34,12 +34,16 @@ const Navbar = () => {
                         <li><a href="#">Community</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Contact</a></li>
-                        <li><a href="#">Tools</a></li>
+                            {
+                                authenticated === true && loggedInUser.type === 'admin' 
+                                ? <li><a href="#">Tools</a></li>
+                                : <li></li>
+                            }
                         <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser && loggedInUser.username}!` : ``}</li>
                         <li>
                             {(authenticated === true)
-                                ? <a href="/logout" className="waves-effect waves-light btn grey">Logout<i className="material-icons right">account_circle</i></a>
-                                : <a href="/login" className="waves-effect waves-light btn grey">Login<i className="material-icons right">account_circle</i></a>
+                                ? <a href="/logout" className="waves-effect waves-light btn">Logout<i className="material-icons right">account_circle</i></a>
+                                : <a href="/login" className="waves-effect waves-light btn">Login<i className="material-icons right">account_circle</i></a>
                             }
                         </li>
                     </ul>

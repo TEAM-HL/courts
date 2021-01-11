@@ -14,7 +14,7 @@ const UserLogin = () => {
   }
 
   //initial authentication values
-  const initialAuth = {authenticated: false}
+  // const initialAuth = {authenticated: false}
   
   // set local state for user values
   const [values, setValues] = useState(initialUserValues)
