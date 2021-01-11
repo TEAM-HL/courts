@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import addDays from 'date-fns/addDays'
@@ -13,6 +13,7 @@ import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
+import { set } from 'mongoose'
 
 const CreateBooking = () => {    
     // destructure store and dispatch from global state
@@ -59,15 +60,10 @@ const CreateBooking = () => {
             [name]: value,
         })
     } 
-    
-    const handleDurationChange = e => {
-        const { value } = e.target
-        setValues({
-            ...values,
-            duration: value
-        })
+
+    useEffect(() => {
         findCourt()
-    }
+    }, [values.duration])
     
     const handleDateChange = date => {
         setDate(date)
@@ -164,6 +160,8 @@ const CreateBooking = () => {
             }).then(res => {
                 console.log(res.data)
 
+                // console.log(this.target.value)
+
                 let dateTime = parseInt(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12).split("").filter(x => x !== ":").map((x, i) => {
                     if (x == "3" && i == 2) {
                         return "5"
@@ -172,7 +170,7 @@ const CreateBooking = () => {
                     }
                 }).join(""))
 
-                let dateEnd = dateTime + 200
+                let dateEnd = dateTime + (values.duration * 100)
 
                 console.log(values)
 
@@ -207,14 +205,9 @@ const CreateBooking = () => {
                 let courtsArray = arr2.map(obj => obj.court)
                 console.log(courtsArray)
 
-                // parseInt(startString.split("")
-                //     .map((char, index) => {
-                //     if (char === '3' && index === startString.length-2) {
-                //         return '5'
-                //     } else {return char}
-                // })
-                //     .filter(char => char !== ':')
-                //     .join(""))
+                if (courtsArray.length == 8) {
+                    // 
+                }
             }
             )} catch (error) {
                 console.log(error)
@@ -409,7 +402,7 @@ const CreateBooking = () => {
                         />
                         <br/>
                         <label>Duration of play</label>
-                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleDurationChange}>
+                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
                             <option value="0">Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
