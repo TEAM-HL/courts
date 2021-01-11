@@ -38,6 +38,7 @@ const userSchema = new Schema({
 })
 
 userSchema.plugin(uniqueValidator);
+userSchema.plugin(require('mongoose-bcrypt'));
 
 const User = mongoose.model('User', userSchema)
 

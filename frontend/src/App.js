@@ -19,7 +19,7 @@ const App = () => {
   // set initial state for global
   const initialState = {
     loggedInUser: null,
-    authenticated: null
+    authenticated: false
   }
 
   // Create state reducer store and dispatcher

@@ -5,6 +5,7 @@ import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
 
 const UserLogin = () => {
+  // use history
   const history = useHistory()
   
   // define initial user values 
@@ -14,16 +15,17 @@ const UserLogin = () => {
   }
 
   //initial authentication values
-  const initialAuth = {authenticated: false}
+  // const initialAuth = {authenticated: false}
   
   // set local state for user values
   const [values, setValues] = useState(initialUserValues)
 
   // set localstate for authentication
-  const [authentication, setAuthentication] = useState(initialAuth)
+  // const [authentication, setAuthentication] = useState(initialAuth)
 
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
+
   // destructure loggedInUser from store
   const {loggedInUser} = store
 
@@ -31,24 +33,9 @@ const UserLogin = () => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value.trim()
+      [name]: value.trim(),
     })    
   }
-  // hook to update global state for loggedInUser
-  useEffect(() => {
-    dispatch({
-      type: "setLoggedInUser",
-      data: values
-    })
-  }, [values])
-
-  // hook to update global state for Authenticated 
-  useEffect(() => {
-    dispatch({
-      type: "setAuthentication",
-      data: authentication
-    })
-  }, [authentication])
   
   // login user function calling express server
   const loginUser = async (data) => {
@@ -65,13 +52,16 @@ const UserLogin = () => {
       }).then(res => {
           console.log(res)
           if (res.data.success === true) {
-            setAuthentication({
-              ...authentication,
-              authenticated: true
-            })
-            history.push("/")
-            console.log(store)
-          }
+              dispatch({
+                type: "setLoggedInUser",
+                data: values
+              })
+              dispatch({
+                type: "setAuthentication",
+                data: true
+              })
+              history.push("/")
+            }
         })  
       } catch (error) {
         console.log(error)
