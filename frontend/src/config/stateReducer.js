@@ -6,10 +6,9 @@ export const stateReducer = (state, action) => {
                 ...state,
                 loggedInUser: action.data
             }
-            
         }
         case "setAuthentication": {
-            console.log(action.data)
+            console.log(`authenticated: ${action.data}`)
             return {
                 ...state,
                 authenticated: action.data
@@ -17,10 +16,13 @@ export const stateReducer = (state, action) => {
         }
         case "RESET_STATE": {
             return {
-                ...state = undefined
+                ...state,
+                loggedInUser: null,
+                authenticated: false
             }
         }
         default: 
             return state
     }
 }
+

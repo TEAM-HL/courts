@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react'
 import { Dropdown } from "materialize-css"
+import { useHistory } from 'react-router-dom'
 import { useGlobalState } from "../../config/store"
 
 
 const Navbar = () => {
+    // use history
+    const history = useHistory()
+
     // destructure store and dispatch from global state
     const {store, dispatch} = useGlobalState()
     
@@ -12,6 +16,17 @@ const Navbar = () => {
     
     // destructure authenticated from store
     const {authenticated} = store
+
+    // logout user function
+    // clear global state
+    // redirect to homepage
+    const logoutUser = () => {
+        dispatch({
+            type: "RESET_STATE",
+        })
+        console.log(store)
+        // history.push("/")
+    }
 
     useEffect(() => {
         // initialise materialize dropdown element
@@ -42,7 +57,7 @@ const Navbar = () => {
                         <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser && loggedInUser.username}!` : ``}</li>
                         <li>
                             {(authenticated === true)
-                                ? <a href="/logout" className="waves-effect waves-light btn">Logout<i className="material-icons right">account_circle</i></a>
+                                ? <a href="/logout" onClick={logoutUser} className="waves-effect waves-light btn">Logout<i className="material-icons right">account_circle</i></a>
                                 : <a href="/login" className="waves-effect waves-light btn">Login<i className="material-icons right">account_circle</i></a>
                             }
                         </li>

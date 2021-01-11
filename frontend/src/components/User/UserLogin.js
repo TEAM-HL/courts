@@ -5,6 +5,7 @@ import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
 
 const UserLogin = () => {
+  // use history
   const history = useHistory()
   
   // define initial user values 
@@ -59,7 +60,7 @@ const UserLogin = () => {
                 type: "setAuthentication",
                 data: true
               })
-              // history.push("/booking/view")
+              history.push("/")
             }
         })  
       } catch (error) {
