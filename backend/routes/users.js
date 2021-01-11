@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const jwt = require('jsonwebtoken')
+
 let User = require('../models/user')
 
 // admin route
@@ -11,8 +13,8 @@ router.route('/').get((req, res) => {
 })
 // login user route 
 router.route('/login').post((req, res, next) => {
-
-// assign user credentials to variables
+"hit login route"
+// assign user credentials to variable
     const {username} = req.body
     const {password} = req.body
 
@@ -31,7 +33,7 @@ router.route('/login').post((req, res, next) => {
         })
     }
 // authenticate password
-    passport.authenticate("local", (error, user, info) => {
+    passport.authenticate("local", (error, user) => {
         try {
             if (error) {
                 res.send({
@@ -39,34 +41,38 @@ router.route('/login').post((req, res, next) => {
                     message: `Error: ${error}`
                 })
             }
-            if(!user) res.send({
+            if (!user) res.send({
                 success: false,
                 message: "Incorrect username/password"})
             else {
-                req.login(user, error => {
-                    if (error) {
-                        res.send({
-                            success: false,
-                            message: `Error: ${error}`
-                        })
-                    }
+                // req.login(user, error => {
+                // //     if (error) {
+                // //         res.send({
+                // //             success: false,
+                // //             message: `Error: ${error}`
+                // //         })
+                // //     }
                     res.send({
                         success: true,
                         message: 'user successfully authenticated'
                     })
                     console.log(req.user)
-                })
+                // })
             }
         } catch (error) {
+            console.log('errorrr')
             res.send({
                 success: false,
                 message: `Error: ${error}`
             })
         }
-    })(req, res, next)
+
+    })
+    //JWT
+    // const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
+    // res.json(token);
 })
 
-// ----------------------------------------------------
 // register user route 
 router.route('/register').post((req, res, next) => {
     //testing
@@ -124,8 +130,8 @@ router.route('/register').post((req, res, next) => {
         newUser.userType = userType
         newUser.password = await bcrypt.hash(password, 10)  //hash password
         // save new user 
-        newUser.save((err, user) => {
-            if (err) {
+        newUser.save((error, user) => {
+            if (error) {
                 return res.send({
                     success: false,
                     message: `Error: ${error}`
@@ -136,6 +142,13 @@ router.route('/register').post((req, res, next) => {
                 message: 'User is successfully registered.'
             })
         })
+        // JWT
+        // .then(() => {
+        //     const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
+        //     res.json(token);
+        // }).catch(error => {
+        //     res.status().json({})
+        // })
         console.log("finish")
     })
 })
