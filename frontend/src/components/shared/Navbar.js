@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react'
 import { Dropdown } from "materialize-css"
+import { useGlobalState } from "../../config/store"
+
 
 const Navbar = () => {
+    // destructure store and dispatch from global state
+    const {store, dispatch} = useGlobalState()
+    
+    // destructure loggedInUser from store
+    const {loggedInUser} = store
     
     useEffect(() => {
         // initialise materialize dropdown element
@@ -25,6 +32,7 @@ const Navbar = () => {
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Tools</a></li>
+                        <li className="red-text text-darken-2">{`Welcome, ${loggedInUser && loggedInUser.username}!`}</li>
                         <li><a href="/login" className="waves-effect waves-light btn grey">Login<i className="material-icons right">account_circle</i></a></li>
                     </ul>
                 </div>

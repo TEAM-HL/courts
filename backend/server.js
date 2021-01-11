@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
+
 
 require('dotenv').config()
 
@@ -21,19 +23,25 @@ app.use(cors({
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(session({
-    secret: process.env.TOKEN_SECRET,
-    resave: true, 
-    saveUninitialized: true
+    secret: process.env.SESSION_SECRET,
+    resave: false, 
+    saveUninitialized: true,
+    cookie: { expires: 600000 },
+    store: new MongoStore(
+        { mongooseConnection: mongoose.connection }
+    )
 }))
-app.use(cookieParser("secretcode"))
+app.use(cookieParser(process.env.COOKIE_KEY))
+require('./config/passportConfig')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
-require('./config/passportConfig')(passport)
 
 app.use((req, res, next) => {
-    const { token } = req.cookies
+    // console.log(res)
+    // console.log(req)
+    // const { token } = req.session
     // TODO: token showing as undefined
-    console.log(`this is the token: ${token}`)
+    // console.log({token})
     next()
 })
 
@@ -57,7 +65,20 @@ const postsRouter = require('./routes/posts')
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
 app.use('/posts', postsRouter)
+// app.get('/', (req, res) => {
+//     res.send("hello world")
+// })
 
+//error handling
+app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+})
+
+//handle 404 response
+app.use(function (req, res, next) {
+    res.status(404).send("Sorry can't find that!")
+  })
 
 // run server 
 app.listen(port, () => {

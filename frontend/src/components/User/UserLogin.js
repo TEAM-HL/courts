@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
@@ -20,10 +20,11 @@ const UserLogin = () => {
   const [values, setValues] = useState(initialUserValues)
 
   // set localstate for authentication
-  const [authentication, setAuthentication] = useState(initialAuth)
+  // const [authentication, setAuthentication] = useState(initialAuth)
 
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
+
   // destructure loggedInUser from store
   const {loggedInUser} = store
 
@@ -31,24 +32,25 @@ const UserLogin = () => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value
+      [name]: value.trim()
     })    
   }
+
   // hook to update global state for loggedInUser
-  useEffect(() => {
-    dispatch({
-      type: "setLoggedInUser",
-      data: values,
-    })
-  }, [values])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "setLoggedInUser",
+  //     data: values
+  //   })
+  // }, [values])
 
   // hook to update global state for Authenticated 
-  useEffect(() => {
-    dispatch({
-      type: "setAuthentication",
-      data: authentication
-    })
-  }, [authentication])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "setAuthentication",
+  //     data: authentication
+  //   })
+  // }, [])
   
   // login user function calling express server
   const loginUser = async (data) => {
@@ -64,20 +66,21 @@ const UserLogin = () => {
           url: "http://localhost:5000/users/login"
       }).then(res => {
           console.log(res)
-          //TODO: authenticated global state not updating
           if (res.data.success === true) {
-            setAuthentication({
-              ...authentication,
-              authenticated: true
-            })
-            history.push("/")
-            console.log(store)
-          }
+              dispatch({
+                type: "setLoggedInUser",
+                data: values
+              })
+              dispatch({
+                type: "setAuthentication",
+                data: true
+              })
+              // history.push("/booking/view")
+            }
         })  
       } catch (error) {
         console.log(error)
       }
-      
     }
     
     const formSubmit = (e) => {
