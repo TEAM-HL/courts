@@ -20,13 +20,13 @@ const UserLogin = () => {
   const [values, setValues] = useState(initialUserValues)
 
   // set localstate for authentication
-  const [authentication, setAuthentication] = useState(initialAuth)
+  // const [authentication, setAuthentication] = useState(initialAuth)
 
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
 
   // destructure loggedInUser from store
-  // const {loggedInUser} = store
+  const {loggedInUser} = store
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -35,21 +35,22 @@ const UserLogin = () => {
       [name]: value.trim()
     })    
   }
+
   // hook to update global state for loggedInUser
-  useEffect(() => {
-    dispatch({
-      type: "setLoggedInUser",
-      data: values
-    })
-  }, [values])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "setLoggedInUser",
+  //     data: values
+  //   })
+  // }, [values])
 
   // hook to update global state for Authenticated 
-  useEffect(() => {
-    dispatch({
-      type: "setAuthentication",
-      data: authentication
-    })
-  }, [authentication])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "setAuthentication",
+  //     data: authentication
+  //   })
+  // }, [])
   
   // login user function calling express server
   const loginUser = async (data) => {
@@ -66,13 +67,16 @@ const UserLogin = () => {
       }).then(res => {
           console.log(res)
           if (res.data.success === true) {
-            setAuthentication({
-              ...authentication,
-              authenticated: true
-            })
-            history.push("/")
-            console.log(store)
-          }
+              dispatch({
+                type: "setLoggedInUser",
+                data: values
+              })
+              dispatch({
+                type: "setAuthentication",
+                data: true
+              })
+              // history.push("/booking/view")
+            }
         })  
       } catch (error) {
         console.log(error)

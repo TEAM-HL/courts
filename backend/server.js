@@ -42,7 +42,7 @@ app.use((req, res, next) => {
     // const { token } = req.session
     // TODO: token showing as undefined
     // console.log({token})
-    // next()
+    next()
 })
 
 // Mongo Atlas connection
@@ -65,6 +65,9 @@ const postsRouter = require('./routes/posts')
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
 app.use('/posts', postsRouter)
+// app.get('/', (req, res) => {
+//     res.send("hello world")
+// })
 
 //error handling
 app.use(function (err, req, res, next) {

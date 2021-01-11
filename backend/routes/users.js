@@ -13,7 +13,7 @@ router.route('/').get((req, res) => {
 })
 // login user route 
 router.route('/login').post((req, res, next) => {
-"hit login route"
+console.log("hit login route")
 // assign user credentials to variable
     const {username} = req.body
     const {password} = req.body
@@ -34,6 +34,7 @@ router.route('/login').post((req, res, next) => {
     }
 // authenticate password
     passport.authenticate("local", (error, user) => {
+        console.log(user)
         try {
             if (error) {
                 res.send({
@@ -45,19 +46,21 @@ router.route('/login').post((req, res, next) => {
                 success: false,
                 message: "Incorrect username/password"})
             else {
-                // req.login(user, error => {
-                // //     if (error) {
-                // //         res.send({
-                // //             success: false,
-                // //             message: `Error: ${error}`
-                // //         })
-                // //     }
+                req.login(user, error => {
+                    if (user) console.log(user)
+                    if (error) {
+                        console.log(error)
+                        res.send({
+                            success: false,
+                            message: `Error: ${error}`
+                        })
+                    }
                     res.send({
                         success: true,
                         message: 'user successfully authenticated'
                     })
                     console.log(req.user)
-                // })
+                })
             }
         } catch (error) {
             console.log('errorrr')
@@ -67,7 +70,7 @@ router.route('/login').post((req, res, next) => {
             })
         }
 
-    })
+    })(req, res, next)
     //JWT
     // const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
     // res.json(token);
