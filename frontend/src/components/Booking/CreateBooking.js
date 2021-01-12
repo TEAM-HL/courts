@@ -159,36 +159,55 @@ const CreateBooking = () => {
                 url: "http://localhost:5000/bookings/findCourt"
             }).then(res => {
                 console.log(res.data)
+                console.log(document.getElementsByName("court")[0][1])
 
                 // console.log(this.target.value)
+                function timeToNumbers(input) {
+                    return parseInt(input.split("").filter(x => x !== ":").map((x, i) => {
+                        if (x == "3" && i == 2) {
+                            return "5"
+                        } else {
+                            return x
+                        }
+                    }).join(""))
+                }
 
-                let dateTime = parseInt(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12).split("").filter(x => x !== ":").map((x, i) => {
-                    if (x == "3" && i == 2) {
-                        return "5"
-                    } else {
-                        return x
-                    }
-                }).join(""))
+                let inputTest = "12:30"
+                console.log(inputTest)
+                inputTest = timeToNumbers(inputTest)
+                console.log(inputTest)
+
+                let dateTime = timeToNumbers(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12))
+
+                // let dateTime = parseInt(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12).split("").filter(x => x !== ":").map((x, i) => {
+                //     if (x == "3" && i == 2) {
+                //         return "5"
+                //     } else {
+                //         return x
+                //     }
+                // }).join(""))
 
                 let dateEnd = dateTime + (values.duration * 100)
 
                 console.log(values)
 
                 let toNumbers = res.data.map(obj => {
-                    obj.time = parseInt(obj.time.split("").filter(x => x !== ":").map((x, i) => {
-                        if (x == "3" && i == 2) {
-                            return "5"
-                        } else {
-                            return x
-                        }
-                    }).join(""))
-                    obj.end = parseInt(obj.end.split("").filter(x => x !== ":").map((x, i) => {
-                        if (x == "3" && i == 2) {
-                            return "5"
-                        } else {
-                            return x
-                        }
-                    }).join(""))
+                    obj.time = timeToNumbers(obj.time)
+                    // obj.time = parseInt(obj.time.split("").filter(x => x !== ":").map((x, i) => {
+                    //     if (x == "3" && i == 2) {
+                    //         return "5"
+                    //     } else {
+                    //         return x
+                    //     }
+                    // }).join(""))
+                    obj.end = timeToNumbers(obj.end)
+                    // obj.end = parseInt(obj.end.split("").filter(x => x !== ":").map((x, i) => {
+                    //     if (x == "3" && i == 2) {
+                    //         return "5"
+                    //     } else {
+                    //         return x
+                    //     }
+                    // }).join(""))
                     return obj
                 })
 
@@ -196,17 +215,59 @@ const CreateBooking = () => {
                 console.log(dateEnd)
                 console.log(toNumbers)
 
-                let arr1 = toNumbers.filter(obj => obj.end >= dateTime)
-                let arr2 = arr1.filter(obj => obj.time <= dateEnd)
+                let arr1 = toNumbers.filter(obj => obj.end > dateTime)
+                let arr2 = arr1.filter(obj => obj.time < dateEnd)
 
+                console.log("Database end time greater than form start time:")
                 console.log(arr1)
+                console.log("Database Clashing Bookings:")
                 console.log(arr2)
 
                 let courtsArray = arr2.map(obj => obj.court)
+                courtsArray = courtsArray.filter((value, index) => courtsArray.indexOf(value) === index)
+                console.log("Unavailable Courts:")
                 console.log(courtsArray)
 
                 if (courtsArray.length == 8) {
-                    // 
+                    // toNumbers, arr1
+                    // needs numerical sorting
+                    let nextArray = arr1
+                    let nextBookingArr = []
+                    for (let i = 0; i < 8; i++) {
+                        // check for earliest avail and check range for other start dates.
+                        nextArray = nextArray.filter(obj => obj.court == (i + 1))
+                        nextArray = nextArray.sort((a, b) => {
+                            return (a.time > b.time) ? 1 : -1
+                        })
+                        if (nextArray.length == 1) {
+                            nextBookingArr.push(nextArray[0].end)
+                        } else {
+                            for (let a = 0; a < nextArray.length-1; a++) {
+                                if ((nextArray[a+1].time - nextArray[a].end) >= (values.duration * 100)) {
+                                    nextBookingArr.push(nextArray[a].end)
+                                }
+                            }
+                            nextBookingArr.push(nextArray[nextArray.length-1].end)
+                        }
+                        console.log(`Court ${i+1} Bookings:`)
+                        console.log(nextArray)
+                        nextArray = arr1
+                    }
+                    nextBookingArr = nextBookingArr.sort((a, b) => {
+                        return (a > b) ? 1 : -1
+                    })
+                    console.log(`next available booking is at ${nextBookingArr[0]}`)
+                    console.log(nextBookingArr)
+
+                    console.log("working")
+                } else {
+                    for (let i = 0; i < 8; i++) {
+                        if (!courtsArray.includes(i+1)) {
+                            document.getElementsByName("court")[0][i+1].disabled = false
+                        } else {
+                            document.getElementsByName("court")[0][i+1].disabled = true
+                        }
+                    }
                 }
             }
             )} catch (error) {
@@ -411,14 +472,14 @@ const CreateBooking = () => {
                         <label>Court:</label>
                         <select required className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
                             <option disabled value="0">Choose option</option>
-                            <option value="1">Court 1</option>
-                            <option value="2">Court 2</option>
-                            <option value="3">Court 3</option>
-                            <option value="4">Court 4</option>
-                            <option value="5">Court 5</option>
-                            <option value="6">Court 6</option>
-                            <option value="7">Court 7</option>
-                            <option value="8">Court 8</option>
+                            <option value="1" disabled={true}>Court 1</option>
+                            <option value="2" disabled={true}>Court 2</option>
+                            <option value="3" disabled={true}>Court 3</option>
+                            <option value="4" disabled={true}>Court 4</option>
+                            <option value="5" disabled={true}>Court 5</option>
+                            <option value="6" disabled={true}>Court 6</option>
+                            <option value="7" disabled={true}>Court 7</option>
+                            <option value="8" disabled={true}>Court 8</option>
                         </select>
                         <br />
                         <em>Equipment</em>
