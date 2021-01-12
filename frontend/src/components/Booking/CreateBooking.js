@@ -229,6 +229,9 @@ const CreateBooking = () => {
                 console.log(courtsArray)
 
                 if (courtsArray.length == 8) {
+                    for (let i = 0; i < 8; i++) {
+                        document.getElementsByName("court")[0][i+1].disabled = true
+                    }
                     // toNumbers, arr1
                     // needs numerical sorting
                     let nextArray = arr1
