@@ -61,8 +61,8 @@ console.log("hit login route")
 // register user route 
 router.route('/register').post((req, res, next) => {
     //testing
-    console.log("hit register route")
-    console.log('username = ' + req.body.username)
+    // console.log("hit register route")
+    // console.log('username = ' + req.body.username)
     
     // assign user credentials to variables 
     const {username} = req.body
@@ -70,14 +70,14 @@ router.route('/register').post((req, res, next) => {
     const userType = "player"
     const {password} = req.body 
 
-    //validate form inputs
+    //validate username
     if (!username || username.length < 5) {
         return res.send({
             success: false,
             message: 'Username must have at least 5 characters.'
         })
     }
-
+    //validate email address via regex test
     if (/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(email) === false) { // include regex for email check
         return res.send({
             success: false,
@@ -96,11 +96,13 @@ router.route('/register').post((req, res, next) => {
     User.find({
         username: username
         }, async (error, existingUser) => {
+            // if server error or otherwise 
             if (error) {
                 return res.send({
                     success: false,
                     message: `Error: ${error}`
                 })
+            // if user alreayd exists, send error message.
             } else if (existingUser.length > 0) {
                 return res.send({
                     success: false,
@@ -127,29 +129,25 @@ router.route('/register').post((req, res, next) => {
                 message: 'User is successfully registered.'
             })
         })
-        // JWT
-        // .then(() => {
-        //     const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
-        //     res.json(token);
-        // }).catch(error => {
-        //     res.status().json({})
-        // })
-        console.log("finish")
+        console.log("new user registered")
     })
 })
 
+// show user profile by ID
 router.route('/:id').get((req, res) => {
     User.findById(req.params.id)
         .then(user => res.json(user))
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
+// delete user by ID
 router.route('/:id').delete((req, res) => {
     User.findByIdAndDelete(req.params.id)
         .then(() => res.json('User deleted'))
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
+// delete user by ID
 router.route('/update/:id').post((req, res) => {
     Booking.findById(req.params.id)
         .then(booking => {
