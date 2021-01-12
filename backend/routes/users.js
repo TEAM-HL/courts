@@ -26,7 +26,6 @@ console.log("hit login route")
             message: 'Error! Username cannot be blank'
         })
     }
-
     if (!password) {
         return res.send({
             success: false,
@@ -43,6 +42,7 @@ console.log("hit login route")
         } else {
             // attempt to log user in
             req.login(user, error => {
+                // send error is error exists 
                 if (error) {
                     res.send({
                         success: false,
@@ -53,15 +53,8 @@ console.log("hit login route")
                     success: true,
                     message: 'user successfully authenticated'
                 })
-                // console.log(req.user)
             })
         }
-        //catch (error) {
-        //     res.send({
-        //         success: false,
-        //         message: `Error: ${error}`
-        //     })
-        // }
     })(req, res, next)
 })
 
@@ -84,20 +77,20 @@ router.route('/register').post((req, res, next) => {
             message: 'Username must have at least 5 characters.'
         })
     }
-    
-    if (!email) { // include regex for email check
+
+    if (/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(email) === false) { // include regex for email check
         return res.send({
             success: false,
             message: 'Email must be a valid email address.'
         })
     }
-    
-    if (!password || password.length < 6) { //include regex for password check
+    // validate password via regex test
+    if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm.test(password) === false) {
         return res.send({
             success: false,
             message: 'Password must be at least 6 characters and include a combination of uppercase & lowercase letters and at least one number.'
         })
-    }
+    } 
     
     //verify that username doesn't already exist
     User.find({
