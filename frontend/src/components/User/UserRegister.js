@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../config/api'
+import M from 'materialize-css'
 
-
-// set initial values 
+// set initial values local state
 const initialvalues = {
     id: 0,
     username: "",
@@ -12,8 +12,11 @@ const initialvalues = {
   }
 
 const UserRegister = () => {
+    // initialise materialize
+    M.AutoInit()
+    //define history for use later
     const history = useHistory()
-
+    // define useState for form values 
     const [values, setValues] = useState(initialvalues)
 
     const handleInputChange = e => {

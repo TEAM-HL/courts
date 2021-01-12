@@ -4,8 +4,9 @@ import { StateContext } from './config/store'
 import { stateReducer } from './config/stateReducer'
 // stripe dependencies 
 import {Elements} from '@stripe/react-stripe-js'
-import {loadStripe} from '@stripe/stripe-js'
-
+import {loadStripe} from '@stripe/stripe-js';
+//materialize
+import 'materialize-css/dist/css/materialize.min.css'
 // components 
 import Dashboard from './components/Dashboard/Dashboard'
 import CreateBooking from './components/Booking/CreateBooking'
@@ -18,6 +19,10 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 toast.configure()
 
+//initialize stripe
+const stripePromise = loadStripe(process.env.STRIPE_KEY)
+
+
 const App = () => {
   // set initial state for global
   const initialState = {
@@ -29,21 +34,18 @@ const App = () => {
   // Create state reducer store and dispatcher
   const [store, dispatch] = useReducer(stateReducer, initialState)
 
-  // create stripe object once when app is loaded 
-  const stripePromise = loadStripe(process.env.STRIPE_KEY);
-
    return (
     <>
       <StateContext.Provider value={{store, dispatch}} >
         <Navbar />
         <BrowserRouter>
-          <Elements stripe={stripePromise}>
             <Route path="/" exact component={Dashboard} />
             <Route path="/login" exact component={UserLogin} />
             <Route path="/register" exact component={UserRegister} />
             <Route path="/booking/new" exact component={CreateBooking} />
-            <Route path="/booking/checkout" exact component={CheckoutForm} />
-          </Elements>
+            <Elements stripe={stripePromise}>
+              <Route path="/booking/checkout" exact component={CheckoutForm} />
+            </Elements>
         </BrowserRouter>
       </StateContext.Provider>    
     </>

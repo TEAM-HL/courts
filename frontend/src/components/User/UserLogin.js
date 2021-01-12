@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom'
 import axios from '../../config/api'
 import { useGlobalState } from "../../config/store"
-// import Error from '../shared/Error'
+import M from 'materialize-css'
 
 const UserLogin = () => {
+  //initialize materialise
+  M.AutoInit()
   // use history
   const history = useHistory()
   

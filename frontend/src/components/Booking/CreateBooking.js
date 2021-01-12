@@ -9,8 +9,11 @@ import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
 import axios from '../../config/api'
 import { useGlobalState } from "../../config/store"
+import M from 'materialize-css'
 
 const CreateBooking = () => {  
+    // initialise materialize
+    M.AutoInit()
     // setup history const to be used later  
     const history = useHistory()
     // destructure store and dispatch from global state
@@ -97,7 +100,7 @@ const CreateBooking = () => {
             data: bookingData
         })   
 
-        // redirect user to checkout route
+        // redirect user to stripe checkout 
         history.push("/booking/checkout")
 
         await axios({
@@ -151,8 +154,7 @@ const CreateBooking = () => {
                 // array.filter(remove entries that are earlier than current booking)
                 //  .filter(end <= start)
 
-
-                }
+            }
                 )} catch (error) {
                     console.log(error)
                 }
