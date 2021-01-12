@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../config/api.js'
 
 
 // set initial values 
@@ -33,7 +33,7 @@ const UserRegister = () => {
                 password: data.password
             },
             withCredentials: true, 
-            url: "http://localhost:5000/users/register",
+            url: "/users/register",
         }).then(res => {
             console.log(res)
             if (res.data.success === true) {

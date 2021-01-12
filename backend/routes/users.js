@@ -11,6 +11,7 @@ router.route('/').get((req, res) => {
         .then(users => res.json(users))
         .catch(e => res.status(400).json('Error: ' + e))
 })
+
 // login user route 
 router.route('/login').post((req, res, next) => {
 console.log("hit login route")
@@ -34,46 +35,34 @@ console.log("hit login route")
     }
 // authenticate password
     passport.authenticate("local", (error, user) => {
-        console.log(user)
-        try {
-            if (error) {
-                res.send({
-                    success: false,
-                    message: `Error: ${error}`
-                })
-            }
-            if (!user) res.send({
-                success: false,
-                message: "Incorrect username/password"})
-            else {
-                req.login(user, error => {
-                    if (user) console.log(user)
-                    if (error) {
-                        console.log(error)
-                        res.send({
-                            success: false,
-                            message: `Error: ${error}`
-                        })
-                    }
+        if (error) {
+            res.status(500).send("Hmm. There may be a problem with the server. Please try again in a few minutes.")
+        }
+        if (!user || (!user && !user.password)) {
+            res.status(401).send("Oops! Authentication failed. Please check your username and password.")
+        } else {
+            // attempt to log user in
+            req.login(user, error => {
+                if (error) {
                     res.send({
-                        success: true,
-                        message: 'user successfully authenticated'
+                        success: false,
+                        message: `Error: ${error}`
                     })
-                    console.log(req.user)
+                }
+                res.send({
+                    success: true,
+                    message: 'user successfully authenticated'
                 })
-            }
-        } catch (error) {
-            console.log('errorrr')
-            res.send({
-                success: false,
-                message: `Error: ${error}`
+                // console.log(req.user)
             })
         }
-
+        //catch (error) {
+        //     res.send({
+        //         success: false,
+        //         message: `Error: ${error}`
+        //     })
+        // }
     })(req, res, next)
-    //JWT
-    // const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
-    // res.json(token);
 })
 
 // register user route 
@@ -89,24 +78,24 @@ router.route('/register').post((req, res, next) => {
     const {password} = req.body 
 
     //validate form inputs
-    if (!username) {
+    if (!username || username.length < 5) {
         return res.send({
             success: false,
-            message: 'Error! Username cannot be blank'
+            message: 'Username must have at least 5 characters.'
         })
     }
     
-    if (!email) {
+    if (!email) { // include regex for email check
         return res.send({
             success: false,
-            message: 'Error! Email cannot be blank'
+            message: 'Email must be a valid email address.'
         })
     }
     
-    if (!password) {
+    if (!password || password.length < 6) { //include regex for password check
         return res.send({
             success: false,
-            message: 'Error! Password cannot be blank'
+            message: 'Password must be at least 6 characters and include a combination of uppercase & lowercase letters and at least one number.'
         })
     }
     
