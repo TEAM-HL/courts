@@ -50,7 +50,7 @@ const UserLogin = () => {
       if (res.data.success === true) {
         dispatch({
           type: "setLoggedInUser",
-          data: values
+          data: values.username
         })
           dispatch({
             type: "setAuthentication",
