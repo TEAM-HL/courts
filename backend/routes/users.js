@@ -11,6 +11,7 @@ router.route('/').get((req, res) => {
         .then(users => res.json(users))
         .catch(e => res.status(400).json('Error: ' + e))
 })
+
 // login user route 
 router.route('/login').post((req, res, next) => {
 console.log("hit login route")
@@ -25,7 +26,6 @@ console.log("hit login route")
             message: 'Error! Username cannot be blank'
         })
     }
-
     if (!password) {
         return res.send({
             success: false,
@@ -34,53 +34,35 @@ console.log("hit login route")
     }
 // authenticate password
     passport.authenticate("local", (error, user) => {
-        console.log(user)
-        try {
-            if (error) {
-                res.send({
-                    success: false,
-                    message: `Error: ${error}`
-                })
-            }
-            if (!user) res.send({
-                success: false,
-                message: "Incorrect username/password"})
-            else {
-                req.login(user, error => {
-                    if (user) console.log(user)
-                    if (error) {
-                        console.log(error)
-                        res.send({
-                            success: false,
-                            message: `Error: ${error}`
-                        })
-                    }
+        if (error) {
+            res.status(500).send("Hmm. There may be a problem with the server. Please try again in a few minutes.")
+        }
+        if (!user || (!user && !user.password)) {
+            res.status(401).send("Oops! Authentication failed. Please check your username and password.")
+        } else {
+            // attempt to log user in
+            req.login(user, error => {
+                // send error is error exists 
+                if (error) {
                     res.send({
-                        success: true,
-                        message: 'user successfully authenticated'
+                        success: false,
+                        message: `Error: ${error}`
                     })
-                    console.log(req.user)
+                }
+                res.send({
+                    success: true,
+                    message: 'user successfully authenticated'
                 })
-            }
-        } catch (error) {
-            console.log('errorrr')
-            res.send({
-                success: false,
-                message: `Error: ${error}`
             })
         }
-
     })(req, res, next)
-    //JWT
-    // const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
-    // res.json(token);
 })
 
 // register user route 
 router.route('/register').post((req, res, next) => {
     //testing
-    console.log("hit register route")
-    console.log('username = ' + req.body.username)
+    // console.log("hit register route")
+    // console.log('username = ' + req.body.username)
     
     // assign user credentials to variables 
     const {username} = req.body
@@ -88,37 +70,39 @@ router.route('/register').post((req, res, next) => {
     const userType = "player"
     const {password} = req.body 
 
-    //validate form inputs
-    if (!username) {
+    //validate username
+    if (!username || username.length < 5) {
         return res.send({
             success: false,
-            message: 'Error! Username cannot be blank'
+            message: 'Username must have at least 5 characters.'
         })
     }
-    
-    if (!email) {
+    //validate email address via regex test
+    if (/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(email) === false) { // include regex for email check
         return res.send({
             success: false,
-            message: 'Error! Email cannot be blank'
+            message: 'Email must be a valid email address.'
         })
     }
-    
-    if (!password) {
+    // validate password via regex test
+    if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm.test(password) === false) {
         return res.send({
             success: false,
-            message: 'Error! Password cannot be blank'
+            message: 'Password must be at least 6 characters and include a combination of uppercase & lowercase letters and at least one number.'
         })
-    }
+    } 
     
     //verify that username doesn't already exist
     User.find({
         username: username
         }, async (error, existingUser) => {
+            // if server error or otherwise 
             if (error) {
                 return res.send({
                     success: false,
                     message: `Error: ${error}`
                 })
+            // if user alreayd exists, send error message.
             } else if (existingUser.length > 0) {
                 return res.send({
                     success: false,
@@ -145,29 +129,25 @@ router.route('/register').post((req, res, next) => {
                 message: 'User is successfully registered.'
             })
         })
-        // JWT
-        // .then(() => {
-        //     const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
-        //     res.json(token);
-        // }).catch(error => {
-        //     res.status().json({})
-        // })
-        console.log("finish")
+        console.log("new user registered")
     })
 })
 
+// show user profile by ID
 router.route('/:id').get((req, res) => {
     User.findById(req.params.id)
         .then(user => res.json(user))
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
+// delete user by ID
 router.route('/:id').delete((req, res) => {
     User.findByIdAndDelete(req.params.id)
         .then(() => res.json('User deleted'))
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
+// delete user by ID
 router.route('/update/:id').post((req, res) => {
     Booking.findById(req.params.id)
         .then(booking => {
