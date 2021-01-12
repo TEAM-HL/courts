@@ -15,15 +15,9 @@ const UserLogin = () => {
     username: "",
     password: "",
   }
-
-  //initial authentication values
-  // const initialAuth = {authenticated: false}
   
   // set local state for user values
   const [values, setValues] = useState(initialUserValues)
-
-  // set localstate for authentication
-  // const [authentication, setAuthentication] = useState(initialAuth)
 
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
@@ -56,7 +50,7 @@ const UserLogin = () => {
           if (res.data.success === true) {
               dispatch({
                 type: "setLoggedInUser",
-                data: values
+                data: values.username
               })
               dispatch({
                 type: "setAuthentication",
