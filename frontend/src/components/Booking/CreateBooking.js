@@ -76,7 +76,7 @@ const CreateBooking = () => {
     
     //executed when form is submitted
     const newBooking = async () => {
-        // save current booking data const
+        // assign current booking data to variable
         const bookingData = {
             username: store.loggedInUser,
             date: date.toLocaleDateString(),
@@ -392,7 +392,8 @@ const CreateBooking = () => {
                 <div className="col s6">
                     <h1>Book a Court</h1>
                     {
-                        (loggedInUser !== null && store.authenticated === false) ? <p>Please login before creating a booking.</p>
+                        (loggedInUser !== null && store.authenticated === false) 
+                        ? <p>Please login before creating a booking.</p>
                         : <form onSubmit={handleSubmit}>
                             <label>Date & Time</label>
                             <br/>
