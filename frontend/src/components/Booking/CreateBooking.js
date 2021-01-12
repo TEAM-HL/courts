@@ -6,12 +6,12 @@ import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
-import axios from 'axios'
+import axios from '../../config/api'
 import { useGlobalState } from "../../config/store"
 
 const CreateBooking = () => {    
     // destructure store and dispatch from global state
-    const {store} = useGlobalState()
+    const {store, dispatch} = useGlobalState()
     // destructure loggedInUser from store
     const {loggedInUser} = store
 
@@ -89,7 +89,7 @@ const CreateBooking = () => {
                 cost: calculateTotalCost
             },
             withCredentials: true, 
-            url: "http://localhost:5000/bookings/new"
+            url: "/bookings/new"
         }).then(res => {
             console.log(res)
             // if (data passes validation formatting and no prev booking clashes) 
