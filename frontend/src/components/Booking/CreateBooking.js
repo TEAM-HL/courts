@@ -170,7 +170,7 @@ const CreateBooking = () => {
                     duration: values.duration        
                 },
                 withCredentials: true, 
-                url: "http://localhost:5000/bookings/findCourt"
+                url: "/bookings/findCourt"
             }).then(res => {
                 console.log(res.data)
 

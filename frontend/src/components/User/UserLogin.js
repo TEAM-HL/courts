@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../config/api'
 import { useGlobalState } from "../../config/store"
 // import Error from '../shared/Error'
 
@@ -48,7 +48,7 @@ const UserLogin = () => {
               password: data.password
           },
           withCredentials: true, 
-          url: "http://localhost:5000/users/login"
+          url: "/users/login"
       }).then(res => {
           console.log(res)
           if (res.data.success === true) {

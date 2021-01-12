@@ -33,7 +33,7 @@ const UserRegister = () => {
                 password: data.password
             },
             withCredentials: true, 
-            url: "http://localhost:5000/users/register",
+            url: "/users/register",
         }).then(res => {
             console.log(res)
             if (res.data.success === true) {
