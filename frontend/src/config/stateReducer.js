@@ -25,7 +25,8 @@ export const stateReducer = (state, action) => {
             return {
                 ...state,
                 loggedInUser: null,
-                authenticated: false
+                authenticated: false,
+                pendingBooking: null
             }
         }
         default: 

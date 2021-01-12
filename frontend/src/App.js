@@ -22,7 +22,8 @@ const App = () => {
   // set initial state for global
   const initialState = {
     loggedInUser: null,
-    authenticated: false
+    authenticated: false,
+    pendingBooking: null
   }
 
   // Create state reducer store and dispatcher
