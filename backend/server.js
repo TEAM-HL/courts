@@ -9,7 +9,6 @@ const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
-
 require('dotenv').config()
 
 const app = express()
