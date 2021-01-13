@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { StateContext } from './config/store'
 import { stateReducer } from './config/stateReducer'
 // stripe dependencies 
-import {Elements} from '@stripe/react-stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 import {loadStripe} from '@stripe/stripe-js';
 //materialize
 import 'materialize-css/dist/css/materialize.min.css'
@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css'
 toast.configure()
 
 //initialize stripe
-const stripePromise = loadStripe(process.env.STRIPE_KEY)
+const stripePromise = loadStripe("pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l")
 
 
 const App = () => {

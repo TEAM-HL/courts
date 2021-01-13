@@ -4,6 +4,9 @@ import {loadStripe} from '@stripe/stripe-js';
 import {
   Elements,
   CardElement,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
@@ -39,12 +42,16 @@ const CheckoutForm = () => {
   } 
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardElement options={cardElementOptions}/>
-      <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
-    </form>
+    <div className="container">
+      <form onSubmit={handleSubmit}>
+        <CardNumberElement/>
+        <CardExpiryElement/>
+        <CardCvcElement/>
+        <button type="submit" disabled={!stripe}>
+          Pay
+        </button>
+      </form>
+    </div>
   )
 }
 

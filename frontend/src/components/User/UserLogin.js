@@ -5,11 +5,10 @@ import { useGlobalState } from "../../config/store"
 import M from 'materialize-css'
 
 const UserLogin = () => {
-  //initialize materialise
+  //initialize materialize
   M.AutoInit()
-  // use history
+  // assign history for later use
   const history = useHistory()
-  console.log("**")
   
   // define initial user values 
   const initialUserValues = {
