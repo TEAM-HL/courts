@@ -14,11 +14,19 @@ export const stateReducer = (state, action) => {
                 authenticated: action.data
             }
         }
+        case "setPendingBooking": {
+            console.log('pendingBooking:', action.data)
+            return {
+                ...state,
+                pendingBooking: action.data
+            }
+        }
         case "RESET_STATE": {
             return {
                 ...state,
                 loggedInUser: null,
-                authenticated: false
+                authenticated: false,
+                pendingBooking: null
             }
         }
         default: 
