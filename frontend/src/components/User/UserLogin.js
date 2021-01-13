@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from 'react-router-dom'
-import axios from '../../config/api.js'
+import api from '../../config/api.js'
 import { useGlobalState } from "../../config/store"
 import M from 'materialize-css'
 
@@ -38,7 +38,7 @@ const UserLogin = () => {
   
   // login user function calling express server
   const loginUser = async (data) => {
-    await axios({
+    await api({
       method: "POST",
       data: {
         username: data.username,
@@ -47,17 +47,19 @@ const UserLogin = () => {
       withCredentials: true, 
       url: "/users/login"
     }).then(res => {
-      // console.log(res)
+      console.log(`response: ${res}`)
       if (res.data.success === true) {
+        console.log("username", values.username)
         dispatch({
           type: "setLoggedInUser",
           data: values.username
         })
-          dispatch({
-            type: "setAuthentication",
-            data: true
+        dispatch({
+          type: "setAuthentication",
+          data: true
         })
-          history.push("/")
+        // checking global state updated
+        history.push("/")
       }
     }).catch(error => {
       // error is server is unavailable
@@ -72,14 +74,12 @@ const UserLogin = () => {
       else if (error)
         setErrorMessage(error)
     })
-      // checking global state updated
-      console.log(store)
   }
-      // error message css styles
-      const errorStyles = {
-        color: "red"
-      }
-
+  
+  // error message css styles
+  const errorStyles = {
+    color: "red"
+  }
       // function to run when form is submitted
       const formSubmit = (e) => {
         e.preventDefault()

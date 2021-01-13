@@ -7,9 +7,9 @@ import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
-import axios from '../../config/api'
+import api from '../../config/api'
 import { useGlobalState } from "../../config/store"
-import { set } from 'mongoose'
+// import { set } from 'mongoose'
 import M from 'materialize-css'
 
 
@@ -101,7 +101,7 @@ const CreateBooking = () => {
         // redirect user to stripe checkout 
         history.push("/booking/checkout")
 
-        await axios({
+        await api({
             method: "POST",
             data: bookingData,
             withCredentials: true, 
@@ -129,7 +129,7 @@ const CreateBooking = () => {
     const checkDate = async (date) => {
         console.log("checking for available times for selected date...")
         try {
-            await axios({
+            await api({
                 method: "POST",
                 data: { 
                     date: date.toLocaleDateString(), 
@@ -161,7 +161,7 @@ const CreateBooking = () => {
     const findCourt = async () => {
         console.log("checking available courts...")
         try {
-            await axios({
+            await api({
                 method: "POST",
                 data: { 
                     date: date.toLocaleDateString(),

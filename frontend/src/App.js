@@ -22,7 +22,6 @@ toast.configure()
 //initialize stripe
 const stripePromise = loadStripe("pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l")
 
-
 const App = () => {
   // set initial state for global
   const initialState = {
