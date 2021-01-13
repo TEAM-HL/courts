@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
@@ -7,9 +7,11 @@ import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
-import axios from '../../config/api'
+import api from '../../config/api'
 import { useGlobalState } from "../../config/store"
+// import { set } from 'mongoose'
 import M from 'materialize-css'
+
 
 const CreateBooking = () => {  
     // initialise materialize
@@ -60,19 +62,15 @@ const CreateBooking = () => {
             [name]: value,
         })
     } 
-    
-    const handleDurationChange = e => {
-        const { value } = e.target
-        setValues({
-            ...values,
-            duration: value
-        })
+
+    useEffect(() => {
         findCourt()
-    }
+    }, [values.duration])
     
     const handleDateChange = date => {
         setDate(date)
         console.log("date changed")
+        document.getElementsByName("error")[0].hidden = true
         // console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         // checkDate(date)
     }
@@ -100,20 +98,15 @@ const CreateBooking = () => {
             data: bookingData
         })   
 
-        // redirect user to stripe checkout 
-        history.push("/booking/checkout")
+        // made backend call to stripe
+        // when connection made,redirect user to stripe checkout-form (which includes review of booking details)
+        // history.push("/booking/checkout")
 
-        await axios({
-            method: "POST",
-            data: bookingData,
-            withCredentials: true, 
-            url: "/bookings/new"
-        }).then(res => {
-            console.log(res)
-            // if (data passes validation formatting and no prev booking clashes) 
-            // redirect user to stripe payment
-            // } 
-        })
+        // from within the CheckoutForm component file, 
+        // after successful payment is made, save booking in database
+        // and provide user with receipt number and tax invoice
+
+    
     }
 
     // function to return all values of a certain key -
@@ -131,7 +124,7 @@ const CreateBooking = () => {
     const checkDate = async (date) => {
         console.log("checking for available times for selected date...")
         try {
-            await axios({
+            await api({
                 method: "POST",
                 data: { 
                     date: date.toLocaleDateString(), 
@@ -163,7 +156,7 @@ const CreateBooking = () => {
     const findCourt = async () => {
         console.log("checking available courts...")
         try {
-            await axios({
+            await api({
                 method: "POST",
                 data: { 
                     date: date.toLocaleDateString(),
@@ -175,34 +168,55 @@ const CreateBooking = () => {
                 url: "/bookings/findCourt"
             }).then(res => {
                 console.log(res.data)
+                console.log(document.getElementsByName("court")[0][1])
 
-                let dateTime = parseInt(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12).split("").filter(x => x !== ":").map((x, i) => {
-                    if (x == "3" && i == 2) {
-                        return "5"
-                    } else {
-                        return x
-                    }
-                }).join(""))
+                // console.log(this.target.value)
+                function timeToNumbers(input) {
+                    return parseInt(input.split("").filter(x => x !== ":").map((x, i) => {
+                        if (x == "3" && i == 2) {
+                            return "5"
+                        } else {
+                            return x
+                        }
+                    }).join(""))
+                }
 
-                let dateEnd = dateTime + 200
+                let inputTest = "12:30"
+                console.log(inputTest)
+                inputTest = timeToNumbers(inputTest)
+                console.log(inputTest)
+
+                let dateTime = timeToNumbers(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12))
+
+                // let dateTime = parseInt(date.toLocaleDateString([], { hour: '2-digit', minute: '2-digit' }).slice(12).split("").filter(x => x !== ":").map((x, i) => {
+                //     if (x == "3" && i == 2) {
+                //         return "5"
+                //     } else {
+                //         return x
+                //     }
+                // }).join(""))
+
+                let dateEnd = dateTime + (values.duration * 100)
 
                 console.log(values)
 
                 let toNumbers = res.data.map(obj => {
-                    obj.time = parseInt(obj.time.split("").filter(x => x !== ":").map((x, i) => {
-                        if (x == "3" && i == 2) {
-                            return "5"
-                        } else {
-                            return x
-                        }
-                    }).join(""))
-                    obj.end = parseInt(obj.end.split("").filter(x => x !== ":").map((x, i) => {
-                        if (x == "3" && i == 2) {
-                            return "5"
-                        } else {
-                            return x
-                        }
-                    }).join(""))
+                    obj.time = timeToNumbers(obj.time)
+                    // obj.time = parseInt(obj.time.split("").filter(x => x !== ":").map((x, i) => {
+                    //     if (x == "3" && i == 2) {
+                    //         return "5"
+                    //     } else {
+                    //         return x
+                    //     }
+                    // }).join(""))
+                    obj.end = timeToNumbers(obj.end)
+                    // obj.end = parseInt(obj.end.split("").filter(x => x !== ":").map((x, i) => {
+                    //     if (x == "3" && i == 2) {
+                    //         return "5"
+                    //     } else {
+                    //         return x
+                    //     }
+                    // }).join(""))
                     return obj
                 })
 
@@ -210,23 +224,83 @@ const CreateBooking = () => {
                 console.log(dateEnd)
                 console.log(toNumbers)
 
-                let arr1 = toNumbers.filter(obj => obj.end >= dateTime)
-                let arr2 = arr1.filter(obj => obj.time <= dateEnd)
+                let arr1 = toNumbers.filter(obj => obj.end > dateTime)
+                let arr2 = arr1.filter(obj => obj.time < dateEnd)
 
+                console.log("Database end time greater than form start time:")
                 console.log(arr1)
+                console.log("Database Clashing Bookings:")
                 console.log(arr2)
 
                 let courtsArray = arr2.map(obj => obj.court)
+                courtsArray = courtsArray.filter((value, index) => courtsArray.indexOf(value) === index)
+                console.log("Unavailable Courts:")
                 console.log(courtsArray)
 
-                // parseInt(startString.split("")
-                //     .map((char, index) => {
-                //     if (char === '3' && index === startString.length-2) {
-                //         return '5'
-                //     } else {return char}
-                // })
-                //     .filter(char => char !== ':')
-                //     .join(""))
+                if (courtsArray.length == 8) {
+                    for (let i = 0; i < 8; i++) {
+                        document.getElementsByName("court")[0][i+1].disabled = true
+                    }
+                    // toNumbers, arr1
+                    // needs numerical sorting
+                    let nextArray = arr1
+                    let nextBookingArr = []
+                    let displayTime = ""
+                    let ampm = "AM"
+                    for (let i = 0; i < 8; i++) {
+                        // check for earliest avail and check range for other start dates.
+                        nextArray = nextArray.filter(obj => obj.court == (i + 1))
+                        nextArray = nextArray.sort((a, b) => {
+                            return (a.time > b.time) ? 1 : -1
+                        })
+                        if (nextArray.length == 1) {
+                            nextBookingArr.push(nextArray[0].end)
+                        } else {
+                            for (let a = 0; a < nextArray.length-1; a++) {
+                                if ((nextArray[a+1].time - nextArray[a].end) >= (values.duration * 100)) {
+                                    nextBookingArr.push(nextArray[a].end)
+                                }
+                            }
+                            nextBookingArr.push(nextArray[nextArray.length-1].end)
+                        }
+                        console.log(`Court ${i+1} Bookings:`)
+                        console.log(nextArray)
+                        nextArray = arr1
+                    }
+                    nextBookingArr = nextBookingArr.sort((a, b) => {
+                        return (a > b) ? 1 : -1
+                    })
+                    console.log(`next available booking is at ${nextBookingArr[0]}`)
+                    displayTime = nextBookingArr[0].toString().split("")
+                    // convert error 24h time to 12h
+                    if (displayTime[1] > 2 && displayTime[0] == 1) {
+                        displayTime[1] = displayTime[1] - 2
+                        displayTime[0] = ""
+                        ampm = "PM"
+                    } else if (displayTime[1] == 2 && displayTime[0] == 1) {
+                        ampm = "PM"
+                    }
+                    // convert error half hour message back to seconds
+                    if (displayTime[2] == 5) {
+                        displayTime[2] = 3 
+                    }
+                    // issues with array manipulating methods v is a work around
+                    displayTime = `${displayTime[0]}${displayTime[1]}:${displayTime[2]}${displayTime[3]} ${ampm}`
+                    console.log(displayTime)
+                    document.getElementsByName("error")[0].innerHTML = `next available booking is at ${displayTime}`
+                    document.getElementsByName("error")[0].hidden = false
+                    console.log(nextBookingArr)
+
+                    console.log("working")
+                } else {
+                    for (let i = 0; i < 8; i++) {
+                        if (!courtsArray.includes(i+1)) {
+                            document.getElementsByName("court")[0][i+1].disabled = false
+                        } else {
+                            document.getElementsByName("court")[0][i+1].disabled = true
+                        }
+                    }
+                }
             }
             )} catch (error) {
                 console.log(error)
@@ -424,7 +498,7 @@ const CreateBooking = () => {
                             />
                             <br/>
                             <label>Duration of play</label>
-                            <select required className="browser-default" name="duration" value={values.duration} onChange={handleDurationChange}>
+                            <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
                                 <option value="0">Choose option</option>
                                 <option value="1">1 Hour</option>
                                 <option value="1.5">1.5 Hours</option>
