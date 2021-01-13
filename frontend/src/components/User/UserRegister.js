@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../config/api'
+import M from 'materialize-css'
 
-
-// set initial values 
+// set initial values local state
 const initialvalues = {
     id: 0,
     username: "",
@@ -12,10 +12,16 @@ const initialvalues = {
   }
 
 const UserRegister = () => {
+    // initialise materialize
+    M.AutoInit()
+    //define history for use later
     const history = useHistory()
-
+    // set local state for errorMessage 
+    const [errorMessage, setErrorMessage] = useState(null)
+    // set local state for form values
     const [values, setValues] = useState(initialvalues)
 
+    // update values object when input changes
     const handleInputChange = e => {
       const { name, value } = e.target
       setValues({
@@ -23,7 +29,7 @@ const UserRegister = () => {
         [name]: value.trim()
       })
     }
-  
+    // register user function to call server
     const registerUser = async (data) => {
         await axios({
             method: "POST",
@@ -33,13 +39,21 @@ const UserRegister = () => {
                 password: data.password
             },
             withCredentials: true, 
-            url: "http://localhost:5000/users/register",
+            url: "/users/register",
         }).then(res => {
             console.log(res)
-            if (res.data.success === true) {
+            if (res.data.success === false) {
+                setErrorMessage(res.data.message)
+            }
+            else if (res.data.success === true) {
                 history.push("/login")
             } 
         })
+    }
+
+    // error message css styles
+    const errorStyles = {
+    color: "red"
     }
 
     const formSubmit = (e) => {
@@ -81,7 +95,8 @@ const UserRegister = () => {
                                 onChange={handleInputChange}
                             />
                         </label>
-                        <input type="submit" value="submit" className="btn waves-effect waves-light" />   
+                        <input type="submit" value="submit" className="btn waves-effect waves-light" />  
+                        {errorMessage && <p style={errorStyles}>{errorMessage}</p>} 
                     </form>
                     <br/>
                     <span>Already have an account? <strong><a href="/login">Login</a></strong></span>

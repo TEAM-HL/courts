@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../config/api.js'
 import { useGlobalState } from "../../config/store"
-// import Error from '../shared/Error'
+import M from 'materialize-css'
 
 const UserLogin = () => {
+  //initialize materialize
+  M.AutoInit()
+  // assign history for later use
   const history = useHistory()
   
   // define initial user values 
@@ -13,17 +16,15 @@ const UserLogin = () => {
     password: "",
   }
 
-  //initial authentication values
-  const initialAuth = {authenticated: false}
-  
+  // set error message local state
+  const [errorMessage, setErrorMessage] = useState(null)
+
   // set local state for user values
   const [values, setValues] = useState(initialUserValues)
 
-  // set localstate for authentication
-  const [authentication, setAuthentication] = useState(initialAuth)
-
   // destructure store and dispatch from global state
   const {store, dispatch} = useGlobalState()
+
   // destructure loggedInUser from store
   const {loggedInUser} = store
 
@@ -31,60 +32,62 @@ const UserLogin = () => {
     const { name, value } = e.target
     setValues({
       ...values,
-      [name]: value.trim()
+      [name]: value.trim(),
     })    
   }
-  // hook to update global state for loggedInUser
-  useEffect(() => {
-    dispatch({
-      type: "setLoggedInUser",
-      data: values
-    })
-  }, [values])
-
-  // hook to update global state for Authenticated 
-  useEffect(() => {
-    dispatch({
-      type: "setAuthentication",
-      data: authentication
-    })
-  }, [authentication])
   
   // login user function calling express server
   const loginUser = async (data) => {
-    console.log(store)
-    try {
-      await axios({
-          method: "POST",
-          data: {
-              username: data.username,
-              password: data.password
-          },
-          withCredentials: true, 
-          url: "http://localhost:5000/users/login"
-      }).then(res => {
-          console.log(res)
-          if (res.data.success === true) {
-            setAuthentication({
-              ...authentication,
-              authenticated: true
-            })
-            history.push("/")
-            console.log(store)
-          }
-        })  
-      } catch (error) {
-        console.log(error)
+    await axios({
+      method: "POST",
+      data: {
+        username: data.username,
+        password: data.password
+      },
+      withCredentials: true, 
+      url: "/users/login"
+    }).then(res => {
+      // console.log(res)
+      if (res.data.success === true) {
+        dispatch({
+          type: "setLoggedInUser",
+          data: values.username
+        })
+          dispatch({
+            type: "setAuthentication",
+            data: true
+        })
+          history.push("/")
       }
-    }
-    
-    const formSubmit = (e) => {
-      e.preventDefault()
-      loginUser(values)
-    }
+    }).catch(error => {
+      // error is server is unavailable
+      if (error && !error.response) {
+        setErrorMessage("There may be a problem with the server. Please try again in a few minutes.")
+      }
+      // error for wrong password/username
+      else if (error && error.response.status === 401) {
+        setErrorMessage(error.response.data)
+      }
+      // any other error
+      else if (error)
+        setErrorMessage(error)
+    })
+      // checking global state updated
+      console.log(store)
+  }
+      // error message css styles
+      const errorStyles = {
+        color: "red"
+      }
 
-  return (
-    <div className="container">
+      // function to run when form is submitted
+      const formSubmit = (e) => {
+        e.preventDefault()
+        loginUser(values)
+      }
+      
+      return (
+        <div className="container">
       <div classame="row">
         <div className="col s6">
           <h1>Login</h1>
@@ -96,6 +99,7 @@ const UserLogin = () => {
                   type="text"
                   value={values.username}
                   onChange={handleInputChange}
+                  required
                 />
             </label>
             <label htmlFor="password">
@@ -105,9 +109,11 @@ const UserLogin = () => {
                 type="text"
                 value={values.password}
                 onChange={handleInputChange}
+                required
                 />
             </label>
             <input type="submit" value="submit" className="btn waves-effect waves-light" />
+            {errorMessage && <p style={errorStyles}>{errorMessage}</p>}
           </form>
           <br/>
           <span>Don't have an account? <strong><a href="/register">Register</a></strong></span>
