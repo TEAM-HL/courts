@@ -68,6 +68,7 @@ const CreateBooking = () => {
     const handleDateChange = date => {
         setDate(date)
         console.log("date changed")
+        document.getElementsByName("error")[0].hidden = true
         // console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         // checkDate(date)
     }
@@ -236,6 +237,8 @@ const CreateBooking = () => {
                     // needs numerical sorting
                     let nextArray = arr1
                     let nextBookingArr = []
+                    let displayTime = ""
+                    let ampm = "AM"
                     for (let i = 0; i < 8; i++) {
                         // check for earliest avail and check range for other start dates.
                         nextArray = nextArray.filter(obj => obj.court == (i + 1))
@@ -260,6 +263,24 @@ const CreateBooking = () => {
                         return (a > b) ? 1 : -1
                     })
                     console.log(`next available booking is at ${nextBookingArr[0]}`)
+                    displayTime = nextBookingArr[0].toString().split("")
+                    // convert error 24h time to 12h
+                    if (displayTime[1] > 2 && displayTime[0] == 1) {
+                        displayTime[1] = displayTime[1] - 2
+                        displayTime[0] = ""
+                        ampm = "PM"
+                    } else if (displayTime[1] == 2 && displayTime[0] == 1) {
+                        ampm = "PM"
+                    }
+                    // convert error half hour message back to seconds
+                    if (displayTime[2] == 5) {
+                        displayTime[2] = 3 
+                    }
+                    // issues with array manipulating methods v is a work around
+                    displayTime = `${displayTime[0]}${displayTime[1]}:${displayTime[2]}${displayTime[3]} ${ampm}`
+                    console.log(displayTime)
+                    document.getElementsByName("error")[0].innerHTML = `next available booking is at ${displayTime}`
+                    document.getElementsByName("error")[0].hidden = false
                     console.log(nextBookingArr)
 
                     console.log("working")
@@ -484,6 +505,7 @@ const CreateBooking = () => {
                             <option value="7" disabled={true}>Court 7</option>
                             <option value="8" disabled={true}>Court 8</option>
                         </select>
+                        <span name="error"  hidden="true" style={{color: "red", fontSize: "12px"}}>*Error messages go here</span>
                         <br />
                         <em>Equipment</em>
                         <br />
