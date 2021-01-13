@@ -49,11 +49,11 @@ const Navbar = () => {
                         <li><a href="/community">Community</a></li>
                         <li><a href="/events">Events</a></li>
                         <li><a href="/contact">Contact</a></li>
-                            {
+                            {/* {
                                 authenticated === true && loggedInUser.type === 'admin' 
                                 ? <li><a href="/tools">Tools</a></li>
                                 : <li></li>
-                            }
+                            } */}
                         <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser && loggedInUser.username}!` : ``}</li>
                         <li>
                             {(authenticated === true)
