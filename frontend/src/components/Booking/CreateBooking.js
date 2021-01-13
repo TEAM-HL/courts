@@ -97,10 +97,12 @@ const CreateBooking = () => {
             type: "setPendingBooking",
             data: bookingData
         })   
-
+        
+        // redirect user to checkoutForm component
+        history.push("/booking/checkout")
+        
         // made backend call to stripe
         // when connection made,redirect user to stripe checkout-form (which includes review of booking details)
-        // history.push("/booking/checkout")
 
         // from within the CheckoutForm component file, 
         // after successful payment is made, save booking in database

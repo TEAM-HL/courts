@@ -12,6 +12,7 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import Preview from '../Checkout/Preview'
 
 // create stripe object once when app is loaded 
 const stripePromise = loadStripe(process.env.STRIPE_KEY);
@@ -60,6 +61,7 @@ const CheckoutForm = () => {
   return (
     <div className="container">
       <form onSubmit={handleSubmit}>
+        <Preview />
         <CardNumberElement/>
         <CardExpiryElement/>
         <CardCvcElement/>
