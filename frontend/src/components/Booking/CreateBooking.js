@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
@@ -503,7 +503,7 @@ const CreateBooking = () => {
                             />
                             <br/>
                             <label>Duration of play</label>
-                            <select required className="browser-default" name="duration" value={values.duration} onChange={handleDurationChange}>
+                            <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
                                 <option value="0">Choose option</option>
                                 <option value="1">1 Hour</option>
                                 <option value="1.5">1.5 Hours</option>
