@@ -1,6 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {loadStripe} from '@stripe/stripe-js';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import api from '../../config/api'
+import axios from 'axios'
+import {loadStripe} from '@stripe/stripe-js'
 import {
   Elements,
   CardElement,
@@ -23,8 +25,22 @@ const CheckoutForm = () => {
     const {error, paymentMethod} = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
-    });
-  };
+    })
+  }
+
+  // save booking function 
+   // await api({
+        //     method: "POST",
+        //     data: bookingData,
+        //     withCredentials: true, 
+        //     url: "/bookings/new"
+        // }).then(res => {
+        //     console.log(res)
+        //     // if (data passes validation formatting and no prev booking clashes) 
+        //     // redirect user to stripe payment
+        //     // } 
+        // })
+
 
   const cardElementOptions = {
     style: {

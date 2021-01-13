@@ -98,20 +98,15 @@ const CreateBooking = () => {
             data: bookingData
         })   
 
-        // redirect user to stripe checkout 
-        history.push("/booking/checkout")
+        // made backend call to stripe
+        // when connection made,redirect user to stripe checkout-form (which includes review of booking details)
+        // history.push("/booking/checkout")
 
-        await api({
-            method: "POST",
-            data: bookingData,
-            withCredentials: true, 
-            url: "/bookings/new"
-        }).then(res => {
-            console.log(res)
-            // if (data passes validation formatting and no prev booking clashes) 
-            // redirect user to stripe payment
-            // } 
-        })
+        // from within the CheckoutForm component file, 
+        // after successful payment is made, save booking in database
+        // and provide user with receipt number and tax invoice
+
+    
     }
 
     // function to return all values of a certain key -
