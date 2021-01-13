@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom'
-import axios from '../../config/api.js'
+import api from '../../config/api.js'
 import { useGlobalState } from "../../config/store"
 import M from 'materialize-css'
 
@@ -38,7 +38,7 @@ const UserLogin = () => {
   
   // login user function calling express server
   const loginUser = async (data) => {
-    await axios({
+    await api({
       method: "POST",
       data: {
         username: data.username,
@@ -59,7 +59,6 @@ const UserLogin = () => {
           data: true
         })
         // checking global state updated
-        console.log(store)
         history.push("/")
       }
     }).catch(error => {

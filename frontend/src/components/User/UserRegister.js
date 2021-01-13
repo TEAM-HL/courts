@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import axios from '../../config/api'
+import api from '../../config/api'
 import M from 'materialize-css'
 
 // set initial values local state
@@ -31,7 +31,7 @@ const UserRegister = () => {
     }
     // register user function to call server
     const registerUser = async (data) => {
-        await axios({
+        await api({
             method: "POST",
             data: {
                 username: data.username,

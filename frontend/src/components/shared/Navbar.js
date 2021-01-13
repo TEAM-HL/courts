@@ -24,8 +24,7 @@ const Navbar = () => {
         dispatch({
             type: "RESET_STATE",
         })
-        console.log(store)
-        history.push("/login")
+        history.push("/")
     }
 
     useEffect(() => {
@@ -54,7 +53,7 @@ const Navbar = () => {
                                 ? <li><a href="/tools">Tools</a></li>
                                 : <li></li>
                             } */}
-                        <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser && loggedInUser.username}!` : ``}</li>
+                        <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser}!` : ``}</li>
                         <li>
                             {(authenticated === true)
                                 ? <a href="/logout" onClick={logoutUser} className="waves-effect waves-light btn">Logout<i className="material-icons right">account_circle</i></a>
