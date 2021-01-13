@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import addDays from 'date-fns/addDays'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
-import getDay from 'date-fns/getDay'
-import getTime from 'date-fns/getTime'
-import closestTo from 'date-fns/closestTo'
-import isFuture from 'date-fns/isFuture'
-import toDate from 'date-fns/toDate'
 import addMinutes from 'date-fns/addMinutes'
 import CurrencyInput from 'react-currency-input-field'
-import axios from 'axios'
+import axios from '../../config/api'
 import { useGlobalState } from "../../config/store"
 import { set } from 'mongoose'
+import M from 'materialize-css'
 
-const CreateBooking = () => {    
+
+const CreateBooking = () => {  
+    // initialise materialize
+    M.AutoInit()
+    // setup history const to be used later  
+    const history = useHistory()
     // destructure store and dispatch from global state
-    const {store} = useGlobalState()
+    const {store, dispatch} = useGlobalState()
     // destructure loggedInUser from store
     const {loggedInUser} = store
 
@@ -73,25 +75,37 @@ const CreateBooking = () => {
         // checkDate(date)
     }
     
+    //executed when form is submitted
     const newBooking = async () => {
+        // assign current booking data to variable
+        const bookingData = {
+            username: store.loggedInUser,
+            date: date.toLocaleDateString(),
+            time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            end: addMinutes(date, (60*values.duration)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            duration: values.duration,
+            court: values.court,
+            equipment: {
+                canister: values.canister,
+                racquet: values.racquet,
+                hopper: values.hopper,
+            },
+            cost: calculateTotalCost
+        }
+        // dispatch to global store as pendingBooking data
+        dispatch({
+            type: "setPendingBooking",
+            data: bookingData
+        })   
+
+        // redirect user to stripe checkout 
+        history.push("/booking/checkout")
+
         await axios({
             method: "POST",
-            data: {
-                username: "test",
-                date: date.toLocaleDateString(),
-                time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                end: addMinutes(date, (60*values.duration)).toLocaleTimeString(),
-                duration: values.duration,
-                court: values.court,
-                equipment: {
-                    canister: values.canister,
-                    racquet: values.racquet,
-                    hopper: values.hopper,
-                },
-                cost: calculateTotalCost
-            },
+            data: bookingData,
             withCredentials: true, 
-            url: "http://localhost:5000/bookings/new"
+            url: "/bookings/new"
         }).then(res => {
             console.log(res)
             // if (data passes validation formatting and no prev booking clashes) 
@@ -138,8 +152,7 @@ const CreateBooking = () => {
                 // array.filter(remove entries that are earlier than current booking)
                 //  .filter(end <= start)
 
-
-                }
+            }
                 )} catch (error) {
                     console.log(error)
                 }
@@ -157,7 +170,7 @@ const CreateBooking = () => {
                     duration: values.duration        
                 },
                 withCredentials: true, 
-                url: "http://localhost:5000/bookings/findCourt"
+                url: "/bookings/findCourt"
             }).then(res => {
                 console.log(res.data)
                 console.log(document.getElementsByName("court")[0][1])
@@ -459,90 +472,93 @@ const CreateBooking = () => {
             <div className="row">
                 <div className="col s6">
                     <h1>Book a Court</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label>Date & Time</label>
-                        <br/>
-                        <DatePicker     
-                            name="date"
-                            selected={date} 
-                            value={date}
-                            onChange={handleDateChange}
-                            dateFormat="MMM d  h:mm aa"
-                            placeholderText="Select a date and time"
-                            minDate={new Date()}                        
-                            maxDate={addDays(new Date(), 10)}
-                            // minTime={ 
-                            //     getDay(date) === getDay(new Date()) && getDay(date) < 1 ? 
-                            //     operatingHoursSunday.filter(time => isFuture(time))[0] :
-                            //     operatingHours.filter(time => isFuture(time))[0]
-                            //     }
-                            // maxTime={
-                            //     (getDay(date) < 1) ? 
-                            //     operatingHoursSunday[operatingHoursSunday.length-1] : 
-                            //     operatingHours[operatingHours.length-1]
-                            // }
-                            // excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date))}
-                            showTimeSelect
-                            required
-                        />
-                        <br/>
-                        <label>Duration of play</label>
-                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
-                            <option value="0">Choose option</option>
-                            <option value="1">1 Hour</option>
-                            <option value="1.5">1.5 Hours</option>
-                            <option value="2">2 Hours</option>
-                        </select>
-                        <label>Court:</label>
-                        <select required className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
-                            <option disabled value="0">Choose option</option>
-                            <option value="1" disabled={true}>Court 1</option>
-                            <option value="2" disabled={true}>Court 2</option>
-                            <option value="3" disabled={true}>Court 3</option>
-                            <option value="4" disabled={true}>Court 4</option>
-                            <option value="5" disabled={true}>Court 5</option>
-                            <option value="6" disabled={true}>Court 6</option>
-                            <option value="7" disabled={true}>Court 7</option>
-                            <option value="8" disabled={true}>Court 8</option>
-                        </select>
-                        <span name="error"  hidden="true" style={{color: "red", fontSize: "12px"}}>*Error messages go here</span>
-                        <br />
-                        <em>Equipment</em>
-                        <br />
-                        <br />
-                        <label>Racquets:</label>
-                        <select className="browser-default" name="racquet" value={values.racquet} onChange={handleInputChange} >
-                            <option value="0" default>None</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                        <label>Ball Canisters:</label>
-                        <select className="browser-default" name="canister" value={values.canister} onChange={handleInputChange} >
-                            <option value="0" default>None</option>
-                            <option value="1" >1</option>
-                            <option value="2" >2</option>
-                            <option value="3" >3</option>
-                            <option value="4" >4</option>
-                        </select>
-                        <label>Hopper:</label>
-                        <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
-                            <option value="0" default>None</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
-                        <label>Total:</label>
-                        <CurrencyInput
-                            name="total"
-                            value={calculateTotalCost}
-                            prefix="$"
-                            defaultValue={0}
-                            decimalsLimit={2}
-                            readOnly
-                        />
-                        <input type="submit" className="btn waves-effect waves-light"/>
-                    </form>
+                    {
+                        (loggedInUser !== null && store.authenticated === false) 
+                        ? <p>Please login before creating a booking.</p>
+                        : <form onSubmit={handleSubmit}>
+                            <label>Date & Time</label>
+                            <br/>
+                            <DatePicker     
+                                name="date"
+                                selected={date} 
+                                value={date}
+                                onChange={handleDateChange}
+                                dateFormat="MMM d  h:mm aa"
+                                placeholderText="Select a date and time"
+                                minDate={new Date()}                        
+                                maxDate={addDays(new Date(), 10)}
+                                // minTime={ 
+                                //     getDay(date) === getDay(new Date()) && getDay(date) < 1 ? 
+                                //     operatingHoursSunday.filter(time => isFuture(time))[0] :
+                                //     operatingHours.filter(time => isFuture(time))[0]
+                                //     }
+                                // maxTime={
+                                //     (getDay(date) < 1) ? 
+                                //     operatingHoursSunday[operatingHoursSunday.length-1] : 
+                                //     operatingHours[operatingHours.length-1]
+                                // }
+                                // excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date))}
+                                showTimeSelect
+                                required
+                            />
+                            <br/>
+                            <label>Duration of play</label>
+                            <select required className="browser-default" name="duration" value={values.duration} onChange={handleDurationChange}>
+                                <option value="0">Choose option</option>
+                                <option value="1">1 Hour</option>
+                                <option value="1.5">1.5 Hours</option>
+                                <option value="2">2 Hours</option>
+                            </select>
+                            <label>Court:</label>
+                            <select required className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
+                                <option disabled value="0">Choose option</option>
+                                <option value="1">Court 1</option>
+                                <option value="2">Court 2</option>
+                                <option value="3">Court 3</option>
+                                <option value="4">Court 4</option>
+                                <option value="5">Court 5</option>
+                                <option value="6">Court 6</option>
+                                <option value="7">Court 7</option>
+                                <option value="8">Court 8</option>
+                            </select>
+                            <br />
+                            <em>Equipment</em>
+                            <br />
+                            <br />
+                            <label>Racquets:</label>
+                            <select className="browser-default" name="racquet" value={values.racquet} onChange={handleInputChange} >
+                                <option value="0" default>None</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                            <label>Ball Canisters:</label>
+                            <select className="browser-default" name="canister" value={values.canister} onChange={handleInputChange} >
+                                <option value="0" default>None</option>
+                                <option value="1" >1</option>
+                                <option value="2" >2</option>
+                                <option value="3" >3</option>
+                                <option value="4" >4</option>
+                            </select>
+                            <label>Hopper:</label>
+                            <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
+                                <option value="0" default>None</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                            <label>Total:</label>
+                            <CurrencyInput
+                                name="total"
+                                value={calculateTotalCost}
+                                prefix="$"
+                                defaultValue={0}
+                                decimalsLimit={2}
+                                readOnly
+                            />
+                            <input type="submit" className="btn waves-effect waves-light"/>
+                        </form>
+                    }
                 </div>
             </div>
         </div>
