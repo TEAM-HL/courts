@@ -5,9 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon backend/server.js",
-    "start": "node backend/server.js",
-    "heroku-postbuild": "YARN_CONFIG_PRODUCTION=false yarn install yarn && run build"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
