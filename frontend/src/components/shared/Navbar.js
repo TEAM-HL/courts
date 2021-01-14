@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { Dropdown } from "materialize-css"
 import { useHistory } from 'react-router-dom'
 import { useGlobalState } from "../../config/store"
+import M from 'materialize-css'
 
 
 const Navbar = () => {
@@ -28,9 +28,20 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        // initialise materialize dropdown element
-        let dropdown = document.querySelector('.dropdown-trigger')
-        Dropdown.init(dropdown)
+        
+        // initialize sidenav
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+
+        // intialize dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+          });
+        
+
     })
 
     return (
@@ -42,17 +53,18 @@ const Navbar = () => {
             <nav>
                 <div className="nav-wrapper blue darken-4">
                     <a href="/" className="brand-logo">Courts</a>
+                    {/* <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a> */}
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
                             <i className="material-icons right">arrow_drop_down</i></a></li>
                         <li><a href="/community">Community</a></li>
                         <li><a href="/events">Events</a></li>
                         <li><a href="/contact">Contact</a></li>
-                            {/* {
+                            {
                                 authenticated === true && loggedInUser.type === 'admin' 
                                 ? <li><a href="/tools">Tools</a></li>
                                 : <li></li>
-                            } */}
+                            }
                         <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser}!` : ``}</li>
                         <li>
                             {(authenticated === true)
