@@ -65,42 +65,44 @@ const UserRegister = () => {
     return (
         <div className="container">
             <div classame="row">
-                <div className="col s6">
-                    <h1>Register</h1>
-                    <form onSubmit={formSubmit}>
-                        <label htmlFor="username">
-                            Username
+                <h3>Register</h3>
+                <form onSubmit={formSubmit}>
+                    <div className="row">
+                        <div className="input-field col s10 m6">
+                            <label for="username">Username</label>   
                             <input 
                                 type="text"
                                 name="username"
                                 value={values.username}
                                 onChange={handleInputChange}
                             />
-                        </label>   
-                        <label htmlFor="email">
-                            Email
-                            <input 
-                                type="text"
-                                name="email"
-                                value={values.email}
-                                onChange={handleInputChange}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s10 m6">
+                            <label for="email">Email</label> 
+                            <input type="text"
+                            name="email"
+                            value={values.email}
+                            onChange={handleInputChange}
                             />
-                        </label>   
-                        <label htmlFor="password">
-                            Password
-                            <input 
-                                type="text"
-                                name="password"
-                                value={values.password}
-                                onChange={handleInputChange}
-                            />
-                        </label>
-                        <input type="submit" value="submit" className="btn waves-effect waves-light" />  
-                        {errorMessage && <p style={errorStyles}>{errorMessage}</p>} 
-                    </form>
-                    <br/>
-                    <span>Already have an account? <strong><a href="/login">Login</a></strong></span>
-                </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s10 m6">
+                            <label for="password">Password</label>
+                                <input 
+                                    type="text"
+                                    name="password"
+                                    value={values.password}
+                                    onChange={handleInputChange}
+                                />
+                        </div>
+                    </div>
+                    <input type="submit" value="submit" className="btn waves-effect waves-light" />  
+                    {errorMessage && <p style={errorStyles}>{errorMessage}</p>} 
+                </form>
+                <p>Already have an account? <strong><a href="/login">Login</a></strong></p>
             </div>
         </div>
     )

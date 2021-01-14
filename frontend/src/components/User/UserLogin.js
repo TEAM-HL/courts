@@ -117,14 +117,14 @@ const UserLogin = () => {
               </div>
             </div>
             <div className="row">
-              <div className="input-field col s12 m6">
+              <div className="input-field col s10 m6">
                 <input type="submit" value="submit" className="btn waves-effect waves-light" />
                 {errorMessage && <p style={errorStyles}>{errorMessage}</p>}
               </div>
             </div>
           </div>
         </form>
-        <span>Don't have an account? <strong><a href="/register">Register</a></strong></span>
+        <p>Don't have an account? <strong><a href="/register">Register</a></strong></p>
       </div>
     </div>
   )
