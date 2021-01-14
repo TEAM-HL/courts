@@ -86,38 +86,45 @@ const UserLogin = () => {
         loginUser(values)
       }
       
-      return (
-        <div className="container">
-      <div classame="row">
-        <div className="col s6">
-          <h1>Login</h1>
-          <form onSubmit={formSubmit}>
-            <label htmlFor="username">
-                Username
-                <input
-                  name="username"
-                  type="text"
-                  value={values.username}
-                  onChange={handleInputChange}
-                  required
-                />
-            </label>
-            <label htmlFor="password">
-                Password
-                <input
-                name="password"
+  return (
+    <div className="container">
+
+      <div className="row">
+        <form classname="col s12 m4 l8" onSubmit={formSubmit}>
+          <h2>Login</h2>
+          <div className="row">
+            <div className="input-field col s12 m4 l8">
+              <label for="username">Username</label>
+              <input
+                name="username"
                 type="text"
-                value={values.password}
+                value={values.username}
                 onChange={handleInputChange}
                 required
-                />
-            </label>
-            <input type="submit" value="submit" className="btn waves-effect waves-light" />
-            {errorMessage && <p style={errorStyles}>{errorMessage}</p>}
-          </form>
-          <br/>
-          <span>Don't have an account? <strong><a href="/register">Register</a></strong></span>
-        </div>
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12 m4 l8">
+              <input
+                  name="password"
+                  type="password"
+                  value={values.password}
+                  onChange={handleInputChange}
+                  required
+              />
+              <label for="password">Password</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12 m4 l8">
+              <input type="submit" value="submit" className="btn waves-effect waves-light" />
+              {errorMessage && <p style={errorStyles}>{errorMessage}</p>}
+            </div>
+          </div>
+        </form>
+        <br/>
+        <span>Don't have an account? <strong><a href="/register">Register</a></strong></span>
       </div>
     </div>
   )
