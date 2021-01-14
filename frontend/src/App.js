@@ -11,11 +11,18 @@ import UserLogin from './components/User/UserLogin'
 import Navbar from './components/shared/Navbar'
 import UserRegister from './components/User/UserRegister'
 import Checkout from './components/Checkout/CheckoutForm'
-//toastify dependencies
+// stripe
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+//toastify 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 toast.configure()
+
+// Make sure to call loadStripe outside of a component’s render to avoid
+// recreating the Stripe object on every render.
+const stripePromise = loadStripe('pk_test_JJ1eMdKN0Hp4UFJ6kWXWO4ix00jtXzq5XG');
 
 const App = () => {
   // set initial state for global
@@ -37,7 +44,9 @@ const App = () => {
             <Route path="/login" exact component={UserLogin} />
             <Route path="/register" exact component={UserRegister} />
             <Route path="/booking/new" exact component={CreateBooking} />
-            <Route path="/booking/checkout" exact component={Checkout} />
+            <Elements stripe={stripePromise}>
+              <Route path="/booking/checkout" exact component={Checkout} />
+            </Elements>
         </BrowserRouter>
       </StateContext.Provider>    
     </>

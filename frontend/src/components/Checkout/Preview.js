@@ -6,7 +6,7 @@ const Preview = () => {
     const {store, dispatch} = useGlobalState()
 
     // const previewBookingData = store.pendingBooking
-    const previewBookingData = {
+    const testData = {
         username: "coolUser",
         date: "16/01/2021",
         time: "10:30",
@@ -22,15 +22,15 @@ const Preview = () => {
     }
 
     // console.log("preview booking data:", previewBookingData)
-    const pairs = Object.entries(previewBookingData)
+    const pairs = Object.entries(testData)
     console.log("entries", pairs)
-    const preview = 
-        pairs.map(entry => {
-            if (typeof entry[1] ==='object') {
-                let nestedObj = Object.entries(entry[1])
-                nestedObj.map(entry => console.log(`${entry[0]}: ${entry[1]}`) )
-            } else console.log(`${entry[0]}: ${entry[1]}`)
-        })
+    // const preview = 
+    //     pairs.map(entry => {
+    //         if (typeof entry[1] ==='object') {
+    //             let nestedObj = Object.entries(entry[1])
+    //             nestedObj.map(entry => console.log(`${entry[0]}: ${entry[1]}`) )
+    //         } else console.log(`${entry[0]}: ${entry[1]}`)
+    //     })
 
     return (
         <div>

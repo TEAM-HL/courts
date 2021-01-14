@@ -1,8 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import api from '../../config/api'
 import axios from 'axios'
-// import {loadStripe} from '@stripe/stripe-js'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
 const CheckoutForm = () => {
@@ -37,7 +35,6 @@ const CheckoutForm = () => {
         //     // } 
         // })
 
-
   const cardElementOptions = {
     style: {
       base: {
@@ -54,7 +51,7 @@ const CheckoutForm = () => {
   } 
 
   return (
-    <div className="container">
+    <div className="container col s12 m6">
       <form onSubmit={handleSubmit}>
         <CardElement/>
         <button type="submit" disabled={!stripe}>
