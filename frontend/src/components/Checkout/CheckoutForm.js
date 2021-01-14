@@ -54,7 +54,7 @@ const CheckoutForm = () => {
     <div className="container col s12 m6">
       <form onSubmit={handleSubmit}>
         <CardElement/>
-        <button type="submit" disabled={!stripe}>
+        <button className="waves-effect waves-light btn" type="submit" disabled={!stripe}>
           Pay
         </button>
       </form>
