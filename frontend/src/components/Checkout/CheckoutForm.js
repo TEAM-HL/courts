@@ -2,7 +2,7 @@ import React from 'react'
 import api from '../../config/api'
 import axios from 'axios'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-
+import '../../assets/css/stripe..css'
 const CheckoutForm = () => {
   const stripe = useStripe()
   const elements = useElements()
