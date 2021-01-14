@@ -70,6 +70,7 @@ const CreateBooking = () => {
     const handleDateChange = date => {
         setDate(date)
         console.log("date changed")
+        // console.log(document.getElementsByName("error")[0])
         document.getElementsByName("error")[0].hidden = true
         // console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         // checkDate(date)
@@ -516,6 +517,7 @@ const CreateBooking = () => {
                                 <option value="7">Court 7</option>
                                 <option value="8">Court 8</option>
                             </select>
+                            <span name="error" hidden="true">error goes here</span>
                             <br />
                             <em>Equipment</em>
                             <br />
