@@ -89,12 +89,12 @@ const UserLogin = () => {
   return (
     <div className="container">
       <div className="row">
-        <form classname="col s12" onSubmit={formSubmit}>
+        <form className="col s12" onSubmit={formSubmit}>
           <h3>Login</h3>
           <div id="box">
             <div className="row">
               <div className="input-field col s10 m6">
-                <label for="username">Username</label>
+                <label htmlFor="username">Username</label>
                 <input
                   name="username"
                   type="text"
@@ -113,7 +113,7 @@ const UserLogin = () => {
                     onChange={handleInputChange}
                     required
                 />
-                <label for="password">Password</label>
+                <label htmlFor="password">Password</label>
               </div>
             </div>
             <div className="row">
