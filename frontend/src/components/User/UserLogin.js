@@ -88,12 +88,12 @@ const UserLogin = () => {
       
   return (
     <div className="container">
-      <div className="row">
-        <form className="col s12" onSubmit={formSubmit}>
-          <h3>Login</h3>
-          <div id="box">
+        <form className="main-form" onSubmit={formSubmit}>
             <div className="row">
-              <div className="input-field col s10 m6">
+              <div className="form-heading left-align col s12 push-m2 m8">
+                <h3>Login</h3>
+              </div>
+              <div className="input-field col s12 push-m2 m8">
                 <label htmlFor="username">Username</label>
                 <input
                   name="username"
@@ -105,7 +105,7 @@ const UserLogin = () => {
               </div>
             </div>
             <div className="row">
-              <div className="input-field col s10 m6">
+              <div className="input-field col s12 push-m2 m8">
                 <input
                     name="password"
                     type="password"
@@ -117,16 +117,14 @@ const UserLogin = () => {
               </div>
             </div>
             <div className="row">
-              <div className="input-field col s10 m6">
+              <div className="input-field col s12 push-m2 m8">
                 <input type="submit" value="submit" className="btn waves-effect waves-light" />
                 {errorMessage && <p style={errorStyles}>{errorMessage}</p>}
+              <p>Don't have an account?  <strong><a href="/register">Register</a></strong></p>
               </div>
             </div>
-          </div>
         </form>
-        <p>Don't have an account? <strong><a href="/register">Register</a></strong></p>
       </div>
-    </div>
   )
 }
 
