@@ -6,6 +6,11 @@
 .form-heading {
     padding: 0
 }
+
+button {
+    margin: 0 1em;
+}
+
 @media (max-width: 768px) {
     .main-form {
         max-width: 100%;

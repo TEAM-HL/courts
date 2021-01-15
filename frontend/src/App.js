@@ -17,8 +17,8 @@ import {loadStripe} from '@stripe/stripe-js';
 //toastify 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+// css
 import './assets/css/App.css'
-
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
