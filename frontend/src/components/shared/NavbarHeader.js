@@ -4,26 +4,25 @@ import { useGlobalState } from "../../config/store"
 //materialize
 import 'materialize-css';
 import M from  'materialize-css/dist/js/materialize.min.js'
-// import { Navbar, Icon, Dropdown, NavItem, Button } from 'react-materialize'
 
 
 const NavbarHeader = () => {
-    // use history
+    // define history for use later
     const history = useHistory()
 
     // destructure store and dispatch from global state
     const {store, dispatch} = useGlobalState()
-    
     // destructure loggedInUser from store
     const {loggedInUser} = store
-    
     // destructure authenticated from store
     const {authenticated} = store
 
     useEffect(() => {
+        //initialise sidenave
         let sidenav = document.querySelector('#slide-out');
         M.Sidenav.init(sidenav, {})    
 
+        //initialise dropdowns from sidenav and navbar
         let dropdowns = document.querySelectorAll('.dropdown-trigger');
         console.log(dropdowns)
         M.Dropdown.init(dropdowns[0], {})
@@ -45,7 +44,7 @@ const NavbarHeader = () => {
         <div>
             <nav>
                 <div className="nav-wrapper blue darken-4">
-                    <a href="#" data-target="slide-out" class="sidenav-trigger hide-on-large-only"><i class="material-icons">menu</i></a>
+                    <a href="" data-target="slide-out" class="sidenav-trigger hide-on-large-only"><i class="material-icons">menu</i></a>
                     <a href="/" id="courts-logo" className="brand-logo">Courts</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li className="yellow-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser}` : ``}</li>
