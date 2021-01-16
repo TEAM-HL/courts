@@ -25,12 +25,14 @@
     "mongoose-bcrypt": "^1.9.0",
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "stripe": "^8.131.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
   },
   "engines": {
-    "node": "14.15.4"
+    "node": "14.8.0"
   }
 }

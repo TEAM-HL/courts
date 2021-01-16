@@ -42,6 +42,7 @@ console.log("hit login route")
         } else {
             // attempt to log user in
             req.login(user, error => {
+                // console.log("user", user)
                 // send error is error exists 
                 if (error) {
                     res.send({
@@ -51,7 +52,8 @@ console.log("hit login route")
                 }
                 res.send({
                     success: true,
-                    message: 'user successfully authenticated'
+                    message: 'user successfully authenticated',
+                    userType: user.userType
                 })
             })
         }

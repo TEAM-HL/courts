@@ -44,14 +44,17 @@ const CheckoutForm = () => {
   const cardElementOptions = {
     style: {
       base: {
-        fontSize: '16px',
-        color: '#424770',
+        'color': '#32325d',
+        'fontFamily': '"Helvetica Neue", Helvetica, sans-serif',
+        'fontSmoothing': 'antialiased',
+        'fontSize': '16px',
         '::placeholder': {
           color: '#aab7c4',
         },
       },
       invalid: {
-        color: '#9e2146',
+        color: '#fa755a',
+        iconColor: '#fa755a',
       },
     },
   } 

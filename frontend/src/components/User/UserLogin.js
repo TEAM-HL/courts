@@ -47,12 +47,16 @@ const UserLogin = () => {
       withCredentials: true, 
       url: "/users/login"
     }).then(res => {
-      console.log(`response: ${res}`)
+      // console.log(`response: ${res}`)
       if (res.data.success === true) {
-        console.log("username", values.username)
+        console.log("res", res)
+        // console.log("username", values.username)
         dispatch({
           type: "setLoggedInUser",
-          data: values.username
+          data: {
+            username: values.username,
+            userType: res.data.userType
+          }
         })
         dispatch({
           type: "setAuthentication",
