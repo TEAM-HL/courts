@@ -14,6 +14,7 @@ import M from 'materialize-css'
 
 
 const CreateBooking = () => {  
+    
     // initialise materialize
     M.AutoInit()
     // setup history const to be used later  
@@ -22,6 +23,10 @@ const CreateBooking = () => {
     const {store, dispatch} = useGlobalState()
     // destructure loggedInUser from store
     const {loggedInUser} = store
+    // destructure pendingBooking from store
+    const {pendingBooking} = store
+    // destructure authenticated from store
+    const {authenticated} = store
 
     // define initial booking values
     const initialBookingValues = {
@@ -39,12 +44,20 @@ const CreateBooking = () => {
         canister: 5,
         hopper: 10
     }
-
+    
     // set state for booking detail values 
     const [values, setValues] = useState(initialBookingValues)
+    
     // set state for date
     const [date, setDate] = useState(null)
-
+    
+    const preFillBooking = () => {
+        console.log("pending booking: ", pendingBooking)
+        if (pendingBooking !== null) {
+            setValues(pendingBooking)
+        }
+    }
+    
     // calculate total cost
     const calculateTotalCost = (
         prices.duration * values.duration + 
@@ -470,13 +483,10 @@ const CreateBooking = () => {
             <div className="row">
                 <div className="col s6">
                     <h1>Book a Court</h1>
-                    {
-                        (loggedInUser !== null && store.authenticated === false) 
-                        ? <p>Please login before creating a booking.</p>
-                        : <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit}>
                             <label>Date & Time</label>
                             <br/>
-                            <DatePicker     
+                            <DatePicker   
                                 name="date"
                                 selected={date} 
                                 value={date}
@@ -557,7 +567,6 @@ const CreateBooking = () => {
                             />
                             <input type="submit" className="btn waves-effect waves-light"/>
                         </form>
-                    }
                 </div>
             </div>
         </div>

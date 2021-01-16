@@ -1,6 +1,7 @@
 const router = require('express').Router()
+const uuid = require('uuid')
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
-// create a new checkout session
 router.route('/create-checkout-session').post(async (req, res) => {
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -9,8 +10,8 @@ router.route('/create-checkout-session').post(async (req, res) => {
             price_data: {
               currency: 'aud',
               product_data: {
-                name: `Court-Booking_${req.body.date}_no.${req.body.court}_${req.body.duration}hrs`,
-                // images: ['https://i.imgur.com/EHyR2nP.png'],
+                name: `Court Booking on ${req.body.date} at ${req.body.time} for ${req.body.duration}hrs`,
+                images: ['https://d24lqeczfu7s1y.cloudfront.net/venue/meadowbank-park-tc/34c340d8-c2b3-45b7-a1a4-71f3b2854d1e.jpg'],
               },
               unit_amount: req.body.cost,
             },
@@ -25,12 +26,25 @@ router.route('/create-checkout-session').post(async (req, res) => {
       res.json({ id: session.id });
     });
 
-router.route('/sessions').get(async (req, res) => {
+// router.route('/checkout-payment').post(async (req, res) => {
+//   const { product, token } = req.body
+//   console.log("PRODUCT ", product)
+//   console.log("PRICE ", booking.price)
+//   const idempontencyKey = uuid()
 
-})
-
-router.route('/sessions/:id').get(async (req, res) => {
-    
-})
+//   return stripe.customers.create({
+//     email: token.email,
+//     source: token.id
+//   }).then(customer => {
+//     stripe.charges.create({
+//       amount: booking.price * 100,
+//       currency: 'aud',
+//       customer: customer.id,
+//       receipt_email: token.email  
+//     }, {idempontencyKey})
+//   })
+//   .then(result => res.status(200).json(result))
+//   .catch(err => console.log(err))
+// })
 
 module.exports = router
