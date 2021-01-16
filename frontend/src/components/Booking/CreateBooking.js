@@ -70,6 +70,7 @@ const CreateBooking = () => {
 
     useEffect(() => {
         findCourt()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.duration])
     
     const handleDateChange = date => {
@@ -79,13 +80,6 @@ const CreateBooking = () => {
         document.getElementsByName("error")[0].hidden = true
         // console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         // checkDate(date)
-
-        // // setMinTime for datepicker based on day number of date local state
-        // if (getDay(date) === getDay(new Date()) && getDay(date) === 0) {
-        //     setMinTime(operatingHoursSunday.filter(time => isFuture(time))[0])
-        // } else if (getDay(date) !== getDay(new Date()) && getDay(date) > 0) {
-        //     setMinTime(operatingHours.filter(time => isFuture(time))[0])
-        // }
     }
     
     //executed when form is submitted
@@ -126,15 +120,15 @@ const CreateBooking = () => {
 
     // function to return all values of a certain key -
     // used below to return array of unavailable times
-    function findAllByKey(object, keyToFind) {
-        return Object.entries(object)
-          .reduce((acc, [key, value]) => (key === keyToFind)
-            ? acc.concat(value)
-            : (typeof value === 'object')
-            ? acc.concat(findAllByKey(value, keyToFind))
-            : acc
-          , [])
-      }
+    // function findAllByKey(object, keyToFind) {
+    //     return Object.entries(object)
+    //       .reduce((acc, [key, value]) => (key === keyToFind)
+    //         ? acc.concat(value)
+    //         : (typeof value === 'object')
+    //         ? acc.concat(findAllByKey(value, keyToFind))
+    //         : acc
+    //       , [])
+    //   }
 
     const checkDate = async (date) => {
         console.log("checking for available times for selected date...")
@@ -435,11 +429,6 @@ const CreateBooking = () => {
           setHours(setMinutes(new Date(), 0), 19),
           setHours(setMinutes(new Date(), 30), 19)
         ]
-    // -----TESTING ------------------
-    // const times = operatingHours.map(time => toDate(time)).filter(time => isFuture(time))
-    // const timesAfterNow = operatingHours.filter(time => isFuture(time))
-    // console.log(timesAfterNow)    
-    // ------------------------------------
     
     // get available times for date picker according to day selected
     const availableTimes = () => {
@@ -466,9 +455,6 @@ const CreateBooking = () => {
     // form submission
     const handleSubmit = e => {
         e.preventDefault()
-        // TESTING
-        // console.log(store)
-        // console.log(values)
         console.log(`total cost: ${calculateTotalCost}`)
         console.log(`date = ${date}`)
     // ----------------------------------
