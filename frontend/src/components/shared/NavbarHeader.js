@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useGlobalState } from "../../config/store"
 //materialize
 import 'materialize-css';
-import M from  'materialize-css/dist/js/materialize.min.js'
+import M from 'materialize-css/dist/js/materialize.min.js'
 
 
 const NavbarHeader = () => {
@@ -24,7 +24,7 @@ const NavbarHeader = () => {
 
         //initialise dropdowns from sidenav and navbar
         let dropdowns = document.querySelectorAll('.dropdown-trigger');
-        console.log(dropdowns)
+        // console.log(dropdowns)
         M.Dropdown.init(dropdowns[0], {})
         M.Dropdown.init(dropdowns[1], {})
     })
@@ -44,10 +44,10 @@ const NavbarHeader = () => {
         <div>
             <nav>
                 <div className="nav-wrapper blue darken-4">
-                    <a href="" data-target="slide-out" class="sidenav-trigger hide-on-large-only"><i class="material-icons">menu</i></a>
+                    <a href="" data-target="slide-out" className="sidenav-trigger hide-on-large-only"><i className="material-icons">menu</i></a>
                     <a href="/" id="courts-logo" className="brand-logo">Courts</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li className="yellow-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser}` : ``}</li>
+                        <li className="yellow-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser.username}` : ''}</li>
                         <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
                             <i className="material-icons right">arrow_drop_down</i></a>
                         </li>
@@ -55,7 +55,7 @@ const NavbarHeader = () => {
                         <li><a href="/events">Events</a></li>
                         <li><a href="/contact">Contact</a></li>
                             {
-                                authenticated === true && loggedInUser.type === 'admin' 
+                                authenticated === true && loggedInUser.userType === 'admin' 
                                 ? <li><a href="/tools">Tools</a></li>
                                 : <li></li>
                             }
@@ -72,7 +72,7 @@ const NavbarHeader = () => {
                 <li><a href="/booking/new">Book a Court</a></li>
                 <li><a href="/booking/view">View My Bookings</a></li>
             </ul>
-            <ul id="slide-out" class="sidenav">
+            <ul id="slide-out" className="sidenav">
             <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
                 <i className="material-icons right">arrow_drop_down</i></a></li>
                 <li><a href="/community">Community</a></li>
