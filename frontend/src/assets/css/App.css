@@ -3,6 +3,9 @@
     margin: 0 auto;
 }
 
+#courts-logo {
+    margin-left: 0.5em;
+}
 .form-heading {
     padding: 0
 }
