@@ -6,10 +6,12 @@ import addDays from 'date-fns/addDays'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import addMinutes from 'date-fns/addMinutes'
+import getDay from 'date-fns/getDay'
+import getTime from 'date-fns/getTime'
+import isFuture from 'date-fns/isFuture'
 import CurrencyInput from 'react-currency-input-field'
 import api from '../../config/api'
 import { useGlobalState } from "../../config/store"
-// import { set } from 'mongoose'
 import M from 'materialize-css'
 
 
@@ -58,6 +60,11 @@ const CreateBooking = () => {
         }
     }
     
+    const [date, setDate] = useState(getRoundedDate(new Date()))
+
+    // set state for minTime
+    // const [minTime, setMinTime] = useState(null)
+
     // calculate total cost
     const calculateTotalCost = (
         prices.duration * values.duration + 
@@ -78,6 +85,7 @@ const CreateBooking = () => {
 
     useEffect(() => {
         findCourt()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.duration])
     
     const handleDateChange = date => {
@@ -127,47 +135,47 @@ const CreateBooking = () => {
 
     // function to return all values of a certain key -
     // used below to return array of unavailable times
-    function findAllByKey(object, keyToFind) {
-        return Object.entries(object)
-          .reduce((acc, [key, value]) => (key === keyToFind)
-            ? acc.concat(value)
-            : (typeof value === 'object')
-            ? acc.concat(findAllByKey(value, keyToFind))
-            : acc
-          , [])
-      }
+    // function findAllByKey(object, keyToFind) {
+    //     return Object.entries(object)
+    //       .reduce((acc, [key, value]) => (key === keyToFind)
+    //         ? acc.concat(value)
+    //         : (typeof value === 'object')
+    //         ? acc.concat(findAllByKey(value, keyToFind))
+    //         : acc
+    //       , [])
+    //   }
 
-    const checkDate = async (date) => {
-        console.log("checking for available times for selected date...")
-        try {
-            await api({
-                method: "POST",
-                data: { 
-                    date: date.toLocaleDateString(), 
-                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })    
-                },
-                withCredentials: true, 
-                url: "http://localhost:5000/bookings/checkDate"
-            }).then(res => {
-                console.log(res)
-                console.log("second array starts here")
-                const data = res.data.data
-                console.log(data)
-                // add data to localState
-                console.log(data.filter(court => court.court === 3))
+    // const checkDate = async (date) => {
+    //     console.log("checking for available times for selected date...")
+    //     try {
+    //         await api({
+    //             method: "POST",
+    //             data: { 
+    //                 date: date.toLocaleDateString(), 
+    //                 time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })    
+    //             },
+    //             withCredentials: true, 
+    //             url: "http://localhost:5000/bookings/checkDate"
+    //         }).then(res => {
+    //             console.log(res)
+    //             console.log("second array starts here")
+    //             const data = res.data.data
+    //             console.log(data)
+    //             // add data to localState
+    //             console.log(data.filter(court => court.court === 3))
                 
-                // if (res.data.success === true && getDay(date) < 1) {
-                // }
+    //             // if (res.data.success === true && getDay(date) < 1) {
+    //             // }
 
-                // for filtering duration
-                // array.filter(remove entries that are earlier than current booking)
-                //  .filter(end <= start)
+    //             // for filtering duration
+    //             // array.filter(remove entries that are earlier than current booking)
+    //             //  .filter(end <= start)
 
-            }
-                )} catch (error) {
-                    console.log(error)
-                }
-    }
+    //         }
+    //             )} catch (error) {
+    //                 console.log(error)
+    //             }
+    // }
 
     const findCourt = async () => {
         console.log("checking available courts...")
@@ -405,8 +413,7 @@ const CreateBooking = () => {
         setHours(setMinutes(new Date(), 30), 20),
         setHours(setMinutes(new Date(), 0), 21),
         setHours(setMinutes(new Date(), 30), 21),
-        setHours(setMinutes(new Date(), 0), 22),
-        setHours(setMinutes(new Date(), 30), 22)
+        setHours(setMinutes(new Date(), 0), 22)
       ]
     // array of excluded times sun  
       const operatingHoursSunday = [
@@ -437,11 +444,6 @@ const CreateBooking = () => {
           setHours(setMinutes(new Date(), 0), 19),
           setHours(setMinutes(new Date(), 30), 19)
         ]
-    // -----TESTING ------------------
-    // const times = operatingHours.map(time => toDate(time)).filter(time => isFuture(time))
-    // const timesAfterNow = operatingHours.filter(time => isFuture(time))
-    // console.log(timesAfterNow)    
-    // ------------------------------------
     
     // get available times for date picker according to day selected
     const availableTimes = () => {
@@ -452,7 +454,8 @@ const CreateBooking = () => {
         }
     }
 
-    const getRoundedDate = (d=new Date()) => {
+    // round date to nearest 30min from current time 
+    function getRoundedDate(d=new Date()) {
         console.log("hit rounded date func")
         // convert minutes to ms
         const ms = 1000 * 60 * 30
@@ -467,9 +470,6 @@ const CreateBooking = () => {
     // form submission
     const handleSubmit = e => {
         e.preventDefault()
-        // TESTING
-        // console.log(store)
-        // console.log(values)
         console.log(`total cost: ${calculateTotalCost}`)
         console.log(`date = ${date}`)
     // ----------------------------------
@@ -495,17 +495,17 @@ const CreateBooking = () => {
                                 placeholderText="Select a date and time"
                                 minDate={new Date()}                        
                                 maxDate={addDays(new Date(), 10)}
-                                // minTime={ 
-                                //     getDay(date) === getDay(new Date()) && getDay(date) < 1 ? 
-                                //     operatingHoursSunday.filter(time => isFuture(time))[0] :
-                                //     operatingHours.filter(time => isFuture(time))[0]
-                                //     }
-                                // maxTime={
-                                //     (getDay(date) < 1) ? 
-                                //     operatingHoursSunday[operatingHoursSunday.length-1] : 
-                                //     operatingHours[operatingHours.length-1]
-                                // }
-                                // excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date))}
+                                minTime={
+                                    (getDay(date) === getDay(new Date()) && getDay(date) === 0) ?
+                                    operatingHoursSunday.filter(time => isFuture(time))[0]
+                                    : operatingHours[0]
+                                }
+                                maxTime={
+                                    (getDay(date) === 0) ? 
+                                    operatingHoursSunday[operatingHoursSunday.length-1] : 
+                                    operatingHours[operatingHours.length-1]
+                                }
+                                excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date)) }
                                 showTimeSelect
                                 required
                             />
