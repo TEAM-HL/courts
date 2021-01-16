@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios'
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from '@stripe/react-stripe-js';
 import Preview from '../Checkout/Preview'
 import CheckoutForm from './CheckoutForm'
 

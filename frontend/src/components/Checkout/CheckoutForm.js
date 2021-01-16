@@ -2,7 +2,8 @@ import React from 'react'
 import api from '../../config/api'
 import axios from 'axios'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import '../../assets/css/stripe..css'
+import '../../assets/css/stripe.css'
+
 const CheckoutForm = () => {
   const stripe = useStripe()
   const elements = useElements()
@@ -20,6 +21,11 @@ const CheckoutForm = () => {
       type: 'card',
       card: elements.getElement(CardElement),
     })
+
+    const { data: clientSecret } = await api.post('/create-checkout-session', {
+      // amount: pendingBooking.cost * 100 //times 100 to convert to cents
+    })
+    console.log(clientSecret)
   }
 
   // save booking function 
@@ -53,10 +59,14 @@ const CheckoutForm = () => {
   return (
     <div className="container col s12 m6">
       <form onSubmit={handleSubmit}>
-        <CardElement/>
-        <button className="waves-effect waves-light btn" type="submit" disabled={!stripe}>
-          Pay
-        </button>
+      <div className="row">
+        <div className="col s12 push-m2 m8">
+          <CardElement/>
+          <button className="waves-effect waves-light btn" type="submit" disabled={!stripe}>
+            Pay
+          </button>
+        </div>
+      </div>
       </form>
     </div>
   )

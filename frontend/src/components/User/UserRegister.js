@@ -64,46 +64,50 @@ const UserRegister = () => {
 
     return (
         <div className="container">
-            <div classame="row">
-                <h3>Register</h3>
-                <form onSubmit={formSubmit}>
-                    <div className="row">
-                        <div className="input-field col s10 m6">
-                            <label for="username">Username</label>   
+            <form className="main-form" onSubmit={formSubmit}>
+                <div className="row">
+                    <div className="form-heading left-align col s12 push-m2 m8">
+                        <h3>Register</h3>
+                    </div>
+                    <div className="input-field col s12 push-m2 m8">
+                        <label for="username">Username</label>   
+                        <input 
+                            type="text"
+                            name="username"
+                            value={values.username}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <label for="email">Email</label> 
+                        <input type="text"
+                        name="email"
+                        value={values.email}
+                        onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <label for="password">Password</label>
                             <input 
                                 type="text"
-                                name="username"
-                                value={values.username}
+                                name="password"
+                                value={values.password}
                                 onChange={handleInputChange}
                             />
-                        </div>
                     </div>
-                    <div className="row">
-                        <div className="input-field col s10 m6">
-                            <label for="email">Email</label> 
-                            <input type="text"
-                            name="email"
-                            value={values.email}
-                            onChange={handleInputChange}
-                            />
-                        </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <input type="submit" value="submit" className="btn waves-effect waves-light" />  
+                        {errorMessage && <p style={errorStyles}>{errorMessage}</p>} 
+                        <p>Already have an account? <strong><a href="/login">Login</a></strong></p>
                     </div>
-                    <div className="row">
-                        <div className="input-field col s10 m6">
-                            <label for="password">Password</label>
-                                <input 
-                                    type="text"
-                                    name="password"
-                                    value={values.password}
-                                    onChange={handleInputChange}
-                                />
-                        </div>
-                    </div>
-                    <input type="submit" value="submit" className="btn waves-effect waves-light" />  
-                    {errorMessage && <p style={errorStyles}>{errorMessage}</p>} 
-                </form>
-                <p>Already have an account? <strong><a href="/login">Login</a></strong></p>
-            </div>
+                </div>
+            </form>
         </div>
     )
 }
