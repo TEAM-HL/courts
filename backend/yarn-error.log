@@ -1,5 +1,5 @@
 Arguments: 
-  /home/hughcharlton/.nvm/versions/node/v14.8.0/bin/node /usr/share/yarn/bin/yarn.js start
+  /home/lkb-t440p/.nvm/versions/node/v14.15.4/bin/node /usr/share/yarn/bin/yarn.js add stripe
 
 PATH: 
   /home/hughcharlton/.rbenv/plugins/ruby-build/bin:/home/hughcharlton/.rbenv/shims:/home/hughcharlton/.rbenv/bin:/home/hughcharlton/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/bin:/home/hughcharlton/.rvm/gems/ruby-2.7.0/bin:/home/hughcharlton/.rvm/gems/ruby-2.7.0@global/bin:/home/hughcharlton/.rvm/rubies/ruby-2.7.0/bin:/home/hughcharlton/.nvm/versions/node/v14.8.0/bin:/home/hughcharlton/.rbenv/plugins/ruby-build/bin:/home/hughcharlton/.rbenv/shims:/home/hughcharlton/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files/Intel/iCLS Client/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Users/Hugh/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Hugh/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/hughcharlton/.rvm/bin:/home/hughcharlton/.rvm/bin:/home/hughcharlton/.rvm/bin
@@ -14,6 +14,8 @@ Platform:
   linux x64
 
 Trace: 
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:67:26)
   SyntaxError: /home/hughcharlton/mnt/c/Projects/flextrack/final/testing/courts/backend/package.json: Unexpected token } in JSON at position 206
       at JSON.parse (<anonymous>)
       at /usr/share/yarn/lib/cli.js:1625:59
@@ -30,9 +32,7 @@ npm manifest:
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "start": "nodemon backend/server.js",
-    },
     "author": "",
-    "license": "ISC",
     "dependencies": {
       "axios": "^0.21.0",
       "bcryptjs": "^2.4.3",
@@ -48,6 +48,11 @@ npm manifest:
       "mongoose-bcrypt": "^1.9.0",
       "mongoose-unique-validator": "^2.0.3",
       "passport": "^0.4.1",
+      "passport-jwt": "^4.0.0",
+      "passport-local": "^1.0.0"
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.6"
       "passport-local": "^1.0.0",
       "stripe": "^8.130.0"
     },
@@ -94,6 +99,7 @@ Lockfile:
       "@types/bson" "*"
       "@types/node" "*"
   
+  "@types/node@*":
   "@types/node@*", "@types/node@>=8.1.0":
     version "14.14.20"
     resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.20.tgz#f7974863edd21d1f8a494a73e8e2b3658615c340"
