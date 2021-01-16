@@ -25,7 +25,8 @@
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "stripe": "^8.131.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

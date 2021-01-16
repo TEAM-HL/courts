@@ -7,7 +7,7 @@ import { stateReducer } from './config/stateReducer'
 import Dashboard from './components/Dashboard/Dashboard'
 import CreateBooking from './components/Booking/CreateBooking'
 import UserLogin from './components/User/UserLogin'
-import Navbar from './components/shared/Navbar'
+import NavbarHeader from './components/shared/NavbarHeader'
 import UserRegister from './components/User/UserRegister'
 //toastify dependencies
 import { toast } from 'react-toastify'
@@ -27,7 +27,7 @@ const App = () => {
    return (
     <>
       <StateContext.Provider value={{store, dispatch}} >
-        <Navbar />
+        <NavbarHeader />
         <BrowserRouter>
           <Route path="/" exact component={Dashboard} />
           <Route path="/login" exact component={UserLogin} />
