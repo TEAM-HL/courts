@@ -6,10 +6,12 @@ import addDays from 'date-fns/addDays'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import addMinutes from 'date-fns/addMinutes'
+import getDay from 'date-fns/getDay'
+import getTime from 'date-fns/getTime'
+import isFuture from 'date-fns/isFuture'
 import CurrencyInput from 'react-currency-input-field'
 import api from '../../config/api'
 import { useGlobalState } from "../../config/store"
-// import { set } from 'mongoose'
 import M from 'materialize-css'
 
 
@@ -43,7 +45,10 @@ const CreateBooking = () => {
     // set state for booking detail values 
     const [values, setValues] = useState(initialBookingValues)
     // set state for date
-    const [date, setDate] = useState(null)
+    const [date, setDate] = useState(getRoundedDate(new Date()))
+
+    // set state for minTime
+    // const [minTime, setMinTime] = useState(null)
 
     // calculate total cost
     const calculateTotalCost = (
@@ -74,6 +79,13 @@ const CreateBooking = () => {
         document.getElementsByName("error")[0].hidden = true
         // console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         // checkDate(date)
+
+        // // setMinTime for datepicker based on day number of date local state
+        // if (getDay(date) === getDay(new Date()) && getDay(date) === 0) {
+        //     setMinTime(operatingHoursSunday.filter(time => isFuture(time))[0])
+        // } else if (getDay(date) !== getDay(new Date()) && getDay(date) > 0) {
+        //     setMinTime(operatingHours.filter(time => isFuture(time))[0])
+        // }
     }
     
     //executed when form is submitted
@@ -392,8 +404,7 @@ const CreateBooking = () => {
         setHours(setMinutes(new Date(), 30), 20),
         setHours(setMinutes(new Date(), 0), 21),
         setHours(setMinutes(new Date(), 30), 21),
-        setHours(setMinutes(new Date(), 0), 22),
-        setHours(setMinutes(new Date(), 30), 22)
+        setHours(setMinutes(new Date(), 0), 22)
       ]
     // array of excluded times sun  
       const operatingHoursSunday = [
@@ -439,7 +450,8 @@ const CreateBooking = () => {
         }
     }
 
-    const getRoundedDate = (d=new Date()) => {
+    // round date to nearest 30min from current time 
+    function getRoundedDate(d=new Date()) {
         console.log("hit rounded date func")
         // convert minutes to ms
         const ms = 1000 * 60 * 30
@@ -485,17 +497,17 @@ const CreateBooking = () => {
                                 placeholderText="Select a date and time"
                                 minDate={new Date()}                        
                                 maxDate={addDays(new Date(), 10)}
-                                // minTime={ 
-                                //     getDay(date) === getDay(new Date()) && getDay(date) < 1 ? 
-                                //     operatingHoursSunday.filter(time => isFuture(time))[0] :
-                                //     operatingHours.filter(time => isFuture(time))[0]
-                                //     }
-                                // maxTime={
-                                //     (getDay(date) < 1) ? 
-                                //     operatingHoursSunday[operatingHoursSunday.length-1] : 
-                                //     operatingHours[operatingHours.length-1]
-                                // }
-                                // excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date))}
+                                minTime={
+                                    (getDay(date) === getDay(new Date()) && getDay(date) === 0) ?
+                                    operatingHoursSunday.filter(time => isFuture(time))[0]
+                                    : operatingHours[0]
+                                }
+                                maxTime={
+                                    (getDay(date) === 0) ? 
+                                    operatingHoursSunday[operatingHoursSunday.length-1] : 
+                                    operatingHours[operatingHours.length-1]
+                                }
+                                excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date)) }
                                 showTimeSelect
                                 required
                             />
