@@ -51,7 +51,7 @@ const CreateBooking = () => {
     const [values, setValues] = useState(initialBookingValues)
     
     // set state for date
-    const [date, setDate] = useState(null)
+    const [date, setDate] = useState(getRoundedDate(new Date()))
     
     const preFillBooking = () => {
         console.log("pending booking: ", pendingBooking)
@@ -59,11 +59,6 @@ const CreateBooking = () => {
             setValues(pendingBooking)
         }
     }
-    
-    const [date, setDate] = useState(getRoundedDate(new Date()))
-
-    // set state for minTime
-    // const [minTime, setMinTime] = useState(null)
 
     // calculate total cost
     const calculateTotalCost = (
