@@ -20,8 +20,8 @@ router.route('/create-checkout-session').post(async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: '/booking/success',
-      cancel_url: '/booking',
+      success_url: `${api.baseUrl}/booking/success`,
+      cancel_url: `${api.baseUrl}/booking/new`,
     });
 
       res.json({ id: session.id });
