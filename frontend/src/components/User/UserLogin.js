@@ -110,6 +110,7 @@ const UserLogin = () => {
             </div>
             <div className="row">
               <div className="input-field col s12 push-m2 m8">
+                <label htmlFor="password">Password</label>
                 <input
                     name="password"
                     type="password"
@@ -117,7 +118,6 @@ const UserLogin = () => {
                     onChange={handleInputChange}
                     required
                 />
-                <label htmlFor="password">Password</label>
               </div>
             </div>
             <div className="row">

@@ -48,9 +48,11 @@ const NavbarHeader = () => {
                     <a href="/" id="courts-logo" className="brand-logo">Courts</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li className="yellow-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser.username}` : ''}</li>
-                        <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
+                        {/* <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
                             <i className="material-icons right">arrow_drop_down</i></a>
-                        </li>
+                        </li> */}
+                        <li className=" blue darken-1"><a href="/booking/new">Book a Court</a></li>
+                        <li><a href="/booking/view">View My Bookings</a></li>
                         <li><a href="/community">Community</a></li>
                         <li><a href="/events">Events</a></li>
                         <li><a href="/contact">Contact</a></li>
