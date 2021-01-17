@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect } from 'react'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 import { StateContext } from './config/store'
 import { stateReducer } from './config/stateReducer'
 //materialize
@@ -11,6 +11,7 @@ import UserLogin from './components/User/UserLogin'
 import NavbarHeader from './components/shared/NavbarHeader'
 import UserRegister from './components/User/UserRegister'
 import Preview from './components/Checkout/Preview'
+import Error404 from './components/Error404'
 //toastify 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -45,11 +46,15 @@ const App = () => {
       <StateContext.Provider value={{store, dispatch}} >
         <NavbarHeader />
         <BrowserRouter>
+          <Switch>
             <Route path="/" exact component={Dashboard} />
             <Route path="/login" exact component={UserLogin} />
             <Route path="/register" exact component={UserRegister} />
             <Route path="/booking/new" exact component={CreateBooking} />
             <Route path="/booking/checkout" exact component={Preview} />
+            <Route path="/404" exact component={Error404} />
+            <Redirect to="/404" />
+          </Switch>
         </BrowserRouter>
       </StateContext.Provider>    
     </>
