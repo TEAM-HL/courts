@@ -9,7 +9,6 @@ const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
-
 require('dotenv').config()
 
 const app = express()
@@ -67,13 +66,12 @@ connection.once('open', () => {
 const bookingsRouter = require('./routes/bookings')
 const usersRouter = require('./routes/users')
 const postsRouter = require('./routes/posts')
+const checkoutRouter = require('./routes/checkout')
 
 app.use('/bookings', bookingsRouter)
 app.use('/users', usersRouter)
 app.use('/posts', postsRouter)
-// app.get('/', (req, res) => {
-//     res.send("hello world")
-// })
+app.use('/checkout', checkoutRouter)
 
 //error handling
 app.use(function (err, req, res, next) {

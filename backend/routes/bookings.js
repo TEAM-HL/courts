@@ -106,13 +106,14 @@ router.route('/findCourt').post((req, res) => {
             })
         } else if (result.length > 0) {
             console.log("there is a clash")
+            res.send(result)
             // check for equal start times
 
-            const filtered = result.filter(booking => {
-                if (booking.time === req.body.time) {
-                    console.log(booking)
-                }
-            })
+            // const filtered = result.filter(booking => {
+            //     if (booking.time === req.body.time) {
+            //         console.log(booking)
+            //     }
+            // })
             
             // result.filter(obj => (obj.endTime > localState.time) && (obj.time < localState.time))
 

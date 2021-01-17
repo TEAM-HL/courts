@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon"
+    "dev": "nodemon",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,10 +25,14 @@
     "mongoose-bcrypt": "^1.9.0",
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "stripe": "^8.131.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
+  },
+  "engines": {
+    "node": "14.8.0"
   }
 }
