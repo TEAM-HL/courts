@@ -12,7 +12,7 @@ const stripePromise = loadStripe('pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l');
 
 const Preview = () => {
     // destructure store and dispatch from globalstate 
-    const {store, dispatch} = useGlobalState()
+    const {store} = useGlobalState()
 
     const { pendingBooking } = store
     console.log("pendingBooking ", pendingBooking)
@@ -72,27 +72,34 @@ const Preview = () => {
     //     return array[index][1]
     // }
 
-    const handleClick = async () => {
+    const handlePayClick = async () => {
         // Get Stripe.js instance
         const stripe = await stripePromise;
 
-        // Call your backend to create the Checkout Session
-        const response = await api('/create-checkout-session', { method: 'POST' });
-
-        const session = await response.json();
-
-        // When the customer clicks on the button, redirect them to Checkout.
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-
-        if (result.error) {
-            console.log(result.error.message)
-            setStripeError(result.error.message)
-        // If `redirectToCheckout` fails due to a browser or network
-        // error, display the localized error message to your customer
-        // using `result.error.message`.
+        try {
+            const response = await api({
+                method: "POST", 
+                data: previewBookingData, 
+                url: "/create-checkout-session"})
+            console.log("response: ", response)
+            // Call your backend to create the Checkout Session
+            const session = await response.json()
+            // When the customer clicks on the button, redirect them to Checkout.
+            const result = await stripe.redirectToCheckout({
+                sessionId: session.id,
+            });
+    
+            if (result.error) {
+                console.log(result.error.message)
+                setStripeError(result.error.message)
+            // If `redirectToCheckout` fails due to a browser or network
+            // error, display the localized error message to your customer
+            // using `result.error.message`.
+            }
+        } catch (error) {
+            console.log(error)
         }
+
     }
 
     return (
@@ -122,11 +129,11 @@ const Preview = () => {
                     </ul>
                     <div className="row">
                         <button className="btn waves-effect waves-light">Cancel</button>
-                        <button role="link" onClick={handleClick} id="checkout-button" className="btn waves-effect waves-light">
+                        <button role="link" onClick={handlePayClick} id="checkout-button" className="btn waves-effect waves-light">
                             Proceed to payment
                         </button>
                         {
-                            (stripeError !== null) ?    
+                            (stripeError !== null) &&    
                             <Modal
                                 actions={[
                                     <Button flat modal="close" node="button" waves="green">Close</Button>
@@ -134,7 +141,7 @@ const Preview = () => {
                                 bottomSheet={false}
                                 fixedFooter={false}
                                 header="Modal Header"
-                                id="modal1"
+                                id="payErrorModal"
                                 open={false}
                                 options={{
                                     dismissible: true,
@@ -152,8 +159,7 @@ const Preview = () => {
                                 // root={[object HTMLBodyElement]}
                             >
                                 {stripeError}
-                            </Modal>
-                           : <></>         
+                            </Modal>        
                         }
                     </div>
                 </div>
