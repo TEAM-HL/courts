@@ -20,10 +20,20 @@ const Navbar = () => {
     // logout user function
     // clear global state
     // redirect to homepage
-    const logoutUser = () => {
+    const logoutUser = async () => {
+
+        // call logout on express server to delete session cookie 
+        await api({
+            method: "GET",
+            url: "/users/logout"
+        }).then(res => {
+            console.log(res)
+        })
+        // clear global context
         dispatch({
             type: "RESET_STATE",
         })
+        //redirect user to dashboard
         history.push("/")
     }
 

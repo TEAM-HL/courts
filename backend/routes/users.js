@@ -12,7 +12,7 @@ router.route('/').get((req, res) => {
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
-// login user route 
+// ------LOGIN USER -------------------------------
 router.route('/login').post((req, res, next) => {
 console.log("hit login route")
 // assign user credentials to variable
@@ -32,6 +32,7 @@ console.log("hit login route")
             message: 'Error! password cannot be blank'
         })
     }
+    
 // authenticate password
     passport.authenticate("local", (error, user) => {
         if (error) {
@@ -50,6 +51,9 @@ console.log("hit login route")
                         message: `Error: ${error}`
                     })
                 }
+
+                console.log("session object: ", req.session)
+
                 res.send({
                     success: true,
                     message: 'user successfully authenticated',
@@ -60,7 +64,7 @@ console.log("hit login route")
     })(req, res, next)
 })
 
-// register user route 
+// -------REGISTER USER --------------------------- 
 router.route('/register').post((req, res, next) => {
     //testing
     // console.log("hit register route")
@@ -134,7 +138,17 @@ router.route('/register').post((req, res, next) => {
         console.log("new user registered")
     })
 })
+// -----------LOGOUT--------------------------------------------
+router.route('/logout').get((req, res) => {
+    console.log("logout endpoint hit")
+    res.logout()
+    res.send({
+        success: true,
+        message: "User has successfully logged out."
+    })
+})
 
+// -------------------------------------------------------
 // show user profile by ID
 router.route('/:id').get((req, res) => {
     User.findById(req.params.id)

@@ -19,6 +19,19 @@ app.use(cors({
     origin: "http://localhost:3000",
     credentials: true
 }))
+
+// Mongo Atlas connection
+const uri = process.env.ATLAS_URI
+mongoose.connect(uri, { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true 
+    }
+)
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log("MongoDB database connection established successfully");
+})
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.enable('trust proxy')
@@ -27,13 +40,13 @@ app.use(session({
     resave: false, 
     saveUninitialized: true,
     cookie: { 
-        expires: 600000,
+        maxAge: 3600000,
         secure: true,
         sameSite: 'none',
         httpOnly: false 
     },
     store: new MongoStore(
-        { mongooseConnection: mongoose.connection }
+        { mongooseConnection: connection }
     )
 }))
 app.use(cookieParser(process.env.COOKIE_KEY))
@@ -42,27 +55,13 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use((req, res, next) => {
-    // console.log(res)
-    // console.log(req)
-    // const { token } = req.session
-    // TODO: token showing as undefined
-    // console.log({token})
+    console.log(req.session)
+    console.log(req.user)
     next()
 })
 
-// Mongo Atlas connection
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true 
-    }
-);
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
-})
-
 // Routes
+
 const bookingsRouter = require('./routes/bookings')
 const usersRouter = require('./routes/users')
 const postsRouter = require('./routes/posts')

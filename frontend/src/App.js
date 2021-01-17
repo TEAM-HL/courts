@@ -17,6 +17,8 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 // css
 import './assets/css/App.css'
+//axios
+import api from './config/api'
 
 // // Make sure to call loadStripe outside of a component’s render to avoid
 // // recreating the Stripe object on every render.
