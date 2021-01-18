@@ -8,6 +8,12 @@ router.route('/').get((req, res) => {
         .catch(e => res.status(400).json('Error: ' + e))
 })
 
+// router.route('/view').get((req, res) => {
+//     Booking.find()
+//         .then(bookings => res.json(bookings))
+//         .catch(e => res.status(400).json('Error: ' + e))
+// })
+
 // validate booking
 router.route('/validate').get((req, res) => {
     Booking.find({ 
