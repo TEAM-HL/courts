@@ -20,28 +20,36 @@ const Navbar = () => {
     // logout user function
     // clear global state
     // redirect to homepage
-    const logoutUser = () => {
-        dispatch({
-            type: "RESET_STATE",
+    const logoutUser = async () => {
+
+        // call logout on express server to delete session cookie 
+        await api({
+            method: "GET",
+            url: "/users/logout"
+        }).then(res => {
+            console.log(res)
+            if (res.status === 200) {
+                // clear global context
+                dispatch({
+                    type: "RESET_STATE",
+                })
+                //redirect user to dashboard
+                // history.push("/")
+                console.log(store)
+            } 
         })
-        history.push("/")
     }
 
+    //initialise materialize dropdown and sidenav
     useEffect(() => {
-        
-        // initialize sidenav
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.sidenav');
             var instances = M.Sidenav.init(elems);
-        });
-
-        // intialize dropdown
+        })
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.dropdown-trigger');
             var instances = M.Dropdown.init(elems);
-          });
-        
-
+        })
     })
 
     return (

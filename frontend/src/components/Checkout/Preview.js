@@ -43,12 +43,12 @@ const Preview = () => {
     const previewTable = []
     // iterate over nested pairs object and push to previewData 
     pairs.map(entry => {
-            if (typeof entry[1] ==='object') {
-                let nestedObj = Object.entries(entry[1])
-                // nestedObj.map(entry => console.log(`${entry[0]}: ${entry[1]}`) )
-                nestedObj.map(entry => previewTable.push(entry) )
-            } else previewTable.push(entry)
-        })
+        if (typeof entry[1] ==='object') {
+            let nestedObj = Object.entries(entry[1])
+            // nestedObj.map(entry => console.log(`${entry[0]}: ${entry[1]}`) )
+            nestedObj.map(entry => previewTable.push(entry) )
+        } else previewTable.push(entry)
+    })
     console.log("post", previewTable)
 
 
@@ -72,34 +72,35 @@ const Preview = () => {
     //     return array[index][1]
     // }
 
-    const handlePayClick = async () => {
+    const handlePayClick = async (event) => {
         // Get Stripe.js instance
-        const stripe = await stripePromise;
-
-        try {
-            const response = await api({
-                method: "POST", 
-                data: previewBookingData, 
-                url: "/create-checkout-session"})
-            console.log("response: ", response)
-            // Call your backend to create the Checkout Session
-            const session = await response.json()
-            // When the customer clicks on the button, redirect them to Checkout.
-            const result = await stripe.redirectToCheckout({
-                sessionId: session.id,
-            });
-    
+        const stripe = await stripePromise
+        
+        // Call backend to create the Checkout Session
+        const response = await api('/checkout/create-checkout-session', { 
+            method: 'POST', data: pendingBooking
+        })
+        .then(function(response) {
+            return response.json()
+          })
+          .then(function(session) {
+            console.log(session)
+            return stripe.redirectToCheckout({ sessionId: session.id });
+          })
+          .then(function(result) {
+         
             if (result.error) {
-                console.log(result.error.message)
-                setStripeError(result.error.message)
-            // If `redirectToCheckout` fails due to a browser or network
-            // error, display the localized error message to your customer
-            // using `result.error.message`.
+              setStripeError(result.error.message)
             }
-        } catch (error) {
-            console.log(error)
-        }
-
+        })
+        .catch(function(error) {
+            console.error('Error:', error)
+          })
+    }
+   
+    // error message css styles
+    const errorStyles = {
+        color: "red"
     }
 
     return (
@@ -132,35 +133,7 @@ const Preview = () => {
                         <button role="link" onClick={handlePayClick} id="checkout-button" className="btn waves-effect waves-light">
                             Proceed to payment
                         </button>
-                        {
-                            (stripeError !== null) &&    
-                            <Modal
-                                actions={[
-                                    <Button flat modal="close" node="button" waves="green">Close</Button>
-                                ]}
-                                bottomSheet={false}
-                                fixedFooter={false}
-                                header="Modal Header"
-                                id="payErrorModal"
-                                open={false}
-                                options={{
-                                    dismissible: true,
-                                    endingTop: '10%',
-                                    inDuration: 250,
-                                    onCloseEnd: null,
-                                    onCloseStart: null,
-                                    onOpenEnd: null,
-                                    onOpenStart: null,
-                                    opacity: 0.5,
-                                    outDuration: 250,
-                                    preventScrolling: true,
-                                    startingTop: '4%'
-                                }}
-                                // root={[object HTMLBodyElement]}
-                            >
-                                {stripeError}
-                            </Modal>        
-                        }
+                        {(stripeError !== null) && <p style={errorStyles}>{stripeError}</p>}
                     </div>
                 </div>
             </div>
@@ -170,5 +143,4 @@ const Preview = () => {
 
 export default Preview
 
-{/* <p>You have booked court {getValueOf(previewData, 'court')}</p> */}
 
