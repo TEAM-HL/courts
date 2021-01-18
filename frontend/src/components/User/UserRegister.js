@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import axios from '../../config/api'
+import api from '../../config/api'
 import M from 'materialize-css'
 
 // set initial values local state
@@ -31,7 +31,7 @@ const UserRegister = () => {
     }
     // register user function to call server
     const registerUser = async (data) => {
-        await axios({
+        await api({
             method: "POST",
             data: {
                 username: data.username,
@@ -64,44 +64,50 @@ const UserRegister = () => {
 
     return (
         <div className="container">
-            <div classame="row">
-                <div className="col s6">
-                    <h1>Register</h1>
-                    <form onSubmit={formSubmit}>
-                        <label htmlFor="username">
-                            Username
-                            <input 
-                                type="text"
-                                name="username"
-                                value={values.username}
-                                onChange={handleInputChange}
-                            />
-                        </label>   
-                        <label htmlFor="email">
-                            Email
-                            <input 
-                                type="text"
-                                name="email"
-                                value={values.email}
-                                onChange={handleInputChange}
-                            />
-                        </label>   
-                        <label htmlFor="password">
-                            Password
+            <form className="main-form" onSubmit={formSubmit}>
+                <div className="row">
+                    <div className="form-heading left-align col s12 push-m2 m8">
+                        <h3>Register</h3>
+                    </div>
+                    <div className="input-field col s12 push-m2 m8">
+                        <label for="username">Username</label>   
+                        <input 
+                            type="text"
+                            name="username"
+                            value={values.username}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <label for="email">Email</label> 
+                        <input type="text"
+                        name="email"
+                        value={values.email}
+                        onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <label for="password">Password</label>
                             <input 
                                 type="text"
                                 name="password"
                                 value={values.password}
                                 onChange={handleInputChange}
                             />
-                        </label>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
                         <input type="submit" value="submit" className="btn waves-effect waves-light" />  
                         {errorMessage && <p style={errorStyles}>{errorMessage}</p>} 
-                    </form>
-                    <br/>
-                    <span>Already have an account? <strong><a href="/login">Login</a></strong></span>
+                        <p>Already have an account? <strong><a href="/login">Login</a></strong></p>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { Dropdown } from "materialize-css"
 import { useHistory } from 'react-router-dom'
 import { useGlobalState } from "../../config/store"
+import M from 'materialize-css'
 
 
 const Navbar = () => {
@@ -20,18 +20,36 @@ const Navbar = () => {
     // logout user function
     // clear global state
     // redirect to homepage
-    const logoutUser = () => {
-        dispatch({
-            type: "RESET_STATE",
+    const logoutUser = async () => {
+
+        // call logout on express server to delete session cookie 
+        await api({
+            method: "GET",
+            url: "/users/logout"
+        }).then(res => {
+            console.log(res)
+            if (res.status === 200) {
+                // clear global context
+                dispatch({
+                    type: "RESET_STATE",
+                })
+                //redirect user to dashboard
+                // history.push("/")
+                console.log(store)
+            } 
         })
-        console.log(store)
-        history.push("/login")
     }
 
+    //initialise materialize dropdown and sidenav
     useEffect(() => {
-        // initialise materialize dropdown element
-        let dropdown = document.querySelector('.dropdown-trigger')
-        Dropdown.init(dropdown)
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        })
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+        })
     })
 
     return (
@@ -43,6 +61,7 @@ const Navbar = () => {
             <nav>
                 <div className="nav-wrapper blue darken-4">
                     <a href="/" className="brand-logo">Courts</a>
+                    {/* <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a> */}
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
                             <i className="material-icons right">arrow_drop_down</i></a></li>
@@ -54,7 +73,7 @@ const Navbar = () => {
                                 ? <li><a href="/tools">Tools</a></li>
                                 : <li></li>
                             }
-                        <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser && loggedInUser.username}!` : ``}</li>
+                        <li className="red-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser}!` : ``}</li>
                         <li>
                             {(authenticated === true)
                                 ? <a href="/logout" onClick={logoutUser} className="waves-effect waves-light btn">Logout<i className="material-icons right">account_circle</i></a>

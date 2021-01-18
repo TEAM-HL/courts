@@ -6,14 +6,18 @@ import addDays from 'date-fns/addDays'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import addMinutes from 'date-fns/addMinutes'
+import getDay from 'date-fns/getDay'
+import getTime from 'date-fns/getTime'
+import isFuture from 'date-fns/isFuture'
 import CurrencyInput from 'react-currency-input-field'
-import axios from '../../config/api'
+import api from '../../config/api'
 import { useGlobalState } from "../../config/store"
-import { set } from 'mongoose'
 import M from 'materialize-css'
+import '../../assets/css/App.css'
 
 
 const CreateBooking = () => {  
+    
     // initialise materialize
     M.AutoInit()
     // setup history const to be used later  
@@ -22,6 +26,10 @@ const CreateBooking = () => {
     const {store, dispatch} = useGlobalState()
     // destructure loggedInUser from store
     const {loggedInUser} = store
+    // destructure pendingBooking from store
+    const {pendingBooking} = store
+    // destructure authenticated from store
+    const {authenticated} = store
 
     // define initial booking values
     const initialBookingValues = {
@@ -39,11 +47,19 @@ const CreateBooking = () => {
         canister: 5,
         hopper: 10
     }
-
+    
     // set state for booking detail values 
     const [values, setValues] = useState(initialBookingValues)
+    
     // set state for date
-    const [date, setDate] = useState(null)
+    const [date, setDate] = useState(getRoundedDate(new Date()))
+    
+    const preFillBooking = () => {
+        console.log("pending booking: ", pendingBooking)
+        if (pendingBooking !== null) {
+            setValues(pendingBooking)
+        }
+    }
 
     // calculate total cost
     const calculateTotalCost = (
@@ -65,11 +81,13 @@ const CreateBooking = () => {
 
     useEffect(() => {
         findCourt()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.duration])
     
     const handleDateChange = date => {
         setDate(date)
         console.log("date changed")
+        // console.log(document.getElementsByName("error")[0])
         document.getElementsByName("error")[0].hidden = true
         // console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         // checkDate(date)
@@ -97,71 +115,68 @@ const CreateBooking = () => {
             type: "setPendingBooking",
             data: bookingData
         })   
-
-        // redirect user to stripe checkout 
+        
+        // redirect user to checkoutForm component
         history.push("/booking/checkout")
+        
+        // made backend call to stripe
+        // when connection made,redirect user to stripe checkout-form (which includes review of booking details)
 
-        await axios({
-            method: "POST",
-            data: bookingData,
-            withCredentials: true, 
-            url: "/bookings/new"
-        }).then(res => {
-            console.log(res)
-            // if (data passes validation formatting and no prev booking clashes) 
-            // redirect user to stripe payment
-            // } 
-        })
+        // from within the CheckoutForm component file, 
+        // after successful payment is made, save booking in database
+        // and provide user with receipt number and tax invoice
+
+    
     }
 
     // function to return all values of a certain key -
     // used below to return array of unavailable times
-    function findAllByKey(object, keyToFind) {
-        return Object.entries(object)
-          .reduce((acc, [key, value]) => (key === keyToFind)
-            ? acc.concat(value)
-            : (typeof value === 'object')
-            ? acc.concat(findAllByKey(value, keyToFind))
-            : acc
-          , [])
-      }
+    // function findAllByKey(object, keyToFind) {
+    //     return Object.entries(object)
+    //       .reduce((acc, [key, value]) => (key === keyToFind)
+    //         ? acc.concat(value)
+    //         : (typeof value === 'object')
+    //         ? acc.concat(findAllByKey(value, keyToFind))
+    //         : acc
+    //       , [])
+    //   }
 
-    const checkDate = async (date) => {
-        console.log("checking for available times for selected date...")
-        try {
-            await axios({
-                method: "POST",
-                data: { 
-                    date: date.toLocaleDateString(), 
-                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })    
-                },
-                withCredentials: true, 
-                url: "http://localhost:5000/bookings/checkDate"
-            }).then(res => {
-                console.log(res)
-                console.log("second array starts here")
-                const data = res.data.data
-                console.log(data)
-                // add data to localState
-                console.log(data.filter(court => court.court === 3))
+    // const checkDate = async (date) => {
+    //     console.log("checking for available times for selected date...")
+    //     try {
+    //         await api({
+    //             method: "POST",
+    //             data: { 
+    //                 date: date.toLocaleDateString(), 
+    //                 time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })    
+    //             },
+    //             withCredentials: true, 
+    //             url: "http://localhost:5000/bookings/checkDate"
+    //         }).then(res => {
+    //             console.log(res)
+    //             console.log("second array starts here")
+    //             const data = res.data.data
+    //             console.log(data)
+    //             // add data to localState
+    //             console.log(data.filter(court => court.court === 3))
                 
-                // if (res.data.success === true && getDay(date) < 1) {
-                // }
+    //             // if (res.data.success === true && getDay(date) < 1) {
+    //             // }
 
-                // for filtering duration
-                // array.filter(remove entries that are earlier than current booking)
-                //  .filter(end <= start)
+    //             // for filtering duration
+    //             // array.filter(remove entries that are earlier than current booking)
+    //             //  .filter(end <= start)
 
-            }
-                )} catch (error) {
-                    console.log(error)
-                }
-    }
+    //         }
+    //             )} catch (error) {
+    //                 console.log(error)
+    //             }
+    // }
 
     const findCourt = async () => {
         console.log("checking available courts...")
         try {
-            await axios({
+            await api({
                 method: "POST",
                 data: { 
                     date: date.toLocaleDateString(),
@@ -394,8 +409,7 @@ const CreateBooking = () => {
         setHours(setMinutes(new Date(), 30), 20),
         setHours(setMinutes(new Date(), 0), 21),
         setHours(setMinutes(new Date(), 30), 21),
-        setHours(setMinutes(new Date(), 0), 22),
-        setHours(setMinutes(new Date(), 30), 22)
+        setHours(setMinutes(new Date(), 0), 22)
       ]
     // array of excluded times sun  
       const operatingHoursSunday = [
@@ -426,11 +440,6 @@ const CreateBooking = () => {
           setHours(setMinutes(new Date(), 0), 19),
           setHours(setMinutes(new Date(), 30), 19)
         ]
-    // -----TESTING ------------------
-    // const times = operatingHours.map(time => toDate(time)).filter(time => isFuture(time))
-    // const timesAfterNow = operatingHours.filter(time => isFuture(time))
-    // console.log(timesAfterNow)    
-    // ------------------------------------
     
     // get available times for date picker according to day selected
     const availableTimes = () => {
@@ -441,7 +450,8 @@ const CreateBooking = () => {
         }
     }
 
-    const getRoundedDate = (d=new Date()) => {
+    // round date to nearest 30min from current time 
+    function getRoundedDate(d=new Date()) {
         console.log("hit rounded date func")
         // convert minutes to ms
         const ms = 1000 * 60 * 30
@@ -456,9 +466,6 @@ const CreateBooking = () => {
     // form submission
     const handleSubmit = e => {
         e.preventDefault()
-        // TESTING
-        // console.log(store)
-        // console.log(values)
         console.log(`total cost: ${calculateTotalCost}`)
         console.log(`date = ${date}`)
     // ----------------------------------
@@ -468,101 +475,133 @@ const CreateBooking = () => {
     
     // component structure
     return (
+        <>
         <div className="container">
-            <div className="row">
-                <div className="col s6">
-                    <h1>Book a Court</h1>
-                    {
-                        (loggedInUser !== null && store.authenticated === false) 
-                        ? <p>Please login before creating a booking.</p>
-                        : <form onSubmit={handleSubmit}>
-                            <label>Date & Time</label>
-                            <br/>
-                            <DatePicker     
-                                name="date"
-                                selected={date} 
-                                value={date}
-                                onChange={handleDateChange}
-                                dateFormat="MMM d  h:mm aa"
-                                placeholderText="Select a date and time"
-                                minDate={new Date()}                        
-                                maxDate={addDays(new Date(), 10)}
-                                // minTime={ 
-                                //     getDay(date) === getDay(new Date()) && getDay(date) < 1 ? 
-                                //     operatingHoursSunday.filter(time => isFuture(time))[0] :
-                                //     operatingHours.filter(time => isFuture(time))[0]
-                                //     }
-                                // maxTime={
-                                //     (getDay(date) < 1) ? 
-                                //     operatingHoursSunday[operatingHoursSunday.length-1] : 
-                                //     operatingHours[operatingHours.length-1]
-                                // }
-                                // excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date))}
-                                showTimeSelect
-                                required
+            <form id="booking-form" className="main-form" onSubmit={handleSubmit}>
+                <div className="row">
+                    <div className="form-heading left-align col s12 push-m2 m8">
+                        <h3>Book a Court</h3>
+                    </div>
+                    <div className="input-field col s12 push-m2 m8">
+                        <br/><br/>
+                        <DatePicker   
+                            name="date"
+                            selected={date} 
+                            value={date}
+                            onChange={handleDateChange}
+                            dateFormat="MMM d  h:mm aa"
+                            placeholderText="Select a date and time"
+                            minDate={new Date()}                        
+                            maxDate={addDays(new Date(), 10)}
+                            minTime={
+                                (getDay(date) === getDay(new Date()) && getDay(date) === 0) ?
+                                operatingHoursSunday.filter(time => isFuture(time))[0]
+                                : operatingHours[0]
+                            }
+                            maxTime={
+                                (getDay(date) === 0) ? 
+                                operatingHoursSunday[operatingHoursSunday.length-1] : 
+                                operatingHours[operatingHours.length-1]
+                            }
+                            excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date)) }
+                            showTimeSelect
+                            required
                             />
-                            <br/>
-                            <label>Duration of play</label>
-                            <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
-                                <option value="0">Choose option</option>
-                                <option value="1">1 Hour</option>
-                                <option value="1.5">1.5 Hours</option>
-                                <option value="2">2 Hours</option>
-                            </select>
-                            <label>Court:</label>
-                            <select required className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
-                                <option disabled value="0">Choose option</option>
-                                <option value="1">Court 1</option>
-                                <option value="2">Court 2</option>
-                                <option value="3">Court 3</option>
-                                <option value="4">Court 4</option>
-                                <option value="5">Court 5</option>
-                                <option value="6">Court 6</option>
-                                <option value="7">Court 7</option>
-                                <option value="8">Court 8</option>
-                            </select>
-                            <span name="error" hidden="true" style={{color: "red", fontSize: "12px"}}>error goes here</span>
-                            <br />
-                            <em>Equipment</em>
-                            <br />
-                            <br />
-                            <label>Racquets:</label>
-                            <select className="browser-default" name="racquet" value={values.racquet} onChange={handleInputChange} >
-                                <option value="0" default>None</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                            <label>Ball Canisters:</label>
-                            <select className="browser-default" name="canister" value={values.canister} onChange={handleInputChange} >
-                                <option value="0" default>None</option>
-                                <option value="1" >1</option>
-                                <option value="2" >2</option>
-                                <option value="3" >3</option>
-                                <option value="4" >4</option>
-                            </select>
-                            <label>Hopper:</label>
-                            <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
-                                <option value="0" default>None</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                            <label>Total:</label>
-                            <CurrencyInput
-                                name="total"
-                                value={calculateTotalCost}
-                                prefix="$"
-                                defaultValue={0}
-                                decimalsLimit={2}
-                                readOnly
-                            />
-                            <input type="submit" className="btn waves-effect waves-light"/>
-                        </form>
-                    }
+                        <label htmlFor="date">Date & Time</label>
+                    </div>
                 </div>
-            </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <br/><br/>
+                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
+                            <option value="0">Choose option</option>
+                            <option value="1">1 Hour</option>
+                            <option value="1.5">1.5 Hours</option>
+                            <option value="2">2 Hours</option>
+                        </select>
+                        <label htmlFor="duration">Duration of Play</label>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <br/><br/>
+                        <select required className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
+                            <option disabled value="0">Choose option</option>
+                            <option value="1">Court 1</option>
+                            <option value="2">Court 2</option>
+                            <option value="3">Court 3</option>
+                            <option value="4">Court 4</option>
+                            <option value="5">Court 5</option>
+                            <option value="6">Court 6</option>
+                            <option value="7">Court 7</option>
+                            <option value="8">Court 8</option>
+                        </select>
+                        <span name="error" hidden="true">error goes here</span>
+                        <label htmlFor="court">Court</label>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="form-heading left-align col s12 push-m2 m8">
+                        <h6>Equipment</h6>
+                    </div>
+                    <div className="input-field col s12 push-m2 m8">
+                        <label htmlFor="racquet">Racquets</label>
+                        <br/><br/>
+                        <select className="browser-default" name="racquet" value={values.racquet} onChange={handleInputChange} >
+                            <option value="0" default>None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <label htmlFor="canister">Ball Canisters</label>
+                        <br/><br/>
+                        <select className="browser-default" name="canister" value={values.canister} onChange={handleInputChange} >
+                            <option value="0" default>None</option>
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3" >3</option>
+                            <option value="4" >4</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <label htmlFor="hopper">Hopper</label>
+                        <br/><br/>
+                        <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
+                            <option value="0" default>None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <h6><strong>Total Cost</strong></h6>
+                        <br/>
+                        <CurrencyInput
+                            name="total"
+                            value={calculateTotalCost}
+                            prefix="$"
+                            defaultValue={0}
+                            decimalsLimit={2}
+                            readOnly
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12 push-m2 m8">
+                        <input type="submit" className="btn waves-effect waves-light"/>
+                    </div>
+                </div>
+            </form>
         </div>
+        </>
     )
 }
 

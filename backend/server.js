@@ -8,6 +8,8 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+let User = require('./models/user')
+
 
 require('dotenv').config()
 
@@ -17,9 +19,22 @@ const port = process.env.PORT || 5000
 // middleware 
 app.use(cors({
     // https://sad-bell-f8c96a.netlify.app/
-    origin: "http://localhost:3000",
+    origin: "https://sad-bell-f8c96a.netlify.app/",
     credentials: true
 }))
+
+// Mongo Atlas connection
+const uri = process.env.ATLAS_URI
+mongoose.connect(uri, { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true 
+    }
+)
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log("MongoDB database connection established successfully");
+})
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.enable('trust proxy')
@@ -28,42 +43,36 @@ app.use(session({
     resave: false, 
     saveUninitialized: true,
     cookie: { 
-        expires: 600000,
-        secure: true,
-        sameSite: 'none',
-        httpOnly: false 
+        maxAge: 600000,
+        // secure: true,
+        // httpOnly: true, 
+        // sameSite: 'none',
     },
     store: new MongoStore(
-        { mongooseConnection: mongoose.connection }
+        { mongooseConnection: connection }
     )
 }))
+// ----CHECK AUTHENTICATION SESSION -----
+app.get('/', (req, res) => {
+    console.log("check-auth session: ", req.session)
+    if (req.session.passport) {
+        User.findById(req.session.passport.user, (err, user) => {
+            // if error send error back 
+            if (err) res.status(401).send(`Error: ${err}`)
+            // eles send user back if found
+            else res.status(200).send(user)
+        })
+    }
+})
+
 app.use(cookieParser(process.env.COOKIE_KEY))
 require('./config/passportConfig')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use((req, res, next) => {
-    // console.log(res)
-    // console.log(req)
-    // const { token } = req.session
-    // TODO: token showing as undefined
-    // console.log({token})
-    next()
-})
-
-// Mongo Atlas connection
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true 
-    }
-);
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
-})
-
 // Routes
+const router = express.Router()
+
 const bookingsRouter = require('./routes/bookings')
 const usersRouter = require('./routes/users')
 const postsRouter = require('./routes/posts')

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from 'react-router-dom'
-import axios from '../../config/api.js'
+import api from '../../config/api.js'
 import { useGlobalState } from "../../config/store"
 import M from 'materialize-css'
 
@@ -38,7 +38,7 @@ const UserLogin = () => {
   
   // login user function calling express server
   const loginUser = async (data) => {
-    await axios({
+    await api({
       method: "POST",
       data: {
         username: data.username,
@@ -47,17 +47,23 @@ const UserLogin = () => {
       withCredentials: true, 
       url: "/users/login"
     }).then(res => {
-      // console.log(res)
+      // console.log(`response: ${res}`)
       if (res.data.success === true) {
+        console.log("res", res)
+        // console.log("username", values.username)
         dispatch({
           type: "setLoggedInUser",
-          data: values.username
+          data: {
+            username: values.username,
+            userType: res.data.userType
+          }
         })
-          dispatch({
-            type: "setAuthentication",
-            data: true
+        dispatch({
+          type: "setAuthentication",
+          data: true
         })
-          history.push("/")
+        // checking global state updated
+        history.push("/")
       }
     }).catch(error => {
       // error is server is unavailable
@@ -72,28 +78,27 @@ const UserLogin = () => {
       else if (error)
         setErrorMessage(error)
     })
-      // checking global state updated
-      console.log(store)
   }
-      // error message css styles
-      const errorStyles = {
-        color: "red"
-      }
-
+  
+  // error message css styles
+  const errorStyles = {
+    color: "red"
+  }
       // function to run when form is submitted
       const formSubmit = (e) => {
         e.preventDefault()
         loginUser(values)
       }
       
-      return (
-        <div className="container">
-      <div classame="row">
-        <div className="col s6">
-          <h1>Login</h1>
-          <form onSubmit={formSubmit}>
-            <label htmlFor="username">
-                Username
+  return (
+    <div className="container">
+        <form className="main-form" onSubmit={formSubmit}>
+            <div className="row">
+              <div className="form-heading left-align col s12 push-m2 m8">
+                <h3>Login</h3>
+              </div>
+              <div className="input-field col s12 push-m2 m8">
+                <label htmlFor="username">Username</label>
                 <input
                   name="username"
                   type="text"
@@ -101,25 +106,29 @@ const UserLogin = () => {
                   onChange={handleInputChange}
                   required
                 />
-            </label>
-            <label htmlFor="password">
-                Password
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12 push-m2 m8">
+                <label htmlFor="password">Password</label>
                 <input
-                name="password"
-                type="text"
-                value={values.password}
-                onChange={handleInputChange}
-                required
+                    name="password"
+                    type="password"
+                    value={values.password}
+                    onChange={handleInputChange}
+                    required
                 />
-            </label>
-            <input type="submit" value="submit" className="btn waves-effect waves-light" />
-            {errorMessage && <p style={errorStyles}>{errorMessage}</p>}
-          </form>
-          <br/>
-          <span>Don't have an account? <strong><a href="/register">Register</a></strong></span>
-        </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12 push-m2 m8">
+                <input type="submit" value="submit" className="btn waves-effect waves-light" />
+                {errorMessage && <p style={errorStyles}>{errorMessage}</p>}
+              <p>Don't have an account?  <strong><a href="/register">Register</a></strong></p>
+              </div>
+            </div>
+        </form>
       </div>
-    </div>
   )
 }
 
