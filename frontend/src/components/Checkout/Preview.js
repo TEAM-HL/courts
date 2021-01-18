@@ -80,13 +80,14 @@ const Preview = () => {
             const response = await api({
                 method: "POST", 
                 data: previewBookingData, 
-                url: "/create-checkout-session"})
+                url: "/checkout/create-checkout-session"})
             console.log("response: ", response)
             // Call your backend to create the Checkout Session
-            const session = await response.json()
+            const session = await response
+            console.log("check session", session)
             // When the customer clicks on the button, redirect them to Checkout.
             const result = await stripe.redirectToCheckout({
-                sessionId: session.id,
+                sessionId: session.data.id,
             });
     
             if (result.error) {

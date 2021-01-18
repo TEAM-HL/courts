@@ -14,14 +14,14 @@ router.route('/create-checkout-session').post(async (req, res) => {
               name: `Court Booking on ${req.body.date} at ${req.body.time} for ${req.body.duration}hrs`,
               images: ['https://d24lqeczfu7s1y.cloudfront.net/venue/meadowbank-park-tc/34c340d8-c2b3-45b7-a1a4-71f3b2854d1e.jpg'],
             },
-            unit_amount: req.body.cost,
+            unit_amount: req.body.cost * 100,
           },
           quantity: 1,
         },
       ],
       mode: 'payment',
-      success_url: `${api.baseUrl}/booking/success`,
-      cancel_url: `${api.baseUrl}/booking/new`,
+      success_url: `http://localhost:3000/booking/success`,
+      cancel_url: `http://localhost:3000/booking/new`,
     });
 
       res.json({ id: session.id });
