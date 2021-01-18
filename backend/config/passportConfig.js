@@ -1,7 +1,6 @@
 const User = require("../models/user")
 const bcrypt = require("bcryptjs")
 const localStrategy = require("passport-local").Strategy
-// const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt")
 
 // define local strategy 
 module.exports = function(passport) {
@@ -43,22 +42,5 @@ module.exports = function(passport) {
             done(error)
         }
     })
-
-    // JWT strategy
-    // passport.use(new JwtStrategy({
-    //     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    //     secretOrKey: process.env.JWT_SECRET
-    // },
-    //     async (jwt_payload, done) => {
-    //         const user = await UserModel.findById(jwt_payload.sub)
-    //         .catch(done)
-            
-    //         if (!user) {
-    //             return done(null, false)
-    //         }
-
-    //         return done(null, user)
-    //     }
-    // ))
 
 }
