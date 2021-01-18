@@ -8,6 +8,7 @@ import 'materialize-css/dist/css/materialize.min.css'
 import Dashboard from './components/Dashboard/Dashboard'
 import CreateBooking from './components/Booking/CreateBooking'
 import BookingSuccess from './components/Booking/BookingSuccess'
+import BookingCancel from './components/Booking/BookingCancel'
 import UserLogin from './components/User/UserLogin'
 import NavbarHeader from './components/shared/NavbarHeader'
 import UserRegister from './components/User/UserRegister'
@@ -50,6 +51,7 @@ const App = () => {
             <Route path="/login" exact component={UserLogin} />
             <Route path="/register" exact component={UserRegister} />
             <Route path="/booking/success" exact component={BookingSuccess} />
+            <Route path="/booking/cancel" exact component={BookingCancel} />
             <Route path="/booking/new" exact component={CreateBooking} />
             <Route path="/booking/checkout" exact component={Preview} />
         </BrowserRouter>
