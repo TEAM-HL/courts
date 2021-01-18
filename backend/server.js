@@ -18,7 +18,7 @@ const port = process.env.PORT || 5000
 
 // middleware 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "https://sad-bell-f8c96a.netlify.app/",
     credentials: true
 }))
 
