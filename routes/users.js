@@ -141,6 +141,7 @@ router.route('/register').post((req, res, next) => {
 // -----------LOGOUT--------------------------------------------
 router.route('/logout').get((req, res) => {
     console.log("logout endpoint hit")
+    // req.logout()
     if (req.session) req.session.destroy(err => {
         if (err) res.status(400).send("Unable to log out.")
         else res.status(200).send('Logout successful.')
