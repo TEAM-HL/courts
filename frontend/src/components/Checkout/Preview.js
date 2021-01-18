@@ -4,11 +4,9 @@ import {loadStripe} from '@stripe/stripe-js';
 import { Modal, Button } from 'react-materialize'
 import api from '../../config/api'
 
-
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 const stripePromise = loadStripe('pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l');
-
 
 const Preview = () => {
     // destructure store and dispatch from globalstate 
@@ -72,7 +70,7 @@ const Preview = () => {
     //     return array[index][1]
     // }
 
-    const handlePayClick = async (event) => {
+    const handlePayClick = async () => {
         // Get Stripe.js instance
         const stripe = await stripePromise;
 
@@ -93,17 +91,11 @@ const Preview = () => {
             console.log(result.error.message)
             setStripeError(result.error.message)
         }
+    }
    
     // error message css styles
     const errorStyles = {
         color: "red"
-
-    }
-
-     // error message css styles
-     const errorStyles = {
-        color: "red"
-
     }
 
     return (
@@ -146,5 +138,3 @@ const Preview = () => {
 }
 
 export default Preview
-
-
