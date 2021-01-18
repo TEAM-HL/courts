@@ -95,9 +95,6 @@ const App = () => {
             <Route path="/admin/calendar" exact component={CalendarComponent} />
             <Route path="/admin/userlist" exact component={UserList} />
             <Route path="/contact" exact component={Contact}/>
-            <Elements stripe={stripePromise}>
-              <Route path="/booking/checkout" exact component={CheckoutForm} />
-            </Elements>
             <Route path="/booking/checkout" exact component={Preview} />
             <Route path="/404" exact component={Error404} />
             <Redirect to="/404" />
