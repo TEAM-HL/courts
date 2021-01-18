@@ -8,6 +8,8 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+let User = require('./models/user')
+
 
 require('dotenv').config()
 
@@ -42,25 +44,45 @@ app.use(session({
     cookie: { 
         maxAge: 6000000,
         secure: true,
-        sameSite: 'none',
-        httpOnly: false 
+        httpOnly: true, 
+        // sameSite: 'none',
     },
     store: new MongoStore(
         { mongooseConnection: connection }
     )
 }))
+
+app.get('/', (req, res) => {
+    console.log("check-auth session: ", req.session)
+    if (req.session.passport.user) {
+        User.findById(req.session.passport.user, (err, user) => {
+            // if error send error back 
+            if (err) res.status(401).send(`Error: ${err}`)
+            // eles send user back if found
+            else res.status(200).send(user)
+        })
+    }
+})
+
 app.use(cookieParser(process.env.COOKIE_KEY))
 require('./config/passportConfig')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use((req, res, next) => {
-    console.log(req.session)
-    console.log(req.user)
-    next()
-})
+// app.use((req, res, next) => {
+//     console.log("session check (line60 server.js): ", req.session)
+//     console.log("user check:", req.user)
+//     next()
+// })
+
+// app.get('/check-auth', checkAuth, (req, res) => {
+//     res.status(200).json({
+//         status: 'login successful!'
+//     })
+// })
 
 // Routes
+const router = express.Router()
 
 const bookingsRouter = require('./routes/bookings')
 const usersRouter = require('./routes/users')

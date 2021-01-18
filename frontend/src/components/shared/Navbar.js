@@ -28,30 +28,28 @@ const Navbar = () => {
             url: "/users/logout"
         }).then(res => {
             console.log(res)
+            if (res.status === 200) {
+                // clear global context
+                dispatch({
+                    type: "RESET_STATE",
+                })
+                //redirect user to dashboard
+                history.push("/")
+                console.log(store)
+            } 
         })
-        // clear global context
-        dispatch({
-            type: "RESET_STATE",
-        })
-        //redirect user to dashboard
-        history.push("/")
     }
 
+    //initialise materialize dropdown and sidenav
     useEffect(() => {
-        
-        // initialize sidenav
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.sidenav');
             var instances = M.Sidenav.init(elems);
-        });
-
-        // intialize dropdown
+        })
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.dropdown-trigger');
             var instances = M.Dropdown.init(elems);
-          });
-        
-
+        })
     })
 
     return (
