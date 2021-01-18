@@ -76,30 +76,23 @@ const Preview = () => {
         // Get Stripe.js instance
         const stripe = await stripePromise;
 
-        try {
-            const response = await api({
-                method: "POST", 
-                data: previewBookingData, 
-                url: "/checkout/create-checkout-session"})
-            console.log("response: ", response)
-            // Call your backend to create the Checkout Session
-            const session = await response
-            console.log("check session", session)
-            // When the customer clicks on the button, redirect them to Checkout.
-            const result = await stripe.redirectToCheckout({
-                sessionId: session.data.id,
-            })
-            if (result.error) {
-                console.log(result.error.message)
-                setStripeError(result.error.message)
-            // If `redirectToCheckout` fails due to a browser or network
-            // error, display the localized error message to your customer
-            // using `result.error.message`.
-            }
-        } catch (error) {
-            console.log(error)
+        const response = await api({
+            method: "POST", 
+            data: previewBookingData, 
+            url: "/checkout/create-checkout-session"
+        })
+        console.log("response: ", response)
+        // Call your backend to create the Checkout Session
+        const session = await response
+        console.log("check session", session)
+        // When the customer clicks on the button, redirect them to Checkout.
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.data.id,
+        })
+        if (result.error) {
+            console.log(result.error.message)
+            setStripeError(result.error.message)
         }
-
     }
 
     return (
