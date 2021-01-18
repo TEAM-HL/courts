@@ -95,6 +95,12 @@ const Preview = () => {
         }
     }
 
+     // error message css styles
+     const errorStyles = {
+        color: "red"
+
+    }
+
     return (
         <div className="container">
             <div className="row">
@@ -126,6 +132,7 @@ const Preview = () => {
                         <button role="link" onClick={handlePayClick} id="checkout-button" className="btn waves-effect waves-light">
                             Proceed to payment
                         </button>
+                        {(stripeError !== null) && <p style={errorStyles}>{stripeError}</p>}
                     </div>
                 </div>
             </div>
