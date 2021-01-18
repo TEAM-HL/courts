@@ -521,6 +521,7 @@ const CreateBooking = () => {
                                 <option value="7">Court 7</option>
                                 <option value="8">Court 8</option>
                             </select>
+                            <span name="error" hidden="true" style={{color: "red", fontSize: "12px"}}>error goes here</span>
                             <br />
                             <em>Equipment</em>
                             <br />

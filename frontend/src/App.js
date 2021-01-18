@@ -14,6 +14,9 @@ import UserLogin from './components/User/UserLogin'
 import Navbar from './components/shared/Navbar'
 import UserRegister from './components/User/UserRegister'
 import CheckoutForm from './components/Checkout/CheckoutForm'
+import ViewBooking from './components/Booking/ViewBooking'
+import CalendarComponent from './components/Dashboard/Calendar'
+import UserList from './components/Profile/ViewProfile'
 //toastify dependencies
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -43,6 +46,9 @@ const App = () => {
             <Route path="/login" exact component={UserLogin} />
             <Route path="/register" exact component={UserRegister} />
             <Route path="/booking/new" exact component={CreateBooking} />
+            <Route path="/booking/view" exact component={ViewBooking} />
+            <Route path="/admin/calendar" exact component={CalendarComponent} />
+            <Route path="/admin/userlist" exact component={UserList} />
             <Elements stripe={stripePromise}>
               <Route path="/booking/checkout" exact component={CheckoutForm} />
             </Elements>
