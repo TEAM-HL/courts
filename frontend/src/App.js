@@ -48,10 +48,11 @@ const App = () => {
             data: true
           })
         } else {
-          history.push("/login")
+          // history.push("/login")
         }
       })
     }
+
     const history = useHistory()
     
     // configure toast on App render

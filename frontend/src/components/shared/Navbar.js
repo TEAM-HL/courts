@@ -34,7 +34,7 @@ const Navbar = () => {
                     type: "RESET_STATE",
                 })
                 //redirect user to dashboard
-                history.push("/")
+                // history.push("/")
                 console.log(store)
             } 
         })

@@ -42,19 +42,19 @@ app.use(session({
     resave: false, 
     saveUninitialized: true,
     cookie: { 
-        maxAge: 6000000,
-        secure: true,
-        httpOnly: true, 
+        maxAge: 600000,
+        // secure: true,
+        // httpOnly: true, 
         // sameSite: 'none',
     },
     store: new MongoStore(
         { mongooseConnection: connection }
     )
 }))
-
+// ----CHECK AUTHENTICATION SESSION -----
 app.get('/', (req, res) => {
     console.log("check-auth session: ", req.session)
-    if (req.session.passport.user) {
+    if (req.session.passport) {
         User.findById(req.session.passport.user, (err, user) => {
             // if error send error back 
             if (err) res.status(401).send(`Error: ${err}`)
@@ -68,18 +68,6 @@ app.use(cookieParser(process.env.COOKIE_KEY))
 require('./config/passportConfig')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
-
-// app.use((req, res, next) => {
-//     console.log("session check (line60 server.js): ", req.session)
-//     console.log("user check:", req.user)
-//     next()
-// })
-
-// app.get('/check-auth', checkAuth, (req, res) => {
-//     res.status(200).json({
-//         status: 'login successful!'
-//     })
-// })
 
 // Routes
 const router = express.Router()
