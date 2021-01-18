@@ -4,6 +4,7 @@ import { useGlobalState } from "../../config/store"
 //materialize
 import 'materialize-css';
 import M from 'materialize-css/dist/js/materialize.min.js'
+import api from '../../config/api'
 
 
 const NavbarHeader = () => {
@@ -32,13 +33,25 @@ const NavbarHeader = () => {
     // logout user function
     // clear global state
     // redirect to homepage
-    const logoutUser = () => {
-        dispatch({
-            type: "RESET_STATE",
+    const logoutUser = async () => {
+         // call logout on express server to delete session cookie 
+         await api({
+            method: "GET",
+            url: "/users/logout"
+        }).then(res => {
+            console.log(res)
+            if (res.status === 200) {
+                // clear global context
+                dispatch({
+                    type: "RESET_STATE",
+                })
+                //redirect user
+                history.push("/login")
+                console.log(store)
+            } 
         })
-        console.log(store)
-        history.push("/login")
     }
+
 
     return (
         <div>
