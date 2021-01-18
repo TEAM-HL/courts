@@ -17,6 +17,7 @@ import CheckoutForm from './components/Checkout/CheckoutForm'
 import ViewBooking from './components/Booking/ViewBooking'
 import CalendarComponent from './components/Dashboard/Calendar'
 import UserList from './components/Profile/ViewProfile'
+import Contact from './components/Contact/Contact'
 //toastify dependencies
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="/booking/view" exact component={ViewBooking} />
             <Route path="/admin/calendar" exact component={CalendarComponent} />
             <Route path="/admin/userlist" exact component={UserList} />
+            <Route path="/contact" exact component={Contact}/>
             <Elements stripe={stripePromise}>
               <Route path="/booking/checkout" exact component={CheckoutForm} />
             </Elements>
