@@ -4,6 +4,7 @@ import { useGlobalState } from "../../config/store"
 //materialize
 import 'materialize-css';
 import M from 'materialize-css/dist/js/materialize.min.js'
+import api from '../../config/api'
 
 
 const NavbarHeader = () => {
@@ -32,13 +33,25 @@ const NavbarHeader = () => {
     // logout user function
     // clear global state
     // redirect to homepage
-    const logoutUser = () => {
-        dispatch({
-            type: "RESET_STATE",
+    const logoutUser = async () => {
+         // call logout on express server to delete session cookie 
+         await api({
+            method: "GET",
+            url: "/users/logout"
+        }).then(res => {
+            console.log(res)
+            if (res.status === 200) {
+                // clear global context
+                dispatch({
+                    type: "RESET_STATE",
+                })
+                //redirect user
+                history.push("/login")
+                console.log(store)
+            } 
         })
-        console.log(store)
-        history.push("/login")
     }
+
 
     return (
         <div>
@@ -48,9 +61,11 @@ const NavbarHeader = () => {
                     <a href="/" id="courts-logo" className="brand-logo">Courts</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li className="yellow-text text-darken-2">{authenticated === true ? `Welcome, ${loggedInUser.username}` : ''}</li>
-                        <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
+                        {/* <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
                             <i className="material-icons right">arrow_drop_down</i></a>
-                        </li>
+                        </li> */}
+                        <li className=" blue darken-1"><a href="/booking/new">Book a Court</a></li>
+                        <li><a href="/booking/view">View My Bookings</a></li>
                         <li><a href="/community">Community</a></li>
                         <li><a href="/events">Events</a></li>
                         <li><a href="/contact">Contact</a></li>

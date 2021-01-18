@@ -43,12 +43,12 @@ const Preview = () => {
     const previewTable = []
     // iterate over nested pairs object and push to previewData 
     pairs.map(entry => {
-            if (typeof entry[1] ==='object') {
-                let nestedObj = Object.entries(entry[1])
-                // nestedObj.map(entry => console.log(`${entry[0]}: ${entry[1]}`) )
-                nestedObj.map(entry => previewTable.push(entry) )
-            } else previewTable.push(entry)
-        })
+        if (typeof entry[1] ==='object') {
+            let nestedObj = Object.entries(entry[1])
+            // nestedObj.map(entry => console.log(`${entry[0]}: ${entry[1]}`) )
+            nestedObj.map(entry => previewTable.push(entry) )
+        } else previewTable.push(entry)
+    })
     console.log("post", previewTable)
 
 
@@ -72,7 +72,7 @@ const Preview = () => {
     //     return array[index][1]
     // }
 
-    const handlePayClick = async () => {
+    const handlePayClick = async (event) => {
         // Get Stripe.js instance
         const stripe = await stripePromise;
 
@@ -93,6 +93,11 @@ const Preview = () => {
             console.log(result.error.message)
             setStripeError(result.error.message)
         }
+   
+    // error message css styles
+    const errorStyles = {
+        color: "red"
+
     }
 
      // error message css styles
@@ -142,5 +147,4 @@ const Preview = () => {
 
 export default Preview
 
-{/* <p>You have booked court {getValueOf(previewData, 'court')}</p> */}
 

@@ -3,7 +3,7 @@ const router = require('express').Router()
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
 router.route('/create-checkout-session').post(async (req, res) => {
-  console.log(req)
+  console.log("hit create checkout endpoint ", req)
   const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -18,14 +18,14 @@ router.route('/create-checkout-session').post(async (req, res) => {
           },
           quantity: 1,
         },
-      ],
+     ],
       mode: 'payment',
       success_url: `http://localhost:3000/booking/success`,
       cancel_url: `http://localhost:3000/booking/cancel`,
-    });
+    })
 
-      res.json({ id: session.id });
-});
+    res.json({ id: session.id });
+})
 
 // router.route('/checkout-payment').post(async (req, res) => {
 //   const { product, token } = req.body
