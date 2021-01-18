@@ -16,12 +16,21 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000
 
+let whitelist = ['https://sad-bell-f8c96a.netlify.app/', 'https://localhost:3000']
+
 // middleware 
 app.use(cors({
-    // https://sad-bell-f8c96a.netlify.app/
-    origin: "https://sad-bell-f8c96a.netlify.app/",
-    credentials: true
-}))
+    origin: function(origin, callback){
+      // allow requests with no origin 
+      if(!origin) return callback(null, true);
+      if(whitelist.indexOf(origin) === -1){
+        var message = `The CORS policy for this origin doesn't ` +
+                  'allow access from the particular origin.';
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    }
+  }));
 
 // Mongo Atlas connection
 const uri = process.env.ATLAS_URI

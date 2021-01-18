@@ -10,18 +10,15 @@ import CreateBooking from './components/Booking/CreateBooking'
 import UserLogin from './components/User/UserLogin'
 import NavbarHeader from './components/shared/NavbarHeader'
 import UserRegister from './components/User/UserRegister'
-<<<<<<< HEAD
 import CheckoutForm from './components/Checkout/CheckoutForm'
 import ViewBooking from './components/Booking/ViewBooking'
 import CalendarComponent from './components/Dashboard/Calendar'
 import UserList from './components/Profile/ViewProfile'
 import Contact from './components/Contact/Contact'
 //toastify dependencies
-=======
 import Preview from './components/Checkout/Preview'
 import Error404 from './components/Error404'
 //toastify 
->>>>>>> 4eba3a6f4493da235b6c391a9709d6b583db05d9
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 // css
@@ -94,20 +91,14 @@ const App = () => {
             <Route path="/login" exact component={UserLogin} />
             <Route path="/register" exact component={UserRegister} />
             <Route path="/booking/new" exact component={CreateBooking} />
-<<<<<<< HEAD
             <Route path="/booking/view" exact component={ViewBooking} />
             <Route path="/admin/calendar" exact component={CalendarComponent} />
             <Route path="/admin/userlist" exact component={UserList} />
             <Route path="/contact" exact component={Contact}/>
-            <Elements stripe={stripePromise}>
-              <Route path="/booking/checkout" exact component={CheckoutForm} />
-            </Elements>
-=======
             <Route path="/booking/checkout" exact component={Preview} />
             <Route path="/404" exact component={Error404} />
             <Redirect to="/404" />
           </Switch>
->>>>>>> 4eba3a6f4493da235b6c391a9709d6b583db05d9
         </BrowserRouter>
       </StateContext.Provider>    
     </>
