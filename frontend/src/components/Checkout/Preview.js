@@ -88,8 +88,7 @@ const Preview = () => {
             // When the customer clicks on the button, redirect them to Checkout.
             const result = await stripe.redirectToCheckout({
                 sessionId: session.data.id,
-            });
-    
+            })
             if (result.error) {
                 console.log(result.error.message)
                 setStripeError(result.error.message)
@@ -129,39 +128,11 @@ const Preview = () => {
                         }
                     </ul>
                     <div className="row">
+                        <button className="btn waves-effect waves-light">Edit</button>
                         <button className="btn waves-effect waves-light">Cancel</button>
                         <button role="link" onClick={handlePayClick} id="checkout-button" className="btn waves-effect waves-light">
                             Proceed to payment
                         </button>
-                        {
-                            (stripeError !== null) &&    
-                            <Modal
-                                actions={[
-                                    <Button flat modal="close" node="button" waves="green">Close</Button>
-                                ]}
-                                bottomSheet={false}
-                                fixedFooter={false}
-                                header="Modal Header"
-                                id="payErrorModal"
-                                open={false}
-                                options={{
-                                    dismissible: true,
-                                    endingTop: '10%',
-                                    inDuration: 250,
-                                    onCloseEnd: null,
-                                    onCloseStart: null,
-                                    onOpenEnd: null,
-                                    onOpenStart: null,
-                                    opacity: 0.5,
-                                    outDuration: 250,
-                                    preventScrolling: true,
-                                    startingTop: '4%'
-                                }}
-                                // root={[object HTMLBodyElement]}
-                            >
-                                {stripeError}
-                            </Modal>        
-                        }
                     </div>
                 </div>
             </div>
