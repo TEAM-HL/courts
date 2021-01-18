@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useGlobalState } from "../../config/store"
 import {loadStripe} from '@stripe/stripe-js';
-import { Modal, Button } from 'react-materialize'
 import api from '../../config/api'
 
 // Make sure to call loadStripe outside of a component’s render to avoid
@@ -10,7 +9,7 @@ const stripePromise = loadStripe('pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l');
 
 const Preview = () => {
     // destructure store and dispatch from globalstate 
-    const {store} = useGlobalState()
+    const {store, dispatch} = useGlobalState()
 
     const { pendingBooking } = store
     console.log("pendingBooking ", pendingBooking)
@@ -31,8 +30,8 @@ const Preview = () => {
         cost: 25.00
     }
 
-    // const previewBookingData = pendingBooking
-    const previewBookingData = testData
+    const previewBookingData = pendingBooking
+    // const previewBookingData = testData
 
     console.log("preview booking data:", previewBookingData)
     const pairs = Object.entries(previewBookingData)
@@ -90,6 +89,20 @@ const Preview = () => {
         if (result.error) {
             console.log(result.error.message)
             setStripeError(result.error.message)
+        } else {
+            await api({
+                method: "POST",
+                data: pendingBooking,
+                url: "/booking/new"
+            }).then(res => {
+                if (res.status === 200) {
+                    dispatch({
+                        type: "setPendingBooking",
+                        data: null
+                    })
+                }
+
+            })
         }
     }
    

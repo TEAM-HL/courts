@@ -19,7 +19,9 @@ import '../../assets/css/App.css'
 const CreateBooking = () => {  
     
     // initialise materialize
-    M.AutoInit()
+    useEffect(() => {
+        M.AutoInit()
+    }, [])
     // setup history const to be used later  
     const history = useHistory()
     // destructure store and dispatch from global state
@@ -128,50 +130,6 @@ const CreateBooking = () => {
 
     
     }
-
-    // function to return all values of a certain key -
-    // used below to return array of unavailable times
-    // function findAllByKey(object, keyToFind) {
-    //     return Object.entries(object)
-    //       .reduce((acc, [key, value]) => (key === keyToFind)
-    //         ? acc.concat(value)
-    //         : (typeof value === 'object')
-    //         ? acc.concat(findAllByKey(value, keyToFind))
-    //         : acc
-    //       , [])
-    //   }
-
-    // const checkDate = async (date) => {
-    //     console.log("checking for available times for selected date...")
-    //     try {
-    //         await api({
-    //             method: "POST",
-    //             data: { 
-    //                 date: date.toLocaleDateString(), 
-    //                 time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })    
-    //             },
-    //             withCredentials: true, 
-    //             url: "http://localhost:5000/bookings/checkDate"
-    //         }).then(res => {
-    //             console.log(res)
-    //             console.log("second array starts here")
-    //             const data = res.data.data
-    //             console.log(data)
-    //             // add data to localState
-    //             console.log(data.filter(court => court.court === 3))
-                
-    //             // if (res.data.success === true && getDay(date) < 1) {
-    //             // }
-
-    //             // for filtering duration
-    //             // array.filter(remove entries that are earlier than current booking)
-    //             //  .filter(end <= start)
-
-    //         }
-    //             )} catch (error) {
-    //                 console.log(error)
-    //             }
-    // }
 
     const findCourt = async () => {
         console.log("checking available courts...")
@@ -506,6 +464,7 @@ const CreateBooking = () => {
                             excludeTimes={(getDay(date) < 1) ? excludedTimesSunday.filter(time => time > getTime(date)) : excludedTimes.filter(time => time > getTime(date)) }
                             showTimeSelect
                             required
+                            withPortal
                             />
                         <label htmlFor="date">Date & Time</label>
                     </div>
@@ -513,7 +472,7 @@ const CreateBooking = () => {
                 <div className="row">
                     <div className="input-field col s12 push-m2 m8">
                         <br/><br/>
-                        <select required className="browser-default" name="duration" value={values.duration} onChange={handleInputChange}>
+                        <select required name="duration" value={values.duration} onChange={handleInputChange}>
                             <option value="0">Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
@@ -525,8 +484,8 @@ const CreateBooking = () => {
                 <div className="row">
                     <div className="input-field col s12 push-m2 m8">
                         <br/><br/>
-                        <select required className="browser-default" name="court" value={values.court} onChange={handleInputChange} >
-                            <option disabled value="0">Choose option</option>
+                        <select required name="court" value={values.court} onChange={handleInputChange} >
+                            <option default disabled value="0">Choose option</option>
                             <option value="1">Court 1</option>
                             <option value="2">Court 2</option>
                             <option value="3">Court 3</option>
@@ -547,7 +506,7 @@ const CreateBooking = () => {
                     <div className="input-field col s12 push-m2 m8">
                         <label htmlFor="racquet">Racquets</label>
                         <br/><br/>
-                        <select className="browser-default" name="racquet" value={values.racquet} onChange={handleInputChange} >
+                        <select name="racquet" value={values.racquet} onChange={handleInputChange} >
                             <option value="0" default>None</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -560,7 +519,7 @@ const CreateBooking = () => {
                     <div className="input-field col s12 push-m2 m8">
                         <label htmlFor="canister">Ball Canisters</label>
                         <br/><br/>
-                        <select className="browser-default" name="canister" value={values.canister} onChange={handleInputChange} >
+                        <select name="canister" value={values.canister} onChange={handleInputChange} >
                             <option value="0" default>None</option>
                             <option value="1" >1</option>
                             <option value="2" >2</option>
@@ -573,7 +532,7 @@ const CreateBooking = () => {
                     <div className="input-field col s12 push-m2 m8">
                         <label htmlFor="hopper">Hopper</label>
                         <br/><br/>
-                        <select className="browser-default" name="hopper" value={values.hopper} onChange={handleInputChange} >
+                        <select name="hopper" value={values.hopper} onChange={handleInputChange} >
                             <option value="0" default>None</option>
                             <option value="1">1</option>
                             <option value="2">2</option>

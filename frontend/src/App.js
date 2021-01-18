@@ -27,11 +27,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import './assets/css/App.css'
 import api from './config/api'
 
-// // Make sure to call loadStripe outside of a component’s render to avoid
-// // recreating the Stripe object on every render.
-// const stripePromise = loadStripe('pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l');
-
-
 const App = () => {
   
   // check for user session via cookie
@@ -56,7 +51,7 @@ const App = () => {
             data: true
           })
         } else {
-          // history.push("/login")
+          history.push("/login")
         }
       })
     }
@@ -66,7 +61,7 @@ const App = () => {
     // configure toast on App render
     useEffect(() => {
       toast.configure()
-    })
+    }, [])
     
     
     // set initial state for global
