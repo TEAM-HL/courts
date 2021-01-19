@@ -9,30 +9,15 @@ const stripePromise = loadStripe('pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l');
 
 const Preview = () => {
     // destructure store and dispatch from globalstate 
-    const { store } = useGlobalState()
+    const { store, dispatch } = useGlobalState()
 
     const { pendingBooking } = store
-    console.log("pendingBooking ", pendingBooking)
     const [stripeError, setStripeError] = useState(null)
-
-    // const testData = {
-    //     username: "coolUser",
-    //     date: "16/01/2021",
-    //     time: "10:30",
-    //     end: "11:30",
-    //     duration: 1,
-    //     court: 5,
-    //     equipment: {
-    //         canister: 0,
-    //         racquet: 0,
-    //         hopper: 0,
-    //     },
-    //     cost: 25.00
-    // }
-
-    const previewBookingData = pendingBooking
-    // const previewBookingData = testData
-
+    
+    let previewBookingData = {}
+    console.log("pendingBooking ", pendingBooking)
+    if (typeof pendingBooking !== null) previewBookingData = pendingBooking
+        
     console.log("preview booking data:", previewBookingData)
     const pairs = Object.entries(previewBookingData)
     // create empty object
@@ -45,10 +30,16 @@ const Preview = () => {
             nestedObj.map(entry => previewTable.push(entry) )
         } else previewTable.push(entry)
     })
-    console.log("previewTable", previewTable)
+    console.log("previewTable", previewTable) 
+
 
 
     const handlePayClick = async () => {
+        console.log("preview: ", previewBookingData)
+        localStorage.setItem('pendingBookingData', JSON.stringify(previewBookingData))
+
+        console.log(localStorage.getItem('pendingBookingData'))
+        
         // Get Stripe.js instance
         const stripe = await stripePromise;
 
@@ -63,7 +54,9 @@ const Preview = () => {
         console.log("check session", session)
         // When the customer clicks on the button, redirect them to Checkout.
         const result = await stripe.redirectToCheckout({
-            sessionId: session.data.id,
+            sessionId: session.data.id
+        }).then(session => {
+            console.log("session: ", session)
         })
         if (result.error) {
             console.log(result.error.message)
