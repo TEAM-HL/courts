@@ -7,6 +7,8 @@ import 'materialize-css/dist/css/materialize.min.css'
 // components 
 import Dashboard from './components/Dashboard/Dashboard'
 import CreateBooking from './components/Booking/CreateBooking'
+import BookingSuccess from './components/Booking/BookingSuccess'
+import BookingCancel from './components/Booking/BookingCancel'
 import UserLogin from './components/User/UserLogin'
 import NavbarHeader from './components/shared/NavbarHeader'
 import UserRegister from './components/User/UserRegister'
@@ -24,11 +26,6 @@ import 'react-toastify/dist/ReactToastify.css'
 // css
 import './assets/css/App.css'
 import api from './config/api'
-
-// // Make sure to call loadStripe outside of a component’s render to avoid
-// // recreating the Stripe object on every render.
-// const stripePromise = loadStripe('pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l');
-
 
 const App = () => {
   
@@ -54,7 +51,7 @@ const App = () => {
             data: true
           })
         } else {
-          // history.push("/login")
+          history.push("/login")
         }
       })
     }
@@ -64,7 +61,7 @@ const App = () => {
     // configure toast on App render
     useEffect(() => {
       toast.configure()
-    })
+    }, [])
     
     
     // set initial state for global
@@ -90,6 +87,8 @@ const App = () => {
             <Route path="/" exact component={Dashboard} />
             <Route path="/login" exact component={UserLogin} />
             <Route path="/register" exact component={UserRegister} />
+            <Route path="/booking/success" exact component={BookingSuccess} />
+            <Route path="/booking/cancel" exact component={BookingCancel} />
             <Route path="/booking/new" exact component={CreateBooking} />
             <Route path="/booking/view" exact component={ViewBooking} />
             <Route path="/admin/calendar" exact component={CalendarComponent} />

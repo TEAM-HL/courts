@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from '../../config/api'
+import api from '../../config/api'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 
