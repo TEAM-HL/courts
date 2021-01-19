@@ -16,7 +16,7 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000
 
-let whitelist = ['https://sad-bell-f8c96a.netlify.app']
+let whitelist = ['https://sad-bell-f8c96a.netlify.app/']
 
 // middleware 
 app.use(cors({
@@ -55,7 +55,7 @@ app.use(session({
     proxy: true,
     cookie: { 
         maxAge: 1500000, // 25 mins
-        // domain: 'sad-bell-f8c96a.netlify.app',
+        domain: 'polar-river-03280.herokuapp.com',
         secure: true,
         httpOnly: false, 
         sameSite: 'none'
