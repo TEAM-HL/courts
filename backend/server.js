@@ -52,13 +52,13 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false, 
     saveUninitialized: true,
-    // proxy: true,
+    proxy: true,
     cookie: { 
         maxAge: 600000,
-        domain: 'sad-bell-f8c96a.netlify.app'
-        // secure: true,
-        // httpOnly: true, 
-        // sameSite: 'none',
+        // domain: 'sad-bell-f8c96a.netlify.app',
+        secure: true,
+        httpOnly: false, 
+        sameSite: 'none'
     },
     store: new MongoStore(
         { mongooseConnection: connection }
