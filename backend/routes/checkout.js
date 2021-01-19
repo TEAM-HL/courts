@@ -20,32 +20,12 @@ router.route('/create-checkout-session').post(async (req, res) => {
         },
      ],
       mode: 'payment',
-      success_url: `http://localhost:3000/booking/success`,
-      cancel_url: `http://localhost:3000/booking/cancel`,
+      success_url: `https://sad-bell-f8c96a.netlify.app/booking/success`,
+      cancel_url: `https://sad-bell-f8c96a.netlify.app/booking/cancel`,
     })
 
     res.json({ id: session.id });
 })
 
-// router.route('/checkout-payment').post(async (req, res) => {
-//   const { product, token } = req.body
-//   console.log("PRODUCT ", product)
-//   console.log("PRICE ", booking.price)
-//   const idempontencyKey = uuid()
-
-//   return stripe.customers.create({
-//     email: token.email,
-//     source: token.id
-//   }).then(customer => {
-//     stripe.charges.create({
-//       amount: booking.price * 100,
-//       currency: 'aud',
-//       customer: customer.id,
-//       receipt_email: token.email  
-//     }, {idempontencyKey})
-//   })
-//   .then(result => res.status(200).json(result))
-//   .catch(err => console.log(err))
-// })
 
 module.exports = router
