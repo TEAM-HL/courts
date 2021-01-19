@@ -51,11 +51,11 @@ app.enable('trust proxy')
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false, 
-    saveUninitialized: false,
+    saveUninitialized: true,
     // proxy: true,
     cookie: { 
         maxAge: 600000,
-        domain: 'https://sad-bell-f8c96a.netlify.app'
+        domain: 'sad-bell-f8c96a.netlify.app'
         // secure: true,
         // httpOnly: true, 
         // sameSite: 'none',
