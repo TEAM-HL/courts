@@ -47,8 +47,8 @@ const NavbarHeader = () => {
                 })
                 //redirect user
                 history.push("/")
-                console.log(store)
             } 
+            console.log(store)
         })
     }
 
