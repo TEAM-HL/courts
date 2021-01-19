@@ -60,7 +60,7 @@ Heroku will host the backend code and handle traffic, resources, management and 
 
 ##### [Passport](http://www.passportjs.org/)
 
-For user authentication purposes, we will be using Passport - a NodeJS middleware which plays well with ExpressJS and provides a number of different 'strategies' for authentication using JSON Web Tokens (JWT). We will implement the ~~JWT~~  local strategy method for the initial MVP and will consider implementing the OAuth 2.0 strategy as an additional feature.
+For user authentication purposes, we will be using Passport - a NodeJS middleware which plays well with ExpressJS and provides a number of different 'strategies' for authentication using JSON Web Tokens (JWT). We will implement the ~~JWT~~  local strategy method (storing the session-cookie in mongoDB) for the initial MVP and will consider implementing the OAuth 2.0 strategy as an additional feature.
 
 ##### [Stripe](https://stripe.com/au)
 
