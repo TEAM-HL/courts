@@ -1,7 +1,7 @@
 ## Courts
 
 ##### [Link](https://github.com/TEAM-HL/courts) to the repo
-##### [link](https://bookacourt.info) to the deployed site
+##### [link](http://bookacourt.info) or [here](https://sad-bell-f8c96a.netlify.app/) to the deployed site 
 --------------
 ### Purpose
 ***Courts*** is a simple to use booking application designed for a local tennis court business. It was developed to replace their previous system that relied on phone bookings and cash envelopes.
