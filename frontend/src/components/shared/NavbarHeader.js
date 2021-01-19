@@ -64,7 +64,7 @@ const NavbarHeader = () => {
                         {/* <li><a className="dropdown-trigger" data-target="bookings-dropdown">Bookings
                             <i className="material-icons right">arrow_drop_down</i></a>
                         </li> */}
-                        <li className=" blue darken-1"><a href="/booking/new">Book a Court</a></li>
+                        <li><a href="/booking/new">Book a Court</a></li>
                         <li><a href="/booking/view">View My Bookings</a></li>
                         <li><a href="/community">Community</a></li>
                         <li><a href="/events">Events</a></li>
