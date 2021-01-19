@@ -16,7 +16,7 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000
 
-let whitelist = ['https://sad-bell-f8c96a.netlify.app/']
+let whitelist = ['https://sad-bell-f8c96a.netlify.app']
 
 // middleware 
 app.use(cors({
