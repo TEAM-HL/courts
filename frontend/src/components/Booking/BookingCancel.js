@@ -1,6 +1,7 @@
 import React from 'react'
 
 const BookingCancel = () => {
+
     return (
         <div className="container">
             <div className="valign-wrapper s12 push-m2 m8">
