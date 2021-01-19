@@ -101,7 +101,7 @@ const CreateBooking = () => {
     const newBooking = async () => {
         // assign current booking data to variable
         const bookingData = {
-            username: store.loggedInUser,
+            username: store.loggedInUser.username,
             date: date.toLocaleDateString(),
             time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             end: addMinutes(date, (60*values.duration)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),

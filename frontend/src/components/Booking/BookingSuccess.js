@@ -8,19 +8,29 @@ const BookingSuccess = () => {
 
     const { pendingBooking } = store
     console.log("pendingBooking ", pendingBooking)
+    
+    const testing = async () => {
+        await api({
+            method: "POST",
+            data: pendingBooking,
+            url: "/bookings/new"
+        }).then(res => {
+            // 
+        })
+    }
 
-    api({
-        method: "POST",
-        data: pendingBooking,
-        url: "/booking/new"
-    }).then(res => {
-        if (res.status === 200) {
-            dispatch({
-                type: "setPendingBooking",
-                data: null
-            })
-        }
-    })
+    // api({
+    //     method: "POST",
+    //     data: pendingBooking,
+    //     url: "/booking/new"
+    // }).then(res => {
+    //     if (res.status === 200) {
+    //         dispatch({
+    //             type: "setPendingBooking",
+    //             data: null
+    //         })
+    //     }
+    // })
 
     return (
         <div className="container">
