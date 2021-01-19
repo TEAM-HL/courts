@@ -105,8 +105,8 @@ const Preview = () => {
                         }
                     </ul>
                     <div className="row">
-                        <button className="btn waves-effect waves-light">Edit</button>
-                        <button className="btn waves-effect waves-light">Cancel</button>
+                        <button className="btn waves-effect waves-light"><a href="/booking/new">Edit</a></button>
+                        <button className="btn waves-effect waves-light"><a href="/booking/cancel">Cancel</a></button>
                         <button role="link" onClick={handlePayClick} id="checkout-button" className="btn waves-effect waves-light">
                             Proceed to payment
                         </button>
