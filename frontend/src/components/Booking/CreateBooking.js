@@ -21,6 +21,7 @@ const CreateBooking = () => {
     // initialise materialize
     useEffect(() => {
         M.AutoInit()
+        preFillBooking()
     }, [])
     // setup history const to be used later  
     const history = useHistory()

@@ -9,33 +9,32 @@ const stripePromise = loadStripe('pk_test_thG1zqeSc5ZWjKDe6OENpRPe00rgTugo8l');
 
 const Preview = () => {
     // destructure store and dispatch from globalstate 
-    const {store, dispatch} = useGlobalState()
+    const { store } = useGlobalState()
 
     const { pendingBooking } = store
     console.log("pendingBooking ", pendingBooking)
     const [stripeError, setStripeError] = useState(null)
 
-    const testData = {
-        username: "coolUser",
-        date: "16/01/2021",
-        time: "10:30",
-        end: "11:30",
-        duration: 1,
-        court: 5,
-        equipment: {
-            canister: 0,
-            racquet: 0,
-            hopper: 0,
-        },
-        cost: 25.00
-    }
+    // const testData = {
+    //     username: "coolUser",
+    //     date: "16/01/2021",
+    //     time: "10:30",
+    //     end: "11:30",
+    //     duration: 1,
+    //     court: 5,
+    //     equipment: {
+    //         canister: 0,
+    //         racquet: 0,
+    //         hopper: 0,
+    //     },
+    //     cost: 25.00
+    // }
 
     const previewBookingData = pendingBooking
     // const previewBookingData = testData
 
     console.log("preview booking data:", previewBookingData)
     const pairs = Object.entries(previewBookingData)
-    // console.log("entries", pairs)
     // create empty object
     const previewTable = []
     // iterate over nested pairs object and push to previewData 
@@ -47,27 +46,6 @@ const Preview = () => {
         } else previewTable.push(entry)
     })
     console.log("previewTable", previewTable)
-
-
-
-    // const log = previewData.forEach((array, index) => {
-    //     if (array[0] === "court") {
-    //         console.log(array[0])
-    //         return array.indexOf('court')
-    //     } 
-    // })
-
-    // console.log(log)
-
-    // function getValueOf(array, item) {
-    //     const index = array.forEach((array, index) => {
-    //         if (array[0] === item) {
-    //             return index
-    //         } 
-    //     })
-    //     console.log(index)
-    //     return array[index][1]
-    // }
 
 
     const handlePayClick = async () => {
@@ -90,20 +68,6 @@ const Preview = () => {
         if (result.error) {
             console.log(result.error.message)
             setStripeError(result.error.message)
-        // } else {
-        //     await api({
-        //         method: "POST",
-        //         data: pendingBooking,
-        //         url: "/booking/new"
-        //     }).then(res => {
-        //         if (res.status === 200) {
-        //             dispatch({
-        //                 type: "setPendingBooking",
-        //                 data: null
-        //             })
-        //         }
-
-        //     })
         }
     }
    
@@ -145,15 +109,3 @@ const Preview = () => {
 }
 
 export default Preview
-
-
-// pairs.map(entry => {
-//     if (typeof entry[1] ==='object') {
-//         let nestedObj = Object.entries(entry[1])
-//         nestedObj.map(entry => {
-//             <li className="collection-item" key={entry[0]}>{entry[0]}: {entry[1]}</li>
-//         })
-//     } else {
-//         return (<li className="collection-item" key={entry[0]}>{entry[0]}: {entry[1]}</li>)
-//         }
-//     })
