@@ -53,9 +53,10 @@ const App = () => {
             type: "setAuthentication",
             data: true
           })
-        } else {
-          // history.push("/login")
-        }
+        } 
+      }).catch(err => {
+        history.push("/login")
+        console.log(err)
       })
     }
 
