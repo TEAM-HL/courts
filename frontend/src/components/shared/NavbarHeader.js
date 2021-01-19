@@ -45,8 +45,9 @@ const NavbarHeader = () => {
                 dispatch({
                     type: "RESET_STATE",
                 })
+                debugger
                 //redirect user
-                history.push("/")
+                history.push("/login")
             } 
             console.log(store)
         })

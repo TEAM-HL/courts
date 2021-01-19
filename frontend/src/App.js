@@ -96,7 +96,7 @@ const App = () => {
             <Route path="/contact" exact component={Contact}/>
             <Route path="/booking/checkout" exact component={Preview} />
             <Route path="/404" exact component={Error404} />
-            <Redirect to="/404" />
+            {/* <Redirect to="/404" /> */}
           </Switch>
         </BrowserRouter>
       </StateContext.Provider>    
