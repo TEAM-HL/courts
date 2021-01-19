@@ -55,7 +55,6 @@ app.use(session({
     proxy: true,
     cookie: { 
         maxAge: 1500000, // 25 mins
-        domain: 'polar-river-03280.herokuapp.com',
         secure: true,
         httpOnly: false, 
         sameSite: 'none'
