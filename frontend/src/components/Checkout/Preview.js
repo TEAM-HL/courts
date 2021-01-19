@@ -49,6 +49,16 @@ const Preview = () => {
 
 
     const handlePayClick = async () => {
+        
+        await api({
+            method: "POST",
+            data: previewBookingData,
+            url: "/bookings/new"
+        }).then(res => {
+            console.log("dfghdifgdfigjdfigj", res)
+            debugger
+        })
+
         // Get Stripe.js instance
         const stripe = await stripePromise;
 
