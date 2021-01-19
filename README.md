@@ -60,17 +60,17 @@ Heroku will host the backend code and handle traffic, resources, management and 
 
 ##### [Passport](http://www.passportjs.org/)
 
-For user authentication purposes, we will be using Passport - a NodeJS middleware which plays well with ExpressJS and provides a number of different 'strategies' for authentication using JSON Web Tokens (JWT). We will implement JWT method for the initial MVP and will consider implementing the OAuth 2.0 strategy as an additonal feature.
+For user authentication purposes, we will be using Passport - a NodeJS middleware which plays well with ExpressJS and provides a number of different 'strategies' for authentication using JSON Web Tokens (JWT). We will implement the ~~JWT~~  local strategy method for the initial MVP and will consider implementing the OAuth 2.0 strategy as an additional feature.
 
 ##### [Stripe](https://stripe.com/au)
 
 Stripe will be used to handle payments and refunds for the application. It is easy to use, setup and customise for our application and user experience.
 
-##### [ToastUI Calendar](https://ui.toast.com/tui-calendar)
+##### [ToastUI Calendar](https://ui.toast.com/tui-calendar) **(yet to be implemented)**
 
 ToastUI is a JavaScript user interface library. We will be specifically using the Calendar features for the admin user to keep track of all events and bookings. Multiple features of the application will require access to the calendar or its data to keep information up to date and in sync. The main benefit of choosing this particular library is that it is open source and versatile enough for our use case. Other options we considered provided the necessary features but required a paid subscription which wasn't an option for us.
 
-##### [Multer](https://github.com/expressjs/multer)
+##### [Multer ](https://github.com/expressjs/multer)**(yet to be implemented)**
 
 Multer is a middleware that will manage form data and handle the storage of uploaded files in our database.
 
@@ -112,7 +112,7 @@ We created 3 personas to match the 3 different user types that the app accommoda
 
 ### New User Stories
 
-With the new user stories we wanted to be more succint with the information we were communicating and show more accurately what our users ere trying to achieve through the use of the application.  The originals only navigated through the actions users could take on the site where as below users have clear goals and we've outlined.  The features of the application have been designed to meet these requirements.
+With the new user stories we wanted to be more succinct with the information we were communicating and show more accurately what our users ere trying to achieve through the use of the application.  The originals only navigated through the actions users could take on the site where as below users have clear goals and we've outlined.  The features of the application have been designed to meet these requirements.
 
 | AS A..     | I WANT TO..                                                  | SO THAT..                                                    |
 | ---------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
