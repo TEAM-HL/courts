@@ -40,6 +40,9 @@ const UserLogin = () => {
   const loginUser = async (data) => {
     await api({
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
       data: {
         username: data.username,
         password: data.password
