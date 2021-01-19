@@ -55,7 +55,7 @@ app.use(session({
     proxy: true,
     cookie: { 
         maxAge: 1500000, // 25 mins
-        // domain: 'sad-bell-f8c96a.netlify.app',
+        domain: 'sad-bell-f8c96a.netlify.app',
         secure: true,
         httpOnly: false, 
         sameSite: 'none'
