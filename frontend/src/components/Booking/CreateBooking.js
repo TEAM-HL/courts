@@ -21,7 +21,7 @@ const CreateBooking = () => {
     // initialise materialize
     useEffect(() => {
         M.AutoInit()
-        preFillBooking()
+        // preFillBooking()
     }, [])
     // setup history const to be used later  
     const history = useHistory()
@@ -56,13 +56,14 @@ const CreateBooking = () => {
     
     // set state for date
     const [date, setDate] = useState(getRoundedDate(new Date()))
-    
-    const preFillBooking = () => {
-        console.log("pending booking: ", pendingBooking)
-        if (pendingBooking !== null) {
-            setValues(pendingBooking)
-        }
-    }
+   
+    // Not ready for production 
+    // const preFillBooking = () => {
+    //     console.log("pending booking: ", pendingBooking)
+    //     if (pendingBooking !== null) {
+    //         setValues(pendingBooking)
+    //     }
+    // }
 
     // calculate total cost
     const calculateTotalCost = (
@@ -99,9 +100,8 @@ const CreateBooking = () => {
     //executed when form is submitted
     const newBooking = async () => {
         // assign current booking data to variable
-        store.loggedInUser = store.loggedInUser
         const bookingData = {
-            username: store.loggedInUser,
+            username: store.loggedInUser.username,
             date: date.toLocaleDateString(),
             time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             end: addMinutes(date, (60*values.duration)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -475,7 +475,7 @@ const CreateBooking = () => {
                     <div className="input-field col s12 push-m2 m8">
                         <br/><br/>
                         <select required name="duration" value={values.duration} onChange={handleInputChange}>
-                            <option value="0">Choose option</option>
+                            <option default value="0">Choose option</option>
                             <option value="1">1 Hour</option>
                             <option value="1.5">1.5 Hours</option>
                             <option value="2">2 Hours</option>

@@ -1,38 +1,25 @@
 import React from 'react'
-import { useGlobalState } from "../../config/store"
 import api from '../../config/api'
 
 const BookingSuccess = () => {
 
-    const {store, dispatch} = useGlobalState()
+    const pendingBookingData = JSON.parse(localStorage.getItem('pendingBookingData'))
+    // console.log(pendingBookingData)
 
-    console.log(store)
-
-    const { pendingBooking } = store
-    console.log("pendingBooking ", pendingBooking)
-    
-    const testing = async () => {
+    const saveBooking = async () => {
         await api({
             method: "POST",
-            data: pendingBooking,
+            data: pendingBookingData,
             url: "/bookings/new"
         }).then(res => {
-            // 
+            // console.log("response from save booking", res)
+            if (res.status === 200) {
+                console.log("booking successful!")
+            }
         })
     }
 
-    // api({
-    //     method: "POST",
-    //     data: pendingBooking,
-    //     url: "/booking/new"
-    // }).then(res => {
-    //     if (res.status === 200) {
-    //         dispatch({
-    //             type: "setPendingBooking",
-    //             data: null
-    //         })
-    //     }
-    // })
+    saveBooking()
 
     return (
         <div className="container">
