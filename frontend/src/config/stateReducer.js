@@ -15,13 +15,14 @@ export const stateReducer = (state, action) => {
             }
         }
         case "setPendingBooking": {
-            console.log('pendingBooking:', action.data)
+            console.log('State Reducer pendingBooking:', action.data)
             return {
                 ...state,
                 pendingBooking: action.data
             }
         }
         case "RESET_STATE": {
+            console.log("Reset State")
             return {
                 ...state,
                 loggedInUser: null,

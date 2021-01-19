@@ -6,6 +6,8 @@ const BookingSuccess = () => {
 
     const {store, dispatch} = useGlobalState()
 
+    console.log(store)
+
     const { pendingBooking } = store
     console.log("pendingBooking ", pendingBooking)
     

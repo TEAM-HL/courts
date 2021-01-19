@@ -147,6 +147,7 @@ router.route('/logout').get((req, res) => {
         else res.status(200).send('Logout successful.')
         console.log("check that session has been cleared: ", req.session)
     })
+
 })
 
 // -------------------------------------------------------

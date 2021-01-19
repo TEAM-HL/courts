@@ -47,7 +47,6 @@ const Preview = () => {
     })
     console.log("previewTable", previewTable)
 
-
     const handlePayClick = async () => {
         // Get Stripe.js instance
         const stripe = await stripePromise;
