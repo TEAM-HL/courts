@@ -46,7 +46,7 @@ const Preview = () => {
             nestedObj.map(entry => previewTable.push(entry) )
         } else previewTable.push(entry)
     })
-    console.log("post", previewTable)
+    console.log("previewTable", previewTable)
 
 
 
@@ -133,15 +133,8 @@ const Preview = () => {
                         {
                         previewTable.length > 0 ?
                         (
-                            pairs.map(entry => {
-                            if (typeof entry[1] ==='object') {
-                                let nestedObj = Object.entries(entry[1])
-                                nestedObj.map(entry => {
-                                    <li className="collection-item" key={entry[0]}>{entry[0]}: {entry[1]}</li>
-                                })
-                            } else {
-                                return (<li className="collection-item" key={entry[0]}>{entry[0]}: {entry[1]}</li>)
-                                }
+                            previewTable.map(array => {
+                                return (<li className="collection-item">{array[0]}:   {array[1]}</li>)
                             })
                         )
                         : <p></p>
@@ -162,3 +155,15 @@ const Preview = () => {
 }
 
 export default Preview
+
+
+// pairs.map(entry => {
+//     if (typeof entry[1] ==='object') {
+//         let nestedObj = Object.entries(entry[1])
+//         nestedObj.map(entry => {
+//             <li className="collection-item" key={entry[0]}>{entry[0]}: {entry[1]}</li>
+//         })
+//     } else {
+//         return (<li className="collection-item" key={entry[0]}>{entry[0]}: {entry[1]}</li>)
+//         }
+//     })
