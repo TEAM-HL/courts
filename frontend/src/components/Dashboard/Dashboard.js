@@ -38,7 +38,7 @@ const Dashboard = () => {
                         Accessible
                     </h3>
                     <h5 className="light grey-text text-lighten-3">
-                        AAA
+                        AAA standard™
                     </h5>
                     </Caption>
                 </Slide>
@@ -48,7 +48,7 @@ const Dashboard = () => {
                         Affordable
                     </h3>
                     <h5 className="light grey-text text-lighten-3">
-                        AAA
+                        AAA standard™
                     </h5>
                     </Caption>
                 </Slide>
@@ -58,7 +58,7 @@ const Dashboard = () => {
                         Achievable
                     </h3>
                     <h5 className="light grey-text text-lighten-3">
-                        AAA
+                        AAA standard™
                     </h5>
                     </Caption>
                 </Slide>
