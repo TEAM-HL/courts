@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
 import { useGlobalState } from "../../config/store"
 //materialize
 import 'materialize-css';
@@ -41,16 +41,14 @@ const NavbarHeader = () => {
         }).then(res => {
             console.log(res)
             if (res.status === 200) {
+                //redirect user
                 // clear global context
                 dispatch({
                     type: "RESET_STATE",
                 })
-                debugger
-                //redirect user
-                history.push("/login")
             } 
-            console.log(store)
         })
+        return <Redirect to="/" />
     }
 
 

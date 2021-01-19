@@ -20,8 +20,8 @@ router.route('/create-checkout-session').post(async (req, res) => {
         },
      ],
       mode: 'payment',
-      success_url: `https://sad-bell-f8c96a.netlify.app/booking/success`,
-      cancel_url: `https://sad-bell-f8c96a.netlify.app/booking/cancel`,
+      success_url: `http://localhost:3000/booking/success`,
+      cancel_url: `http://localhost:3000/booking/cancel`,
     })
 
     res.json({ id: session.id });
