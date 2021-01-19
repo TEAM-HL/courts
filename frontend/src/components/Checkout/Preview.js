@@ -69,7 +69,18 @@ const Preview = () => {
     //     return array[index][1]
     // }
 
+
     const handlePayClick = async () => {
+        
+        await api({
+            method: "POST",
+            data: previewBookingData,
+            url: "/bookings/new"
+        }).then(res => {
+            console.log("dfghdifgdfigjdfigj", res)
+            debugger
+        })
+
         // Get Stripe.js instance
         const stripe = await stripePromise;
 
@@ -89,20 +100,20 @@ const Preview = () => {
         if (result.error) {
             console.log(result.error.message)
             setStripeError(result.error.message)
-        } else {
-            await api({
-                method: "POST",
-                data: pendingBooking,
-                url: "/booking/new"
-            }).then(res => {
-                if (res.status === 200) {
-                    dispatch({
-                        type: "setPendingBooking",
-                        data: null
-                    })
-                }
+        // } else {
+        //     await api({
+        //         method: "POST",
+        //         data: pendingBooking,
+        //         url: "/booking/new"
+        //     }).then(res => {
+        //         if (res.status === 200) {
+        //             dispatch({
+        //                 type: "setPendingBooking",
+        //                 data: null
+        //             })
+        //         }
 
-            })
+        //     })
         }
     }
    

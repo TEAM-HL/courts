@@ -98,6 +98,7 @@ const CreateBooking = () => {
     //executed when form is submitted
     const newBooking = async () => {
         // assign current booking data to variable
+        store.loggedInUser = "billy"
         const bookingData = {
             username: store.loggedInUser,
             date: date.toLocaleDateString(),

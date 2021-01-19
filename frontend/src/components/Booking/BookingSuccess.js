@@ -1,6 +1,27 @@
 import React from 'react'
+import { useGlobalState } from "../../config/store"
+import api from '../../config/api'
 
 const BookingSuccess = () => {
+
+    const {store, dispatch} = useGlobalState()
+
+    const { pendingBooking } = store
+    console.log("pendingBooking ", pendingBooking)
+
+    api({
+        method: "POST",
+        data: pendingBooking,
+        url: "/booking/new"
+    }).then(res => {
+        if (res.status === 200) {
+            dispatch({
+                type: "setPendingBooking",
+                data: null
+            })
+        }
+    })
+
     return (
         <div className="container">
             <div className="valign-wrapper s12 push-m2 m8">
