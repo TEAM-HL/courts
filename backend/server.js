@@ -20,6 +20,7 @@ let whitelist = ['https://sad-bell-f8c96a.netlify.app', 'https://localhost:3000'
 
 // middleware 
 app.use(cors({
+    credentials: true,
     origin: function(origin, callback){
       // allow requests with no origin 
       if(!origin) return callback(null, true);
