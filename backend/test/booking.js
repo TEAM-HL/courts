@@ -45,7 +45,7 @@ describe('/POST booking', () => {
               console.log(res)
                 res.should.have.status(200);
                 res.body.should.be.a('object');
-                //res.body.should.have.property('errors');
+                //res.body.should.have.property('errors'); //errors = false, success = false
                 //res.body.errors.should.have.property('date');
                 //res.body.errors.pages.should.have.property('kind').eql('required');
             done();
@@ -90,7 +90,7 @@ describe('/DELETE/:id booking', () => {
               .end((err, res) => {
                     // res.should.have.status(200);
                     // res.body.should.be.a('object');
-                    // res.body.should.have.property('message').eql('Book successfully deleted!');
+                    // res.body.should.have.property('message').eql('Booking deleted');
                     // res.body.result.should.have.property('ok').eql(1);
                     // res.body.result.should.have.property('n').eql(1);
                 done();
