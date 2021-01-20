@@ -3,7 +3,7 @@
 ##### [Link](https://github.com/TEAM-HL/courts) to the repo
 ##### [link](http://bookacourt.info) or [here](https://sad-bell-f8c96a.netlify.app/) to the deployed site 
 
-Update: Wed Jan 20
+Update (Wed Jan 20): 
 For testing on localhost, use 'prezo' branch. 
 Production version ('main' branch) has a few bugs:
 - cookie doesn't save when using Chrome. saves in Firefox
