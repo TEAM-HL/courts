@@ -435,8 +435,9 @@ const CreateBooking = () => {
     
     // component structure
     return (
-        <>{
-            (loggedInUser !== null && authenticated == true) ?
+        <>
+            {/* { */}
+            {/* (loggedInUser !== null && authenticated == true) ? */}
             
             <div className="container">
                 <form id="booking-form" className="main-form" onSubmit={handleSubmit}>
@@ -564,8 +565,8 @@ const CreateBooking = () => {
                     </div>
                 </form>
             </div>
-            : <div className="container valign-wrapper"><p>Please login before making a booking.</p></div>
-            }
+            // : <div className="container valign-wrapper"><p>Please login before making a booking.</p></div>
+            // }
         </>
     )
 }
