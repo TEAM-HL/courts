@@ -2,6 +2,14 @@
 
 ##### [Link](https://github.com/TEAM-HL/courts) to the repo
 ##### [link](http://bookacourt.info) or [here](https://sad-bell-f8c96a.netlify.app/) to the deployed site 
+
+Update: Wed Jan 20
+For testing on localhost, use 'prezo' branch. 
+Production version ('main' branch) has a few bugs:
+- cookie doesn't save when using Chrome. saves in Firefox
+- session-cookie doesn't clear consistently in firefox
+- conditional rendering for booking form has disabled dropdown inputs
+
 --------------
 ### Purpose
 ***Courts*** is a simple to use booking application designed for a local tennis court business. It was developed to replace their previous system that relied on phone bookings and cash envelopes.
